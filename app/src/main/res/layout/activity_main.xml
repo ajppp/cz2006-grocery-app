@@ -41,7 +41,7 @@
             android:text="@string/grocery_list" />
 
         <Button
-            android:id="@+id/settingButton"
+            android:id="@+id/settingsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

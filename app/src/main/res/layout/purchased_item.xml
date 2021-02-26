@@ -2,53 +2,48 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/inventoryItem"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:id="@+id/purchasedItem"
+    android:layout_width="384dp"
+    android:layout_height="48dp">
 
 
-    <TextView
-        android:id="@+id/inventoryFoodItem"
-        android:layout_width="0dp"
+    <CheckBox
+        android:id="@+id/purchasedcheckBox"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Food Item"
+        android:text="Purchased Item"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/inventoryQuantity"
+        app:layout_constraintEnd_toStartOf="@+id/purchasedQuantity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/inventoryQuantity"
-        android:layout_width="0dp"
+        android:id="@+id/purchasedQuantity"
+        android:layout_width="8dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:text="3"
+        android:text="4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/purchasedQuantity"
-        app:layout_constraintStart_toEndOf="@+id/inventoryFoodItem"
+        app:layout_constraintStart_toEndOf="@id/purchasedcheckBox"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/purchasedQuantity"
-        android:layout_width="0dp"
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:text="5 Days"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/inventoryQuantity"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_right_arrow" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

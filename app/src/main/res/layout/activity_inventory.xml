@@ -7,6 +7,7 @@
     tools:context=".Inventory">
 
     <LinearLayout
+        android:id="@+id/inventoryTitleBar"
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:orientation="horizontal"
@@ -39,7 +40,7 @@
             android:layout_weight="1"
             android:text="Quantity"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/inventoryShelfLife"
+            app:layout_constraintEnd_toStartOf="@+id/purchasedQuantity"
             app:layout_constraintStart_toEndOf="@+id/inventoryFoodItem"
             app:layout_constraintTop_toTopOf="parent" />
 

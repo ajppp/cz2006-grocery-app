@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.ImageButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var inventoryButton: Button
     private lateinit var recipeButton: Button
     private lateinit var groceryButton: Button
-    private lateinit var settingButton: Button
+    private lateinit var settingsButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +25,9 @@ class MainActivity : AppCompatActivity() {
         inventoryButton = findViewById(R.id.inventoryButton)
         recipeButton = findViewById(R.id.recipeButton)
         groceryButton = findViewById(R.id.groceryButton)
-        settingButton = findViewById(R.id.settingButton)
+        settingsButton = findViewById(R.id.settingsButton)
+
+        // testing out the click listener for every button
 
         inventoryButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on inventory button")
@@ -35,21 +36,42 @@ class MainActivity : AppCompatActivity() {
 
         recipeButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on recipe button")
+            openRecipe()
         } )
 
         groceryButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on grocery button")
+            openGrocery()
         } )
 
-        settingButton.setOnClickListener(View.OnClickListener {
+        settingsButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on setting button")
+            openSettings()
         } )
 
     }
+
+    // open the different activity pages
 
     private fun openInventory() {
         val intent = Intent(this, Inventory::class.java)
         startActivity(intent)
     }
+
+    private fun openRecipe() {
+        val intent = Intent(this, Recipe::class.java)
+        startActivity(intent)
+    }
+
+    private fun openGrocery() {
+        val intent = Intent(this, Grocery::class.java)
+        startActivity(intent)
+    }
+
+    private fun openSettings() {
+        val intent = Intent(this, Inventory::class.java)
+        startActivity(intent)
+    }
+
 
 }
