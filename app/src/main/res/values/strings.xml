@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Z+</string>
+    <string name="inventory_list">Inventory List</string>
+    <string name="recipe">Recipe</string>
+    <string name="grocery_list">Grocery List</string>
+    <string name="user_settings">User Settings</string>
+</resources>
