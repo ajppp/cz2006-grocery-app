@@ -21,6 +21,8 @@ class RecipeAdapter(private val context: Context, private val numSuggestedRecipe
 
             fun bind(position: Int) {
                 suggestedRecipeName.setOnClickListener{
+                    // TODO("enter the recipe page on click")
+                    // TODO("make a new recipe activity?")
                     Log.i(TAG, "clicked on position $position")
                 }
             }

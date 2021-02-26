@@ -16,6 +16,8 @@ class ShoppingListAdapter(private val context: Context, private val numShoppingI
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             fun bind(position: Int) {
                 //No-Op
+                //TODO("add an onclick listener? for the checkbox")
+                // need to figure out how a checkbox works
 
             }
         }

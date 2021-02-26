@@ -12,6 +12,10 @@ class PurchasedListAdapter(private val context: Context, private val numPurchase
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             fun bind(position: Int) {
                 //No-Op
+                // TODO("change button image")
+                // TODO("add onClickListener for the button, which will prompt a dialog")
+                // should the dialog be a simple prompt or should it be a completely separate page?
+                // if prompt, how to implement the expiry date question
 
             }
 
