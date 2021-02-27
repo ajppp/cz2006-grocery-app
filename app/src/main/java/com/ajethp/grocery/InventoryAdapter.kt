@@ -28,6 +28,13 @@ class InventoryAdapter(private val context: Context, private val numInventoryIte
                     }
 
                     // can set more onClickListener here in case anything else in the inventory is clickable
+
+                    // set onLongClickListener to delete item
+                    quantityText.setOnLongClickListener{
+                        // TODO("delete item")
+                        Log.i(TAG, "long click")
+                        true
+                    }
                 }
             }
 

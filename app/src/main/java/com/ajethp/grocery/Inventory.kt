@@ -12,6 +12,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ajethp.grocery.classes.User
 import java.util.*
 
 class Inventory : AppCompatActivity() {
@@ -63,37 +64,25 @@ class Inventory : AppCompatActivity() {
                         },
                                 {
                                     Log.i(TAG, "entered positive button")
-
                                     // sees expiry date
-                                    showExpiryDateDialog("Enter the expiry date you see for $newInventoryName", inputInventoryExpiryDate, View.OnClickListener {
-                                        // NOT YET WORKING
-                                        // HOW TO
-                                        val newInventoryExpiryDate = inputInventoryExpiryDate
-                                        Log.i(TAG, "entered date $inputInventoryExpiryDate")
-                                    })
+                                        val c = Calendar.getInstance()
+                                        var year = c.get(Calendar.YEAR)
+                                        var month = c.get(Calendar.MONTH)
+                                        var day = c.get(Calendar.DAY_OF_MONTH)
+                                        DatePickerDialog(this, {_, mYear, mMonth, mDay ->
+                                            year = mYear
+                                            month = mMonth
+                                            day = mDay
+                                        }, year, month, day).show()
+                                        Log.i(TAG, "entered date $year $month $day")
+
                                 })
+                        // TODO("add item with info to the user db")
                     })
-                } )
+                })
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    // METHOD NOT YET WORKING
-    // HOW TO RETURN DATE?
-    private fun showExpiryDateDialog(title: String, view: View, onClickListener: View.OnClickListener) {
-         AlertDialog.Builder(this)
-                .setTitle(title)
-        .setView(view)
-        .setNegativeButton("Cancel", null)
-                .setPositiveButton("Enter date") { _, _ ->
-                   onClickListener.onClick(null)
-          }.show()
-        // val c = Calendar.getInstance()
-        // val year = c.get(Calendar.YEAR)
-        // val month = c.get(Calendar.MONTH)
-        // val day = c.get(Calendar.DAY_OF_MONTH)
-        // DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth -> }, year, month, day).show()
     }
 
     private fun showHasExpiryAlertDialog(title: String, view: View?, negativeClickListener: View.OnClickListener, positiveClickListener: View.OnClickListener ) {
