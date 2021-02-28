@@ -6,8 +6,9 @@ Our project is called **Minimising Food Waste by Leveraging Technology**. To tha
 ---
 
 ## TODO
-- [ ] add Settings class and layout
-- [ ] use Snackbar to display messages to the user
+- [x] add Settings class and layout
+- [ ] add alert dialogs for all of the buttons in Settings
+- [ ] use Snackbar to display messages to the user (Inventory, Shopping List etc.)
 - [x] add a menuInflater to Inventory to add items
 - [ ] figure out how to use DatePickerDialog.OnSetDateListener
 - [ ] add AlertDialog to add and delete items?
