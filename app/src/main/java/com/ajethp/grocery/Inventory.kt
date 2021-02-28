@@ -10,9 +10,11 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ajethp.grocery.classes.User
+import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
 import java.util.*
 
 class Inventory : AppCompatActivity() {
@@ -21,12 +23,14 @@ class Inventory : AppCompatActivity() {
     }
 
     private lateinit var inventoryRvBoard: RecyclerView
+    private lateinit var inventoryClRoot: ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inventory)
 
         inventoryRvBoard = findViewById(R.id.inventoryRvBoard)
+        inventoryClRoot = findViewById(R.id.inventoryClRoot)
 
         // TODO("replace 8 with the actual number of items in user's inventory")
         // Recycler View is scrollable so there's no need to change anything
@@ -45,6 +49,10 @@ class Inventory : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
             R.id.mi_add_inventory -> {
+                val c = Calendar.getInstance()
+                var year = c.get(Calendar.YEAR)
+                var month = c.get(Calendar.YEAR)
+                var day = c.get(Calendar.YEAR)
                 val inputInventoryName = EditText(this)
                 showNameAlertDialog("Enter item name", inputInventoryName, View.OnClickListener {
                     val newInventoryName = inputInventoryName.text.toString()
@@ -54,10 +62,9 @@ class Inventory : AppCompatActivity() {
                         // TODO("add error checking if it is not an int")
                         val newInventoryQuantity = inputInventoryQuantity.text.toString().toInt()
                         Log.i(TAG, "entered $newInventoryQuantity")
-                        val inputInventoryExpiryDate = DatePicker(this)
                         // TODO("can only select future date")
                         showHasExpiryAlertDialog("Do you see an expiry date?", null, {
-                                                                                                 Log.i(TAG, "entered the negative button")
+                                     Log.i(TAG, "entered the negative button")
                             //no expiry date code here
                             // access database
                             // firebase or sqlite?
@@ -65,19 +72,22 @@ class Inventory : AppCompatActivity() {
                                 {
                                     Log.i(TAG, "entered positive button")
                                     // sees expiry date
-                                        val c = Calendar.getInstance()
-                                        var year = c.get(Calendar.YEAR)
-                                        var month = c.get(Calendar.MONTH)
-                                        var day = c.get(Calendar.DAY_OF_MONTH)
-                                        DatePickerDialog(this, {_, mYear, mMonth, mDay ->
-                                            year = mYear
-                                            month = mMonth
-                                            day = mDay
-                                        }, year, month, day).show()
-                                        Log.i(TAG, "entered date $year $month $day")
+                                    var timeSet : String? = null
+                                    val dateSetListener = DatePickerDialog.OnDateSetListener { _, cyear, monthOfYear, dayOfMonth ->
+                                            c.set(Calendar.YEAR, cyear)
+                                            c.set(Calendar.MONTH, monthOfYear)
+                                            c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                                        }
 
+                                    val dialog = DatePickerDialog(this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
+                                    dialog.datePicker.minDate = c.timeInMillis
+                                    dialog.show()
+                                    // STILL NOT WORKING
+                                    Snackbar.make(inventoryClRoot, "You have successfully added $newInventoryQuantity of $newInventoryName", Snackbar.LENGTH_LONG).show()
+                                    val enteredMonth = c.get(Calendar.MONTH)
+                                    Log.i(TAG, "entered $enteredMonth")
+                                    // TODO("add item with info to the user db")
                                 })
-                        // TODO("add item with info to the user db")
                     })
                 })
             }

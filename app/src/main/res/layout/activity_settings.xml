@@ -85,19 +85,19 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/updateRestrictionsButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Update DIetary Restrictions" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/languageButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Change Language" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/fontSizeButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Change Font Size" />
@@ -119,7 +119,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/familyButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="View Family" />

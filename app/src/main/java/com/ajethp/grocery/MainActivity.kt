@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity() {
         // TODO("sign in")
         var currentUser: User = User("username", null)
 
-        // testing out the click listener for every button
-
         inventoryButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on inventory button")
             openInventory()
