@@ -8,11 +8,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Grocery">
+        <activity android:name=".Settings"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Grocery"
             android:icon="@drawable/ic_food"
             android:label=""
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Recipe"
             android:icon="@drawable/ic_food"

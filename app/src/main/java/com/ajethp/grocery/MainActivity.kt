@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import com.ajethp.grocery.classes.User
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
     }
+
 
     private lateinit var inventoryButton: Button
     private lateinit var recipeButton: Button
@@ -26,6 +28,9 @@ class MainActivity : AppCompatActivity() {
         recipeButton = findViewById(R.id.recipeButton)
         groceryButton = findViewById(R.id.groceryButton)
         settingsButton = findViewById(R.id.settingsButton)
+
+        // TODO("sign in")
+        var currentUser: User = User("username", null)
 
         // testing out the click listener for every button
 
@@ -69,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openSettings() {
-        val intent = Intent(this, Inventory::class.java)
+        val intent = Intent(this, Settings::class.java)
         startActivity(intent)
     }
 
