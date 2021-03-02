@@ -18,4 +18,5 @@ Our project is called **Minimising Food Waste by Leveraging Technology**. To tha
 - [ ] implement SQLite for storing food date
 - [ ] firebase for storing user data?
 - [ ] implement recipe retrieval
+- [ ] Shared Preferences to save data across activities and app usage
 - [ ] Use RadioGroup to implement restrictions?
