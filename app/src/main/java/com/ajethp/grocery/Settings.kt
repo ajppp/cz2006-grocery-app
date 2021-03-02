@@ -10,6 +10,25 @@ import androidx.appcompat.app.AlertDialog
 
 class Settings : AppCompatActivity() {
 
+    // should be attributes of User
+    val restrictionsList = arrayOf(
+            "beef",
+            "pork",
+            "etc",
+            "idk what else there is",
+            "some random crap",
+            "whatever"
+    )
+
+    var checkedRestrictions = booleanArrayOf(
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+    )
+
     companion object {
         private const val TAG = "Settings"
     }
@@ -37,23 +56,6 @@ class Settings : AppCompatActivity() {
     // NOT DONE
     // HOW TO GET IT TO SAVE THE THINGS THAT HAVE BEEN MODIFIED
     private fun showDietaryRestrictionAlertDialog(title: String, view: View?, positiveClickListener: View.OnClickListener) {
-        val restrictionsList = arrayOf(
-                "beef",
-                "pork",
-                "etc",
-                "idk what else there is",
-                "some random crap",
-                "whatever"
-        )
-
-        var checkedRestrictions = booleanArrayOf(
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
-        )
         AlertDialog.Builder(this)
                 .setTitle(title)
                 .setView(view)
