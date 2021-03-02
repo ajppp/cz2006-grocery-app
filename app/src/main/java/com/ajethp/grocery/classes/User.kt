@@ -4,10 +4,12 @@ class User(
         val username: String,
         var dietaryRestriction : String?,
         var isInFamily : Boolean = false,
-        var inventoryList:ArrayList<Food> = ArrayList(),
-        var groceryList:ArrayList<Food> = ArrayList()
+        var inventoryList:MutableList<Food> = ArrayList(),
+        var groceryList:MutableList<Food> = ArrayList()
 ) {
     // use safe calls to check if null when accessing restrictions
+        private fun addFoodToInventory(newInventoryFood: Food) = inventoryList.add(newInventoryFood)
+
 }
 
 data class AppUser(

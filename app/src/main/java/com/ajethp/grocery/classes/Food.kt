@@ -1,8 +1,10 @@
 package com.ajethp.grocery.classes
 
+import java.util.*
+
 class Food (
     val foodName: String,
-    var shelfLife: Int,
+    var expiryDate: Date,
     var quantity: Int
 ) {
 

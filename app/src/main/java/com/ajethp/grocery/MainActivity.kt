@@ -1,6 +1,8 @@
 package com.ajethp.grocery
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +17,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    private lateinit var sharedPreferences: SharedPreferences
+
     private lateinit var inventoryButton: Button
     private lateinit var recipeButton: Button
     private lateinit var groceryButton: Button
@@ -24,13 +28,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        openLogin()
+
+        sharedPreferences = getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
+
         inventoryButton = findViewById(R.id.inventoryButton)
         recipeButton = findViewById(R.id.recipeButton)
         groceryButton = findViewById(R.id.groceryButton)
         settingsButton = findViewById(R.id.settingsButton)
 
         // TODO("sign in")
-        var currentUser: User = User("username", null)
+
+        val username = sharedPreferences.getString("USERNAME", "")
+        Log.i(TAG, "username is $username")
 
         inventoryButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on inventory button")
@@ -55,6 +65,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     // open the different activity pages
+    private fun openLogin() {
+        val intent = Intent(this, Login::class.java)
+        startActivity(intent)
+    }
 
     private fun openInventory() {
         val intent = Intent(this, Inventory::class.java)
