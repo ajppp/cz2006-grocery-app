@@ -9,7 +9,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Grocery">
         <activity android:name=".Login"></activity>
-        <activity android:name=".login" />
         <activity
             android:name=".Settings"
             android:label="Settings"
@@ -29,7 +28,8 @@
             android:icon="@drawable/ic_food"
             android:label="Your Inventory"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

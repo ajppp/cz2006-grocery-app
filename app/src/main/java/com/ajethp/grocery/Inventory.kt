@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ajethp.grocery.classes.User
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,9 +33,12 @@ class Inventory : AppCompatActivity() {
         inventoryRvBoard = findViewById(R.id.inventoryRvBoard)
         inventoryClRoot = findViewById(R.id.inventoryClRoot)
 
+        var currentUser = intent.getParcelableExtra<User>("CURRENT USER")
+        var numInventoryItems = currentUser!!.inventoryList!!.size
+
         // TODO("replace 8 with the actual number of items in user's inventory")
         // Recycler View is scrollable so there's no need to change anything
-        inventoryRvBoard.adapter = InventoryAdapter(this, 8)
+        inventoryRvBoard.adapter = InventoryAdapter(this, numInventoryItems)
         inventoryRvBoard.setHasFixedSize(true)
         // spanCount is the number of columns
         inventoryRvBoard.layoutManager = GridLayoutManager(this, 1)
