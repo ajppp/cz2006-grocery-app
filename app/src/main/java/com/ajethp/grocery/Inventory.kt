@@ -36,7 +36,7 @@ class Inventory : AppCompatActivity() {
 
         // ("replace 8 with the actual number of items in user's inventory") -> done
         // Recycler View is scrollable so there's no need to change anything
-        inventoryRvBoard.adapter = InventoryAdapter(this, userInventory.size, userInventory)
+        inventoryRvBoard.adapter = InventoryAdapter(this, userInventory)
         inventoryRvBoard.setHasFixedSize(true)
         // spanCount is the number of columns
         inventoryRvBoard.layoutManager = GridLayoutManager(this, 1)
@@ -50,12 +50,14 @@ class Inventory : AppCompatActivity() {
     // TODO("rethink the entire method... perhaps using a new activity is better")
     // method to add new inventory item
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val c = Calendar.getInstance()
+        var year = c.get(Calendar.YEAR)
+        var month = c.get(Calendar.MONTH)
+        var day = c.get(Calendar.DAY_OF_MONTH)
+        var newInventoryDate: String = ""
         when (item.itemId){
             R.id.mi_add_inventory -> {
-                val c = Calendar.getInstance()
-                var year = c.get(Calendar.YEAR)
-                var month = c.get(Calendar.YEAR)
-                var day = c.get(Calendar.YEAR)
                 val inputInventoryName = EditText(this)
                 showNameAlertDialog("Enter item name", inputInventoryName, View.OnClickListener {
                     val newInventoryName = inputInventoryName.text.toString()
@@ -69,14 +71,12 @@ class Inventory : AppCompatActivity() {
                         showHasExpiryAlertDialog("Do you see an expiry date?", null, {
                                      Log.i(TAG, "entered the negative button")
                             //no expiry date code here
-                            // access database
-                            // firebase or sqlite?
                         },
                                 {
                                     Log.i(TAG, "entered positive button")
                                     // sees expiry date
-                                    var timeSet : String? = null
-                                    val dateSetListener = DatePickerDialog.OnDateSetListener { _, cyear, monthOfYear, dayOfMonth ->
+                                    val dateSetListener = DatePickerDialog.OnDateSetListener { view, cyear, monthOfYear, dayOfMonth ->
+                                            newInventoryDate.plus(cyear).plus(monthOfYear).plus(dayOfMonth)
                                             c.set(Calendar.YEAR, cyear)
                                             c.set(Calendar.MONTH, monthOfYear)
                                             c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -84,11 +84,12 @@ class Inventory : AppCompatActivity() {
 
                                     val dialog = DatePickerDialog(this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
                                     dialog.datePicker.minDate = c.timeInMillis
+                                    dateSetListener.onDateSet(dialog.datePicker, year , month, day)
                                     dialog.show()
                                     // STILL NOT WORKING
+                                    // the code below runs even before the ok button is clicked
                                     Snackbar.make(inventoryClRoot, "You have successfully added $newInventoryQuantity of $newInventoryName", Snackbar.LENGTH_LONG).show()
-                                    val enteredMonth = c.get(Calendar.MONTH)
-                                    Log.i(TAG, "entered $enteredMonth")
+                                    Log.i(TAG, "entered $month button")
                                     // TODO("add item with info to the user db")
                                 })
                     })

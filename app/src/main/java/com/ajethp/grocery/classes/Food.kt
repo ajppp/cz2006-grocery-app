@@ -7,6 +7,7 @@ import java.time.LocalDate
 @Parcelize
 data class Food (
         val foodName: String,
-        var expiryDate: LocalDate,
-        var quantity: Int
+        // make expiryDate nullable for food in shopping list?
+        var expiryDate: LocalDate?,
+        var quantity: Int,
 ) : Parcelable

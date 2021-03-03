@@ -61,10 +61,16 @@ class MainActivity : AppCompatActivity() {
         val orangeDate = LocalDate.of(2021, Month.APRIL, 21)
         var orange = Food("orange", orangeDate,19)
 
+        var kiwi = Food("kiwi", null, 3)
+        var peach = Food("peach", null, 7)
+
         currentUser = User(username!!)
         currentUser.inventoryList.add(avocado)
         currentUser.inventoryList.add(banana)
         currentUser.inventoryList.add(orange)
+
+        currentUser.shoppingList.add(kiwi)
+        currentUser.shoppingList.add(peach)
 
         inventoryButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on inventory button")
@@ -102,16 +108,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun openRecipe() {
         val intent = Intent(this, Recipe::class.java)
+        intent.putExtra("CURRENT USER", currentUser)
         startActivity(intent)
     }
 
     private fun openGrocery() {
         val intent = Intent(this, Grocery::class.java)
+        intent.putExtra("CURRENT USER", currentUser)
         startActivity(intent)
     }
 
     private fun openSettings() {
         val intent = Intent(this, Settings::class.java)
+        intent.putExtra("CURRENT USER", currentUser)
         startActivity(intent)
     }
 

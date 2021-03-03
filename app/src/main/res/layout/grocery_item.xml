@@ -8,7 +8,7 @@
 
 
     <CheckBox
-        android:id="@+id/purchasedcheckBox"
+        android:id="@+id/shoppingcheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -17,12 +17,12 @@
         android:layout_marginBottom="8dp"
         android:text="Item to be Bought"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/purchasedQuantity"
+        app:layout_constraintEnd_toStartOf="@+id/shoppingQuantity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/purchasedQuantity"
+        android:id="@+id/shoppingQuantity"
         android:layout_width="8dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -30,7 +30,7 @@
         android:layout_marginBottom="8dp"
         android:text="4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/purchasedcheckBox"
+        app:layout_constraintStart_toEndOf="@id/shoppingcheckBox"
         app:layout_constraintTop_toTopOf="parent" />
 
 

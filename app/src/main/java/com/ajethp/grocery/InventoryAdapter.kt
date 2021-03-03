@@ -11,7 +11,6 @@ import com.ajethp.grocery.classes.Food
 
 class InventoryAdapter(
     private val context: Context,
-    private val numInventoryItems: Int,
     private val userInventory: MutableList<Food>
 ) :
         RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
@@ -28,6 +27,7 @@ class InventoryAdapter(
 
                 fun bind(position: Int) {
 
+                    // set text for the inventory items
                     nameText.text = userInventory[position].foodName
                     quantityText.text = userInventory[position].quantity.toString()
                     expiryDateText.text = userInventory[position].expiryDate.toString()
@@ -105,6 +105,6 @@ class InventoryAdapter(
      *
      * @return The total number of items in this adapter.
      */
-    override fun getItemCount() = numInventoryItems
+    override fun getItemCount() = userInventory.size
 
 }

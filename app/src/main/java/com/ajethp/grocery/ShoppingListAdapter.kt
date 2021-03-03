@@ -4,9 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ajethp.grocery.classes.Food
 
-class ShoppingListAdapter(private val context: Context, private val numShoppingItems: Int) :
+class ShoppingListAdapter(private val context: Context, private var userShoppingList: MutableList<Food>) :
     RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
 
         companion object {
@@ -14,10 +17,15 @@ class ShoppingListAdapter(private val context: Context, private val numShoppingI
         }
 
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+            private val shoppingItemText = itemView.findViewById<CheckBox>(R.id.shoppingcheckBox)
+            private val shoppingItemQuantity = itemView.findViewById<TextView>(R.id.shoppingQuantity)
             fun bind(position: Int) {
-                //No-Op
                 //TODO("add an onclick listener? for the checkbox")
                 // need to figure out how a checkbox works
+
+                shoppingItemText.text = userShoppingList[position].foodName
+                shoppingItemQuantity.text = userShoppingList[position].quantity.toString()
 
             }
         }
@@ -80,8 +88,6 @@ class ShoppingListAdapter(private val context: Context, private val numShoppingI
      *
      * @return The total number of items in this adapter.
      */
-    override fun getItemCount(): Int {
-        return numShoppingItems
-    }
+    override fun getItemCount() = userShoppingList.size
 
 }
