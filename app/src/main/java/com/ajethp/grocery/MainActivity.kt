@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 
+    lateinit var currentUser: User
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -41,6 +42,10 @@ class MainActivity : AppCompatActivity() {
 
         val username = sharedPreferences.getString("USERNAME", "")
         Log.i(TAG, "username is $username")
+
+        // TEMPORARY METHOD TO CREATE USER TO TRY TO IMPLEMENT APP LOGIC
+        // !! -> throws NullPointerException if null
+        currentUser = User(username!!)
 
         inventoryButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on inventory button")
