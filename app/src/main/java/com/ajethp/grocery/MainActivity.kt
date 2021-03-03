@@ -54,8 +54,17 @@ class MainActivity : AppCompatActivity() {
         // !! -> throws NullPointerException if null
         val avocadoDate = LocalDate.of(2021, Month.APRIL, 12)
         var avocado = Food("avocado", avocadoDate,2)
+
+        val bananaDate = LocalDate.of(2021, Month.APRIL, 17)
+        var banana = Food("banana", bananaDate,5)
+
+        val orangeDate = LocalDate.of(2021, Month.APRIL, 21)
+        var orange = Food("orange", orangeDate,19)
+
         currentUser = User(username!!)
         currentUser.inventoryList.add(avocado)
+        currentUser.inventoryList.add(banana)
+        currentUser.inventoryList.add(orange)
 
         inventoryButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on inventory button")

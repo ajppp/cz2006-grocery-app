@@ -32,12 +32,12 @@
         android:clickable="true"
         android:text="3"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/purchasedQuantity"
+        app:layout_constraintEnd_toStartOf="@+id/inventoryExpiryDate"
         app:layout_constraintStart_toEndOf="@+id/inventoryFoodItem"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/purchasedQuantity"
+        android:id="@+id/inventoryExpiryDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

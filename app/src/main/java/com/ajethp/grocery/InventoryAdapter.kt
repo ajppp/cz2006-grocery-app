@@ -7,8 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ajethp.grocery.classes.Food
 
-class InventoryAdapter(private val context: Context, private val numInventoryItems: Int) :
+class InventoryAdapter(
+    private val context: Context,
+    private val numInventoryItems: Int,
+    private val userInventory: MutableList<Food>
+) :
         RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
 
         companion object {
@@ -17,18 +22,22 @@ class InventoryAdapter(private val context: Context, private val numInventoryIte
 
             inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-                // make an itemView for the quantity text so that it is clickable
+                private val nameText = itemView.findViewById<TextView>(R.id.inventoryFoodItem)
                 private val quantityText = itemView.findViewById<TextView>(R.id.inventoryQuantity)
+                private val expiryDateText = itemView.findViewById<TextView>(R.id.inventoryExpiryDate)
 
                 fun bind(position: Int) {
+
+                    nameText.text = userInventory[position].foodName
+                    quantityText.text = userInventory[position].quantity.toString()
+                    expiryDateText.text = userInventory[position].expiryDate.toString()
+
                     quantityText.setOnClickListener{
                         // TODO("change the function on the on click listener to reduce the quantity?")
                         // also possible to add button to minus?
                         Log.i(TAG, "Clicked on position $position")
                     }
-
                     // can set more onClickListener here in case anything else in the inventory is clickable
-
                     // set onLongClickListener to delete item
                     quantityText.setOnLongClickListener{
                         // TODO("delete item")
@@ -96,8 +105,6 @@ class InventoryAdapter(private val context: Context, private val numInventoryIte
      *
      * @return The total number of items in this adapter.
      */
-    override fun getItemCount(): Int {
-        return numInventoryItems
-    }
+    override fun getItemCount() = numInventoryItems
 
 }

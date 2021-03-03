@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.DatePicker
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.User
 import com.google.android.material.snackbar.Snackbar
-import java.text.SimpleDateFormat
 import java.util.*
 
 class Inventory : AppCompatActivity() {
@@ -34,11 +32,11 @@ class Inventory : AppCompatActivity() {
         inventoryClRoot = findViewById(R.id.inventoryClRoot)
 
         var currentUser = intent.getParcelableExtra<User>("CURRENT USER")
-        var numInventoryItems = currentUser!!.inventoryList!!.size
+        var userInventory = currentUser!!.inventoryList
 
-        // TODO("replace 8 with the actual number of items in user's inventory")
+        // ("replace 8 with the actual number of items in user's inventory") -> done
         // Recycler View is scrollable so there's no need to change anything
-        inventoryRvBoard.adapter = InventoryAdapter(this, numInventoryItems)
+        inventoryRvBoard.adapter = InventoryAdapter(this, userInventory.size, userInventory)
         inventoryRvBoard.setHasFixedSize(true)
         // spanCount is the number of columns
         inventoryRvBoard.layoutManager = GridLayoutManager(this, 1)
@@ -49,6 +47,7 @@ class Inventory : AppCompatActivity() {
         return true
     }
 
+    // TODO("rethink the entire method... perhaps using a new activity is better")
     // method to add new inventory item
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
