@@ -41,6 +41,7 @@ class Grocery : AppCompatActivity() {
         var userPurchasedList = currentUser!!.purchasedList
 
         shoppingListRvBoard.adapter = ShoppingListAdapter(this, userShoppingList) {
+            currentUser!!.purchasedList.add(currentUser!!.shoppingList[it])
             currentUser!!.shoppingList.removeAt(it)
         }
         purchasedListRvBoard.adapter = PurchasedListAdapter(this, userPurchasedList)
@@ -54,9 +55,6 @@ class Grocery : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         val intent = Intent(this, MainActivity::class.java)
-
-        var numItemsInShoppingList = currentUser!!.shoppingList.size
-        Log.i(TAG, "removed, items left in shopping list is $numItemsInShoppingList")
 
         val jsonString = Gson().toJson(currentUser)
         val userEditor = userSharedPreferences.edit()
