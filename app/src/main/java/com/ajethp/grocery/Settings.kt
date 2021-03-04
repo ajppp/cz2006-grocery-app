@@ -1,14 +1,21 @@
 package com.ajethp.grocery
 
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import com.ajethp.grocery.classes.User
+import com.google.gson.Gson
 
 class Settings : AppCompatActivity() {
+
+
 
     // should be attributes of User
     val restrictionsList = arrayOf(
@@ -20,18 +27,14 @@ class Settings : AppCompatActivity() {
             "whatever"
     )
 
-    var checkedRestrictions = booleanArrayOf(
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-    )
+    lateinit var checkedRestrictions : BooleanArray
 
     companion object {
         private const val TAG = "Settings"
     }
+
+    private lateinit var currentUser: User
+    private lateinit var userSharedPreferences: SharedPreferences
 
     private lateinit var updateRestrictionsButton: Button
     private lateinit var languageButton: Button
@@ -41,6 +44,11 @@ class Settings : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
+        val userJsonString = userSharedPreferences.getString("USER", "")
+        currentUser = Gson().fromJson(userJsonString, User::class.java)
+        checkedRestrictions = currentUser.dietaryRestriction.toBooleanArray()
 
         updateRestrictionsButton = findViewById(R.id.updateRestrictionsButton)
         languageButton = findViewById(R.id.languageButton)
@@ -59,13 +67,27 @@ class Settings : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle(title)
                 .setView(view)
-                .setMultiChoiceItems(restrictionsList, checkedRestrictions) { dialog, which, isChecked ->
-                    checkedRestrictions[which] = !checkedRestrictions[which]
+                .setMultiChoiceItems(restrictionsList, currentUser.dietaryRestriction.toBooleanArray()) { dialog, which, isChecked ->
+                    currentUser.dietaryRestriction[which] = isChecked
                     val currentItem = restrictionsList[which]
                     Log.i(TAG, "pressing $currentItem")
                 }
                 .setPositiveButton("DONE") { dialog, which ->
                 }
                 .show()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val intent = Intent(this, MainActivity::class.java)
+
+        val jsonString = Gson().toJson(currentUser)
+        val userEditor = userSharedPreferences.edit()
+        Log.i(TAG, jsonString)
+        userEditor.putString("USER", jsonString)
+        userEditor.apply()
+
+        Log.i(TAG, "stopped settings, starting main activity")
+        startActivity(intent)
     }
 }

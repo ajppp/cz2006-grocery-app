@@ -129,13 +129,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun openGrocery() {
         val intent = Intent(this, Grocery::class.java)
-        intent.putExtra("CURRENT USER", currentUser)
+        // intent.putExtra("CURRENT USER", currentUser)
         startActivity(intent)
     }
 
     private fun openSettings() {
         val intent = Intent(this, Settings::class.java)
-        intent.putExtra("CURRENT USER", currentUser)
+        // intent.putExtra("CURRENT USER", currentUser)
         startActivity(intent)
     }
 

@@ -17,8 +17,7 @@ class Grocery : AppCompatActivity() {
         private const val TAG = "Grocery"
     }
 
-    var currentUser: User? = null
-
+    private lateinit var currentUser: User
     private lateinit var userSharedPreferences: SharedPreferences
 
     private lateinit var shoppingListRvBoard: RecyclerView
@@ -33,16 +32,17 @@ class Grocery : AppCompatActivity() {
 
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
         val userJsonString = userSharedPreferences.getString("USER", "")
-        Log.i(TAG, "test $userJsonString")
         currentUser = Gson().fromJson(userJsonString, User::class.java)
 
         // currentUser = intent.getParcelableExtra<User>("CURRENT USER")
-        var userShoppingList = currentUser!!.shoppingList
-        var userPurchasedList = currentUser!!.purchasedList
+        val userShoppingList = currentUser.shoppingList
+        val userPurchasedList = currentUser.purchasedList
 
         shoppingListRvBoard.adapter = ShoppingListAdapter(this, userShoppingList) {
-            currentUser!!.purchasedList.add(currentUser!!.shoppingList[it])
-            currentUser!!.shoppingList.removeAt(it)
+            // remove item from shopping list and add it to purchased list
+            currentUser.purchasedList.add(currentUser.shoppingList[it])
+            currentUser.shoppingList.removeAt(it)
+            purchasedListRvBoard.adapter?.notifyDataSetChanged()
         }
         purchasedListRvBoard.adapter = PurchasedListAdapter(this, userPurchasedList)
 

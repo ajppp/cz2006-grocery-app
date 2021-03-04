@@ -1,6 +1,8 @@
 package com.ajethp.grocery
 
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,12 +16,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.User
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import java.util.*
 
 class Inventory : AppCompatActivity() {
     companion object{
         private const val TAG = "Inventory"
     }
+
+    private lateinit var currentUser: User
+    private lateinit var userSharedPreferences: SharedPreferences
 
     private lateinit var inventoryRvBoard: RecyclerView
     private lateinit var inventoryClRoot: ConstraintLayout
@@ -31,8 +37,11 @@ class Inventory : AppCompatActivity() {
         inventoryRvBoard = findViewById(R.id.inventoryRvBoard)
         inventoryClRoot = findViewById(R.id.inventoryClRoot)
 
-        var currentUser = intent.getParcelableExtra<User>("CURRENT USER")
-        var userInventory = currentUser!!.inventoryList
+        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
+        val userJsonString = userSharedPreferences.getString("USER", "")
+        currentUser = Gson().fromJson(userJsonString, User::class.java)
+
+        var userInventory = currentUser.inventoryList
 
         // ("replace 8 with the actual number of items in user's inventory") -> done
         // Recycler View is scrollable so there's no need to change anything

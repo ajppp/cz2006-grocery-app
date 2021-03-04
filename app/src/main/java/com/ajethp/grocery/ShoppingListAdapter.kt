@@ -11,12 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.Food
 
 
-class ShoppingListAdapter(private val context: Context, private var userShoppingList: MutableList<Food>, val itemClick: (Int) -> Unit) :
+class ShoppingListAdapter(private val context: Context,
+                          private var userShoppingList: MutableList<Food>,
+                          val itemClick: (Int) -> Unit) :
     RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
-
-    interface CallbackInterface {
-        fun passResultCallback(position: Int)
-    }
 
         companion object {
             private const val TAG = "ShoppingListAdapter"
@@ -37,20 +35,16 @@ class ShoppingListAdapter(private val context: Context, private var userShopping
                 shoppingItemText.text = userShoppingList[position].foodName
                 shoppingItemQuantity.text = userShoppingList[position].quantity.toString()
                 shoppingItemText.setOnCheckedChangeListener { buttonView, isChecked ->
-                    // WORKS BUT WHY IS THERE AN ERROR WHEN THERE ARE NO ITEMS
                     if (shoppingItemText.isChecked) {
                         notifyItemRemoved(position)
-                        removeItem(userShoppingList[position])
+                        // -1 since item has not been removed in the actual shopping list
+                        notifyItemRangeChanged(position, userShoppingList.size - 1)
                         itemClick(position)
                     }
                 }
             }
 
         }
-
-    private fun removeItem(removedFood: Food) : Food {
-        return removedFood
-    }
 
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
