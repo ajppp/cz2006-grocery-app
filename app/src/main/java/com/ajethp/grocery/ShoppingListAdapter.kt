@@ -6,29 +6,51 @@ import android.view.ViewGroup
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.Food
 
-class ShoppingListAdapter(private val context: Context, private var userShoppingList: MutableList<Food>) :
+
+class ShoppingListAdapter(private val context: Context, private var userShoppingList: MutableList<Food>, val itemClick: (Int) -> Unit) :
     RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
+
+    interface CallbackInterface {
+        fun passResultCallback(position: Int)
+    }
 
         companion object {
             private const val TAG = "ShoppingListAdapter"
         }
 
-        inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
             private val shoppingItemText = itemView.findViewById<CheckBox>(R.id.shoppingcheckBox)
             private val shoppingItemQuantity = itemView.findViewById<TextView>(R.id.shoppingQuantity)
+            private val shoppingItem = itemView.findViewById<ConstraintLayout>(R.id.purchasedItem)
+
+
             fun bind(position: Int) {
                 //TODO("add an onclick listener? for the checkbox")
                 // need to figure out how a checkbox works
 
                 shoppingItemText.text = userShoppingList[position].foodName
                 shoppingItemQuantity.text = userShoppingList[position].quantity.toString()
-
+                shoppingItemText.setOnCheckedChangeListener { buttonView, isChecked ->
+                    // WORKS BUT WHY IS THERE AN ERROR WHEN THERE ARE NO ITEMS
+                    if (shoppingItemText.isChecked) {
+                        notifyItemRemoved(position)
+                        removeItem(userShoppingList[position])
+                        itemClick(position)
+                    }
+                }
             }
+
         }
+
+    private fun removeItem(removedFood: Food) : Food {
+        return removedFood
+    }
 
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent

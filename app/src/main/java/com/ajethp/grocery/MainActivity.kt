@@ -12,6 +12,7 @@ import android.widget.Button
 import androidx.annotation.RequiresApi
 import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
+import com.google.gson.Gson
 import java.time.LocalDate
 import java.time.Month
 
@@ -21,9 +22,10 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 
-    lateinit var currentUser: User
+    private lateinit var currentUser: User
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var userSharedPreferences: SharedPreferences
 
     private lateinit var inventoryButton: Button
     private lateinit var recipeButton: Button
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i(TAG, "currently on create")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             openLogin()
 
         sharedPreferences = getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
+        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
 
         inventoryButton = findViewById(R.id.inventoryButton)
         recipeButton = findViewById(R.id.recipeButton)
@@ -52,25 +56,36 @@ class MainActivity : AppCompatActivity() {
 
         // TEMPORARY CODE TO CREATE USER TO TRY TO IMPLEMENT APP LOGIC
         // !! -> throws NullPointerException if null
-        val avocadoDate = LocalDate.of(2021, Month.APRIL, 12)
-        var avocado = Food("avocado", avocadoDate,2)
+        if (savedInstanceState == null) {
+            val avocadoDate = LocalDate.of(2021, Month.APRIL, 12)
+            var avocado = Food("avocado", avocadoDate,2)
 
-        val bananaDate = LocalDate.of(2021, Month.APRIL, 17)
-        var banana = Food("banana", bananaDate,5)
+            val bananaDate = LocalDate.of(2021, Month.APRIL, 17)
+            var banana = Food("banana", bananaDate,5)
 
-        val orangeDate = LocalDate.of(2021, Month.APRIL, 21)
-        var orange = Food("orange", orangeDate,19)
+            val orangeDate = LocalDate.of(2021, Month.APRIL, 21)
+            var orange = Food("orange", orangeDate,19)
 
-        var kiwi = Food("kiwi", null, 3)
-        var peach = Food("peach", null, 7)
+            var kiwi = Food("kiwi", null, 3)
+            var peach = Food("peach", null, 7)
 
-        currentUser = User(username!!)
-        currentUser.inventoryList.add(avocado)
-        currentUser.inventoryList.add(banana)
-        currentUser.inventoryList.add(orange)
+            currentUser = User(username!!)
+            currentUser!!.inventoryList.add(avocado)
+            currentUser!!.inventoryList.add(banana)
+            currentUser!!.inventoryList.add(orange)
 
-        currentUser.shoppingList.add(kiwi)
-        currentUser.shoppingList.add(peach)
+            currentUser!!.shoppingList.add(kiwi)
+            currentUser!!.shoppingList.add(peach)
+
+            val jsonString = Gson().toJson(currentUser)
+            val userEditor = userSharedPreferences.edit()
+            userEditor.putString("USER", jsonString)
+            userEditor.apply()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         inventoryButton.setOnClickListener(View.OnClickListener {
             Log.i(TAG, "clicked on inventory button")
@@ -97,7 +112,7 @@ class MainActivity : AppCompatActivity() {
     // open the different activity pages
     private fun openLogin() {
         val intent = Intent(this, Login::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, 2)
     }
 
     private fun openInventory() {

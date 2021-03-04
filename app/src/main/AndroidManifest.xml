@@ -15,6 +15,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Grocery"
+            android:launchMode="singleTop"
             android:icon="@drawable/ic_food"
             android:label=""
             android:parentActivityName=".MainActivity" />

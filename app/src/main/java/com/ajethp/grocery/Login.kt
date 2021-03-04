@@ -37,6 +37,7 @@ class Login : AppCompatActivity() {
             prefsEditor.putString("PASSWORD", password)
             prefsEditor.commit()
 
+            setResult(2)
             finish()
 
         }

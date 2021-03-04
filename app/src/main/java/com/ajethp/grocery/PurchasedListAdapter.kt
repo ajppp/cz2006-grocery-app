@@ -4,18 +4,28 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ajethp.grocery.classes.Food
 
-class PurchasedListAdapter(private val context: Context, private val numPurchasedItems: Int) :
+class PurchasedListAdapter(private val context: Context, private val userPurchasedItems: MutableList<Food>) :
     RecyclerView.Adapter<PurchasedListAdapter.ViewHolder>() {
 
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+            private val purchasedItemText = itemView.findViewById<CheckBox>(R.id.purchasedcheckBox)
+            private val purchasedItemQuantity = itemView.findViewById<TextView>(R.id.purchasedQuantity)
+
             fun bind(position: Int) {
                 //No-Op
                 // TODO("change button image")
                 // TODO("add onClickListener for the button, which will prompt a dialog")
                 // should the dialog be a simple prompt or should it be a completely separate page?
                 // if prompt, how to implement the expiry date question
+
+                purchasedItemText.text = userPurchasedItems[position].foodName
+                purchasedItemQuantity.text = userPurchasedItems[position].quantity.toString()
 
             }
 
@@ -80,7 +90,7 @@ class PurchasedListAdapter(private val context: Context, private val numPurchase
      * @return The total number of items in this adapter.
      */
     override fun getItemCount(): Int {
-        return numPurchasedItems
+        return userPurchasedItems.size
     }
 
 }
