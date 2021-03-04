@@ -15,10 +15,7 @@ import com.google.gson.Gson
 
 class Settings : AppCompatActivity() {
 
-
-
-    // should be attributes of User
-    val restrictionsList = arrayOf(
+    private val restrictionsList = arrayOf(
             "beef",
             "pork",
             "etc",
@@ -26,8 +23,6 @@ class Settings : AppCompatActivity() {
             "some random crap",
             "whatever"
     )
-
-    lateinit var checkedRestrictions : BooleanArray
 
     companion object {
         private const val TAG = "Settings"
@@ -48,17 +43,13 @@ class Settings : AppCompatActivity() {
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
         val userJsonString = userSharedPreferences.getString("USER", "")
         currentUser = Gson().fromJson(userJsonString, User::class.java)
-        checkedRestrictions = currentUser.dietaryRestriction.toBooleanArray()
 
         updateRestrictionsButton = findViewById(R.id.updateRestrictionsButton)
         languageButton = findViewById(R.id.languageButton)
         fontSizeButton = findViewById(R.id.fontSizeButton)
         familyButton = findViewById(R.id.familyButton)
 
-        updateRestrictionsButton.setOnClickListener({
-            showDietaryRestrictionAlertDialog("Dietary Restrictions", null, View.OnClickListener {
-            })
-        })
+        updateRestrictionsButton.setOnClickListener { showDietaryRestrictionAlertDialog("Dietary Restrictions", null) {} }
     }
 
     // NOT DONE
@@ -67,13 +58,8 @@ class Settings : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle(title)
                 .setView(view)
-                .setMultiChoiceItems(restrictionsList, currentUser.dietaryRestriction.toBooleanArray()) { dialog, which, isChecked ->
-                    currentUser.dietaryRestriction[which] = isChecked
-                    val currentItem = restrictionsList[which]
-                    Log.i(TAG, "pressing $currentItem")
-                }
-                .setPositiveButton("DONE") { dialog, which ->
-                }
+                .setMultiChoiceItems(restrictionsList, currentUser.dietaryRestriction.toBooleanArray()) { _, which, isChecked -> currentUser.dietaryRestriction[which] = isChecked }
+                .setPositiveButton("DONE") { _, _ -> }
                 .show()
     }
 

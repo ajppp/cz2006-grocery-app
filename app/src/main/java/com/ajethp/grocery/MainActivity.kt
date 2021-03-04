@@ -55,17 +55,13 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "username is $username")
 
         // TEMPORARY CODE TO CREATE USER TO TRY TO IMPLEMENT APP LOGIC
-        // !! -> throws NullPointerException if null
         if (savedInstanceState == null) {
             val avocadoDate = LocalDate.of(2021, Month.APRIL, 12)
             val avocado = Food("avocado", avocadoDate,2)
-
             val bananaDate = LocalDate.of(2021, Month.APRIL, 17)
             val banana = Food("banana", bananaDate,5)
-
             val orangeDate = LocalDate.of(2021, Month.APRIL, 21)
             val orange = Food("orange", orangeDate,19)
-
             val kiwi = Food("kiwi", null, 3)
             val peach = Food("peach", null, 7)
 
@@ -73,7 +69,6 @@ class MainActivity : AppCompatActivity() {
             currentUser.inventoryList.add(avocado)
             currentUser.inventoryList.add(banana)
             currentUser.inventoryList.add(orange)
-
             currentUser.shoppingList.add(kiwi)
             currentUser.shoppingList.add(peach)
 
