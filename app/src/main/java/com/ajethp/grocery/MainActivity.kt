@@ -58,24 +58,24 @@ class MainActivity : AppCompatActivity() {
         // !! -> throws NullPointerException if null
         if (savedInstanceState == null) {
             val avocadoDate = LocalDate.of(2021, Month.APRIL, 12)
-            var avocado = Food("avocado", avocadoDate,2)
+            val avocado = Food("avocado", avocadoDate,2)
 
             val bananaDate = LocalDate.of(2021, Month.APRIL, 17)
-            var banana = Food("banana", bananaDate,5)
+            val banana = Food("banana", bananaDate,5)
 
             val orangeDate = LocalDate.of(2021, Month.APRIL, 21)
-            var orange = Food("orange", orangeDate,19)
+            val orange = Food("orange", orangeDate,19)
 
-            var kiwi = Food("kiwi", null, 3)
-            var peach = Food("peach", null, 7)
+            val kiwi = Food("kiwi", null, 3)
+            val peach = Food("peach", null, 7)
 
             currentUser = User(username!!)
-            currentUser!!.inventoryList.add(avocado)
-            currentUser!!.inventoryList.add(banana)
-            currentUser!!.inventoryList.add(orange)
+            currentUser.inventoryList.add(avocado)
+            currentUser.inventoryList.add(banana)
+            currentUser.inventoryList.add(orange)
 
-            currentUser!!.shoppingList.add(kiwi)
-            currentUser!!.shoppingList.add(peach)
+            currentUser.shoppingList.add(kiwi)
+            currentUser.shoppingList.add(peach)
 
             val jsonString = Gson().toJson(currentUser)
             val userEditor = userSharedPreferences.edit()
@@ -87,25 +87,10 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        inventoryButton.setOnClickListener(View.OnClickListener {
-            Log.i(TAG, "clicked on inventory button")
-            openInventory()
-        } )
-
-        recipeButton.setOnClickListener(View.OnClickListener {
-            Log.i(TAG, "clicked on recipe button")
-            openRecipe()
-        } )
-
-        groceryButton.setOnClickListener(View.OnClickListener {
-            Log.i(TAG, "clicked on grocery button")
-            openGrocery()
-        } )
-
-        settingsButton.setOnClickListener(View.OnClickListener {
-            Log.i(TAG, "clicked on setting button")
-            openSettings()
-        } )
+        inventoryButton.setOnClickListener { startActivity(Intent(this, Inventory::class.java)) }
+        recipeButton.setOnClickListener{ startActivity(Intent(this, Recipe::class.java)) }
+        groceryButton.setOnClickListener { startActivity(Intent(this, Grocery::class.java)) }
+        settingsButton.setOnClickListener { startActivity(Intent(this, Settings::class.java)) }
 
     }
 
@@ -114,30 +99,5 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, Login::class.java)
         startActivityForResult(intent, 2)
     }
-
-    private fun openInventory() {
-        val intent = Intent(this, Inventory::class.java)
-        intent.putExtra("CURRENT USER", currentUser)
-        startActivity(intent)
-    }
-
-    private fun openRecipe() {
-        val intent = Intent(this, Recipe::class.java)
-        intent.putExtra("CURRENT USER", currentUser)
-        startActivity(intent)
-    }
-
-    private fun openGrocery() {
-        val intent = Intent(this, Grocery::class.java)
-        // intent.putExtra("CURRENT USER", currentUser)
-        startActivity(intent)
-    }
-
-    private fun openSettings() {
-        val intent = Intent(this, Settings::class.java)
-        // intent.putExtra("CURRENT USER", currentUser)
-        startActivity(intent)
-    }
-
 
 }

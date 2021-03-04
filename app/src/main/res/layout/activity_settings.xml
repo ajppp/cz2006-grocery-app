@@ -60,7 +60,7 @@
                     android:layout_marginBottom="48dp"
                     android:layout_weight="1"
                     android:text="user restrictions"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
             </LinearLayout>
 
         </LinearLayout>
