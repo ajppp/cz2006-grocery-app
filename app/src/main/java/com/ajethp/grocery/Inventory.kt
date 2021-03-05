@@ -34,21 +34,16 @@ class Inventory : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inventory)
-
         inventoryRvBoard = findViewById(R.id.inventoryRvBoard)
         inventoryClRoot = findViewById(R.id.inventoryClRoot)
-
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
         val userJsonString = userSharedPreferences.getString("USER", "")
         currentUser = Gson().fromJson(userJsonString, User::class.java)
 
         var userInventory = currentUser.inventoryList
 
-        // ("replace 8 with the actual number of items in user's inventory") -> done
-        // Recycler View is scrollable so there's no need to change anything
         inventoryRvBoard.adapter = InventoryAdapter(this, userInventory)
         inventoryRvBoard.setHasFixedSize(true)
-        // spanCount is the number of columns
         inventoryRvBoard.layoutManager = GridLayoutManager(this, 1)
     }
 
@@ -66,40 +61,4 @@ class Inventory : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
-
-    private fun showHasExpiryAlertDialog(title: String, view: View?, negativeClickListener: View.OnClickListener, positiveClickListener: View.OnClickListener ) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-        builder.setView(view)
-        builder.setNegativeButton("No") {_, _ ->
-            // TODO("access database")
-            negativeClickListener.onClick(null)
-        }
-        builder.setPositiveButton("Yes") {_, _ ->
-            positiveClickListener.onClick(null)
-        }
-        builder.show()
-
-    }
-
-    private fun showQuantityAlertDialog(title: String, view:View, positiveClickListener: View.OnClickListener) {
-        AlertDialog.Builder(this)
-            .setTitle(title)
-            .setView(view)
-            .setNegativeButton("Cancel", null)
-            .setPositiveButton("Enter quantity") { _, _ ->
-                positiveClickListener.onClick(null)
-            }.show()
-    }
-
-    private fun showNameAlertDialog(title: String, view: View, positiveClickListener: View.OnClickListener) {
-        AlertDialog.Builder(this)
-            .setTitle(title)
-            .setView(view)
-            .setNegativeButton("Cancel", null)
-            .setPositiveButton("Enter quantity") { _, _ ->
-                positiveClickListener.onClick(null)
-            }.show()
-    }
-
 }
