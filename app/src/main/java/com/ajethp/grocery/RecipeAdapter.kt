@@ -8,7 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecipeAdapter(private val context: Context, private val numSuggestedRecipes: Int) :
+class RecipeAdapter(private val context: Context,
+                    private val suggestedRecipeName: MutableList<String>) :
     RecyclerView.Adapter<RecipeAdapter.ViewHolder>() {
 
     companion object{
@@ -17,10 +18,11 @@ class RecipeAdapter(private val context: Context, private val numSuggestedRecipe
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-            private val suggestedRecipeName = itemView.findViewById<TextView>(R.id.suggestedRecipeName)
+            private val suggestedRecipe = itemView.findViewById<TextView>(R.id.suggestedRecipeName)
 
             fun bind(position: Int) {
-                suggestedRecipeName.setOnClickListener{
+                suggestedRecipe.text = suggestedRecipeName[position]
+                suggestedRecipe.setOnClickListener{
                     // TODO("enter the recipe page on click")
                     // TODO("make a new recipe activity?")
                     Log.i(TAG, "clicked on position $position")
@@ -87,7 +89,7 @@ class RecipeAdapter(private val context: Context, private val numSuggestedRecipe
      * @return The total number of items in this adapter.
      */
     override fun getItemCount(): Int {
-        return numSuggestedRecipes
+        return suggestedRecipeName.size
     }
 
 }

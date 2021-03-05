@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         inventoryButton.setOnClickListener { startActivity(Intent(this, Inventory::class.java)) }
-        recipeButton.setOnClickListener{ startActivity(Intent(this, Recipe::class.java)) }
+        recipeButton.setOnClickListener { startActivity(Intent(this, Recipe::class.java)) }
         groceryButton.setOnClickListener { startActivity(Intent(this, Grocery::class.java)) }
         settingsButton.setOnClickListener { startActivity(Intent(this, Settings::class.java)) }
     }

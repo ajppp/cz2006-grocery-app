@@ -1,55 +1,84 @@
 package com.ajethp.grocery
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import okhttp3.MediaType
+import com.ajethp.grocery.classes.User
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
-import java.io.IOException
+import org.json.JSONArray
 
 class Recipe : AppCompatActivity() {
     companion object{
-        private const val TAG = "Recipe"
+         private const val TAG = "Recipe"
     }
+
+    private lateinit var currentUser: User
+    private lateinit var userSharedPreferences: SharedPreferences
 
     private lateinit var recipeRvBoard: RecyclerView
 
-    val client = OkHttpClient()
+    private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
+        val userJsonString = userSharedPreferences.getString("USER", "")
+        Log.i(TAG, userJsonString!!)
+        currentUser = Gson().fromJson(userJsonString, User::class.java)
+
+        var _url = "https://api.spoonacular.com/recipes/findByIngredients?ingredients="
+        val firstIngredient = currentUser.inventoryList[0].foodName
+        val secondIngredient = currentUser.inventoryList[1].foodName
+        val thirdIngredient = currentUser.inventoryList[2].foodName
+        var ingredients = "$firstIngredient,+$secondIngredient,+$thirdIngredient"
+        val numberOfRecipes = "&number=3&"
+        val apiKey = "apiKey=fbb942433c0d4382a68fef26d5554e5f"
+
+        val url = _url+ingredients+numberOfRecipes+apiKey
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
-
         recipeRvBoard = findViewById(R.id.recipeRvBoard)
 
-        Thread { getRecommendedRecipe() }.start()
+        Thread {
+            val responseText = client.newCall(Request.Builder().url(url).get().build()).execute().body()!!.string()
+            var responseArray  = JSONArray(responseText)
+            var size = responseArray.length()
+            var suggestedRecipe: MutableList<String> = arrayListOf()
+            for (i in 0 until size) {
+                val responseObject = responseArray.getJSONObject(i)
+                val recipeName = responseObject.optString("title").toString()
+                suggestedRecipe.add(recipeName)
+                Log.i(TAG, responseObject.toString())
+                Log.i(TAG, recipeName)
+            }
 
-        // TODO("replace 3 with the actual number of suggested recipes")
-        recipeRvBoard.adapter = RecipeAdapter(this, 3)
-        recipeRvBoard.setHasFixedSize(true)
-        // spanCount is the number of columns
-        recipeRvBoard.layoutManager = GridLayoutManager(this, 1)
+            runOnUiThread {
+                recipeRvBoard.adapter = RecipeAdapter(this, suggestedRecipe)
+                recipeRvBoard.setHasFixedSize(true)
+                // spanCount is the number of columns
+                recipeRvBoard.layoutManager = GridLayoutManager(this, 1)
+            }
+        }.start()
+        }
     }
 
-    private fun getRecommendedRecipe() {
-        val request = Request.Builder()
-            .url("https://api.spoonacular.com/recipes/findByIngredients")
-            .get()
-            .addHeader("x-rapidapi-key", "bd07ba6061msh8837e8eb1488270p1e4586jsna6edf2899b9d")
-            .addHeader("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
-            .build()
+    // private fun getRecommendedRecipe() {
+        // val request = Request.Builder()
+            // .url("https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=2&apiKey=fbb942433c0d4382a68fef26d5554e5f")
+            // .get()
+            // .build()
 
-        val response = client.newCall(request).execute()
+        // val response = client.newCall(request).execute()
 
-        val headerNameIterator = response.body()!!.string()
-        Log.i(TAG, headerNameIterator)
-
-        // headerNameIterator.forEach {
+// headerNameIterator.forEach {
             // Log.i(TAG, it)
         // }
-    }
-}
+    //}
+// }
