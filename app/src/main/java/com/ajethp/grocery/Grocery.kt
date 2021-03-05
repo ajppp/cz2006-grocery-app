@@ -51,8 +51,22 @@ class Grocery : AppCompatActivity() {
             currentUser.purchasedList.add(currentUser.shoppingList[it])
             currentUser.shoppingList.removeAt(it)
             purchasedListRvBoard.adapter?.notifyDataSetChanged()
+            val jsonString = Gson().toJson(currentUser)
+            val userEditor = userSharedPreferences.edit()
+            userEditor.putString("USER", jsonString)
+            userEditor.apply()
         }
-        purchasedListRvBoard.adapter = PurchasedListAdapter(this, userPurchasedList)
+        purchasedListRvBoard.adapter = PurchasedListAdapter(this, userPurchasedList) {
+            var movedFoodItem = currentUser.purchasedList[it]
+            currentUser.inventoryList.add(movedFoodItem)
+            currentUser.purchasedList.removeAt(it)
+            purchasedListRvBoard.adapter?.notifyDataSetChanged()
+            val jsonString = Gson().toJson(currentUser)
+            val userEditor = userSharedPreferences.edit()
+            userEditor.putString("USER", jsonString)
+            userEditor.apply()
+            startActivity(Intent(this, MovePurchasedItemToInventory::class.java))
+        }
 
         shoppingListRvBoard.setHasFixedSize(true)
         purchasedListRvBoard.setHasFixedSize(true)

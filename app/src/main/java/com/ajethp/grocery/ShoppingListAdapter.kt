@@ -29,8 +29,6 @@ class ShoppingListAdapter(private val context: Context,
 
 
             fun bind(position: Int) {
-                //TODO("add an onclick listener? for the checkbox")
-                // need to figure out how a checkbox works
 
                 shoppingItemText.text = userShoppingList[position].foodName
                 shoppingItemQuantity.text = userShoppingList[position].quantity.toString()

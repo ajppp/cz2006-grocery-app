@@ -7,67 +7,37 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.*
-import androidx.appcompat.widget.SwitchCompat
+import android.widget.DatePicker
 import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.gson.Gson
 import java.util.*
 
-class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+class MovePurchasedItemToInventory : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
-    companion object {
-        private const val TAG = "AddNewInventoryItem"
+    companion object{
+        private const val TAG = "MoveItem"
     }
-
     var day = 0
     var month = 0
     var year = 0
-
-    private lateinit var newInventoryItemName: String
-    private var newInventoryItemQuantity: Int = 0
-    private lateinit var expiryDate: String
-
     var savedDay = 0
     var savedMonth = 0
     var savedYear = 0
-
-    private lateinit var enterFoodItem: EditText
-    private lateinit var enterFoodQuantity: EditText
-    private lateinit var expiryDateSwitch: Switch
-    private lateinit var addNewInventoryNextButton : Button
+    private lateinit var expiryDate: String
 
     private lateinit var currentUser: User
     private lateinit var userSharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_new_inventory_item)
+        setContentView(R.layout.activity_move_purchased_item_to_inventory)
 
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
         val userJsonString = userSharedPreferences.getString("USER", "")
         currentUser = Gson().fromJson(userJsonString, User::class.java)
 
-        enterFoodItem = findViewById(R.id.enterFoodItemText)
-        enterFoodQuantity = findViewById(R.id.enterFoodQuantityText)
-        expiryDateSwitch = findViewById(R.id.expiryDateSwitch)
-        addNewInventoryNextButton = findViewById(R.id.addNewInventoryNextButton)
-
-        var hasExpiryDate: Boolean = false
-        expiryDateSwitch.setOnCheckedChangeListener { _, isChecked -> hasExpiryDate = isChecked }
-
-        addNewInventoryNextButton.setOnClickListener {
-            newInventoryItemName = enterFoodItem.text.toString()
-            newInventoryItemQuantity = enterFoodQuantity.text.toString().toInt()
-            Log.i(TAG,"$newInventoryItemQuantity of $newInventoryItemName, $hasExpiryDate" )
-            if (hasExpiryDate){
-                pickDate()
-            } else {
-                // use database
-            }
-        }
-
+        pickDate()
     }
 
     private fun getDateCalendar() {
@@ -84,7 +54,6 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         dpd.show()
     }
 
-
     /**
      * @param view the picker associated with the dialog
      * @param year the selected year
@@ -100,14 +69,14 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
         expiryDate = "$savedDay-$savedMonth-$savedYear"
 
-        Log.i(TAG,"$newInventoryItemQuantity of $newInventoryItemName with $expiryDate" )
-        val newInventoryFood = Food(newInventoryItemName, expiryDate, newInventoryItemQuantity)
-        currentUser.inventoryList.add(newInventoryFood)
+        val size = currentUser.inventoryList.size
+        var movedFoodItem: Food = currentUser.inventoryList.elementAt(size - 1)
+        movedFoodItem.expiryDate = expiryDate
         val jsonString = Gson().toJson(currentUser)
+        Log.i(TAG, jsonString)
         val userEditor = userSharedPreferences.edit()
         userEditor.putString("USER", jsonString)
         userEditor.apply()
-
-        startActivity(Intent(this, Inventory::class.java))
+        startActivity(Intent(this, Grocery::class.java))
     }
 }

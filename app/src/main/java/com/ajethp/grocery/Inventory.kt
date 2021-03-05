@@ -21,7 +21,7 @@ import com.google.gson.Gson
 import java.util.*
 
 class Inventory : AppCompatActivity() {
-    companion object{
+    companion object {
         private const val TAG = "Inventory"
     }
 
@@ -34,17 +34,10 @@ class Inventory : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inventory)
+
         inventoryRvBoard = findViewById(R.id.inventoryRvBoard)
         inventoryClRoot = findViewById(R.id.inventoryClRoot)
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
-        val userJsonString = userSharedPreferences.getString("USER", "")
-        currentUser = Gson().fromJson(userJsonString, User::class.java)
 
-        var userInventory = currentUser.inventoryList
-
-        inventoryRvBoard.adapter = InventoryAdapter(this, userInventory)
-        inventoryRvBoard.setHasFixedSize(true)
-        inventoryRvBoard.layoutManager = GridLayoutManager(this, 1)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -53,9 +46,23 @@ class Inventory : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
-            R.id.mi_add_inventory -> { startActivity(Intent(this, AddNewInventoryItem::class.java)) }
+        when (item.itemId) {
+            R.id.mi_add_inventory -> {
+                startActivity(Intent(this, AddNewInventoryItem::class.java))
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
+        val userJsonString = userSharedPreferences.getString("USER", "")
+        Log.i(TAG, userJsonString!!)
+        currentUser = Gson().fromJson(userJsonString, User::class.java)
+
+        inventoryRvBoard.adapter = InventoryAdapter(this, currentUser.inventoryList)
+        inventoryRvBoard.setHasFixedSize(true)
+        inventoryRvBoard.layoutManager = GridLayoutManager(this, 1)
     }
 }

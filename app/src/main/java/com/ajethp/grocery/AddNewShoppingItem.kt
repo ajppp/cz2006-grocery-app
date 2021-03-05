@@ -38,7 +38,7 @@ class AddNewShoppingItem : AppCompatActivity() {
         addShoppingItemDoneButton.setOnClickListener {
             newShoppingItemName = enterShoppingItem.text.toString()
             newShoppingItemQuantity = enterShoppingQuantity.text.toString().toInt()
-            val newShoppingFood = Food(newShoppingItemName, null, newShoppingItemQuantity)
+            var newShoppingFood = Food(newShoppingItemName, null, newShoppingItemQuantity)
             currentUser.shoppingList.add(newShoppingFood)
 
             val jsonString = Gson().toJson(currentUser)

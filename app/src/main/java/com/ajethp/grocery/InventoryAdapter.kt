@@ -11,7 +11,7 @@ import com.ajethp.grocery.classes.Food
 
 class InventoryAdapter(
     private val context: Context,
-    private val userInventory: MutableList<Food>
+    private val userInventory: List<Food>
 ) :
         RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
 
@@ -30,7 +30,7 @@ class InventoryAdapter(
                     // set text for the inventory items
                     nameText.text = userInventory[position].foodName
                     quantityText.text = userInventory[position].quantity.toString()
-                    expiryDateText.text = userInventory[position].expiryDate.toString()
+                    expiryDateText.text = userInventory[position].expiryDate
 
                     quantityText.setOnClickListener{
                         // TODO("change the function on the on click listener to reduce the quantity?")

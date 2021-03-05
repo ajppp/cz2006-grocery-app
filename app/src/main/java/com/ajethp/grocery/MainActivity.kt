@@ -54,13 +54,13 @@ class MainActivity : AppCompatActivity() {
         // TEMPORARY CODE TO CREATE USER ON FIRST LOGIN TO TRY TO IMPLEMENT APP LOGIC
         if (savedInstanceState == null) {
             val avocadoDate = LocalDate.of(2021, Month.APRIL, 12).toString()
-            val avocado = Food("avocado", avocadoDate,2)
+            var avocado = Food("avocado", avocadoDate,2)
             val bananaDate = LocalDate.of(2021, Month.APRIL, 17).toString()
-            val banana = Food("banana", bananaDate,5)
+            var banana = Food("banana", bananaDate,5)
             val orangeDate = LocalDate.of(2021, Month.APRIL, 21).toString()
             val orange = Food("orange", orangeDate, 19)
-            val kiwi = Food("kiwi", null, 3)
-            val peach = Food("peach", null, 7)
+            var kiwi = Food("kiwi", null, 3)
+            var peach = Food("peach", null, 7)
 
             currentUser = User(username!!)
             currentUser.inventoryList.add(avocado)

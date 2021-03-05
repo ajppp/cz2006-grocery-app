@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Grocery">
-        <activity android:name=".AddNewShoppingItem"
-            android:parentActivityName=".Grocery"/>
+        <activity android:name=".MovePurchasedItemToInventory"></activity>
+        <activity
+            android:name=".AddNewShoppingItem"
+            android:parentActivityName=".Grocery" />
         <activity
             android:name=".AddNewInventoryItem"
             android:parentActivityName=".Inventory" />
