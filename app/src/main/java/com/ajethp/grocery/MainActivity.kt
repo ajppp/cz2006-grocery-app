@@ -38,9 +38,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // if (savedInstanceState == null)
-            // openLogin()
-
         sharedPreferences = getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
 

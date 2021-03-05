@@ -45,6 +45,7 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_inventory_item)
+
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
         val userJsonString = userSharedPreferences.getString("USER", "")
         currentUser = Gson().fromJson(userJsonString, User::class.java)

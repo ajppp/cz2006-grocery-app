@@ -6,6 +6,11 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.User
@@ -16,6 +21,9 @@ class Grocery : AppCompatActivity() {
     companion object {
         private const val TAG = "Grocery"
     }
+
+    private lateinit var shoppingItemName: String
+    private var shoppingItemQuantity = 0
 
     private lateinit var currentUser: User
     private lateinit var userSharedPreferences: SharedPreferences
@@ -52,17 +60,24 @@ class Grocery : AppCompatActivity() {
         purchasedListRvBoard.layoutManager = GridLayoutManager(this, 1)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.inventory_add_item, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.mi_add_inventory -> { startActivity(Intent(this, AddNewShoppingItem::class.java)) }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onStop() {
         super.onStop()
-        val intent = Intent(this, MainActivity::class.java)
-
         val jsonString = Gson().toJson(currentUser)
         val userEditor = userSharedPreferences.edit()
         userEditor.putString("USER", jsonString)
         userEditor.apply()
-
-        Log.i(TAG, "stopped grocery, starting main activity")
-        startActivity(intent)
     }
 
 }

@@ -52,13 +52,10 @@ class Inventory : AppCompatActivity() {
         return true
     }
 
-    // method to add new inventory item
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId){
             R.id.mi_add_inventory -> { startActivity(Intent(this, AddNewInventoryItem::class.java)) }
         }
-
         return super.onOptionsItemSelected(item)
     }
 }
