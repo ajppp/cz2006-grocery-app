@@ -56,12 +56,12 @@ class MainActivity : AppCompatActivity() {
 
         // TEMPORARY CODE TO CREATE USER ON FIRST LOGIN TO TRY TO IMPLEMENT APP LOGIC
         if (savedInstanceState == null) {
-            val avocadoDate = LocalDate.of(2021, Month.APRIL, 12)
+            val avocadoDate = LocalDate.of(2021, Month.APRIL, 12).toString()
             val avocado = Food("avocado", avocadoDate,2)
-            val bananaDate = LocalDate.of(2021, Month.APRIL, 17)
+            val bananaDate = LocalDate.of(2021, Month.APRIL, 17).toString()
             val banana = Food("banana", bananaDate,5)
-            val orangeDate = LocalDate.of(2021, Month.APRIL, 21)
-            val orange = Food("orange", orangeDate,19)
+            val orangeDate = LocalDate.of(2021, Month.APRIL, 21).toString()
+            val orange = Food("orange", orangeDate, 19)
             val kiwi = Food("kiwi", null, 3)
             val peach = Food("peach", null, 7)
 
@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             currentUser.shoppingList.add(peach)
 
             val jsonString = Gson().toJson(currentUser)
+            Log.i(TAG, jsonString)
             val userEditor = userSharedPreferences.edit()
             userEditor.putString("USER", jsonString)
             userEditor.apply()

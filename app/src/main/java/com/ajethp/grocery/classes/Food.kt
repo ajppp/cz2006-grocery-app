@@ -8,6 +8,6 @@ import java.time.LocalDate
 data class Food (
         val foodName: String,
         // make expiryDate nullable for food in shopping list?
-        var expiryDate: LocalDate?,
+        var expiryDate: String?,
         var quantity: Int,
 ) : Parcelable
