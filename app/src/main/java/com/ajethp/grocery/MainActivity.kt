@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null)
-            openLogin()
+        // if (savedInstanceState == null)
+            // openLogin()
 
         sharedPreferences = getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val username = sharedPreferences.getString("USERNAME", "")
         Log.i(TAG, "username is $username")
 
-        // TEMPORARY CODE TO CREATE USER TO TRY TO IMPLEMENT APP LOGIC
+        // TEMPORARY CODE TO CREATE USER ON FIRST LOGIN TO TRY TO IMPLEMENT APP LOGIC
         if (savedInstanceState == null) {
             val avocadoDate = LocalDate.of(2021, Month.APRIL, 12)
             val avocado = Food("avocado", avocadoDate,2)
@@ -86,13 +86,5 @@ class MainActivity : AppCompatActivity() {
         recipeButton.setOnClickListener{ startActivity(Intent(this, Recipe::class.java)) }
         groceryButton.setOnClickListener { startActivity(Intent(this, Grocery::class.java)) }
         settingsButton.setOnClickListener { startActivity(Intent(this, Settings::class.java)) }
-
     }
-
-    // open the different activity pages
-    private fun openLogin() {
-        val intent = Intent(this, Login::class.java)
-        startActivityForResult(intent, 2)
-    }
-
 }
