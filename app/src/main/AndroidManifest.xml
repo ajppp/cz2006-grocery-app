@@ -7,10 +7,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Grocery">
+        android:theme="@style/Theme.Grocery"
+        android:icon="@drawable/ic_food">
+        <activity
+            android:name=".AddNewInventoryItem"
+            android:parentActivityName=".Inventory" />
         <activity android:name=".Login">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
@@ -20,9 +25,9 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Grocery"
-            android:launchMode="singleTop"
             android:icon="@drawable/ic_food"
             android:label=""
+            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Recipe"
@@ -34,9 +39,9 @@
             android:icon="@drawable/ic_food"
             android:label="Your Inventory"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity"
-            android:launchMode="singleTop">
-        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop" />
     </application>
 
 </manifest>
