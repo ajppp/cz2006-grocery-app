@@ -37,7 +37,7 @@ class Recipe : AppCompatActivity() {
 
     private fun getRecommendedRecipe() {
         val request = Request.Builder()
-            .url("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=apples%2Cflour%2Csugar&number=3&ranking=1&ignorePantry=true")
+            .url("https://api.spoonacular.com/recipes/findByIngredients")
             .get()
             .addHeader("x-rapidapi-key", "bd07ba6061msh8837e8eb1488270p1e4586jsna6edf2899b9d")
             .addHeader("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
