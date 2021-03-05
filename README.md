@@ -13,7 +13,7 @@ Our project is called **Minimising Food Waste by Leveraging Technology**. To tha
 - [ ] figure out how to use DatePickerDialog.OnSetDateListener
 - [ ] add AlertDialog to add and delete items?
 - [ ] use AlertDialog to change number of inventory items?
-- [ ] add sign-up and login!
+- [ ] add sign-up
 - [ ] Implement the classes and the logic
 - [ ] implement SQLite for storing food date
 - [ ] firebase for storing user data?
