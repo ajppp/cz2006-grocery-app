@@ -13,10 +13,10 @@ Our project is called **Minimising Food Waste by Leveraging Technology**. To tha
 - [ ] figure out how to use DatePickerDialog.OnSetDateListener
 - [ ] add AlertDialog to add and delete items?
 - [ ] use AlertDialog to change number of inventory items?
-- [ ] add sign-up and login!
+- [ ] add sign-up
 - [ ] Implement the classes and the logic
 - [ ] implement SQLite for storing food date
 - [ ] firebase for storing user data?
 - [ ] implement recipe retrieval
-- [ ] Shared Preferences to save data across activities and app usage
-- [ ] Use RadioGroup to implement restrictions?
+- [x] Shared Preferences to save data across activities and app usage
+- [x] Use RadioGroup to implement restrictions?
