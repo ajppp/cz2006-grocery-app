@@ -63,6 +63,7 @@ class Recipe : AppCompatActivity() {
                     val clickedRecipeId: String = suggestedRecipeId[it]
                     val intent = Intent(this, RecipeDetails::class.java)
                     intent.putExtra("RECIPE_ID", clickedRecipeId)
+                    intent.putExtra("RECIPE_NAME", suggestedRecipeName[it])
                     startActivity(intent)
                 }
                 recipeRvBoard.setHasFixedSize(true)
