@@ -8,7 +8,7 @@ Our project is called **Minimising Food Waste by Leveraging Technology**. To tha
 ## TODO
 - [x] add Settings class and layout
 - [x] add alert dialogs for all of the buttons in Settings
-- [ ] use Snackbar to display messages to the user (Inventory, Shopping List etc.)
+- [x] use Snackbar to display messages to the user (Inventory, Shopping List etc.)
 - [x] add a menuInflater to Inventory to add items
 - [x] figure out how to use DatePickerDialog.OnSetDateListener
 - [x] used new activity to add items 

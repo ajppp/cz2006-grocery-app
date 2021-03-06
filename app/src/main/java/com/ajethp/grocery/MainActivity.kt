@@ -46,39 +46,8 @@ class MainActivity : AppCompatActivity() {
         groceryButton = findViewById(R.id.groceryButton)
         settingsButton = findViewById(R.id.settingsButton)
 
-        // TODO("sign in")
-
         val username = sharedPreferences.getString("USERNAME", "")
-        Log.i(TAG, "username is $username")
 
-        // TEMPORARY CODE TO CREATE USER ON FIRST LOGIN TO TRY TO IMPLEMENT APP LOGIC
-        if (savedInstanceState == null) {
-            val avocadoDate = LocalDate.of(2021, Month.APRIL, 12).toString()
-            var avocado = Food("avocado", avocadoDate,2)
-            val bananaDate = LocalDate.of(2021, Month.APRIL, 17).toString()
-            var banana = Food("banana", bananaDate,5)
-            val orangeDate = LocalDate.of(2021, Month.APRIL, 21).toString()
-            val orange = Food("orange", orangeDate, 19)
-            val chickenDate = LocalDate.of(2021, Month.MARCH, 12).toString()
-            val chicken = Food("chicken", chickenDate, 2)
-            var kiwi = Food("kiwi", null, 3)
-            var peach = Food("peach", null, 7)
-
-            currentUser = User(username!!)
-            currentUser.inventoryList.add(avocado)
-            currentUser.inventoryList.add(banana)
-            currentUser.inventoryList.add(chicken)
-            currentUser.inventoryList.add(orange)
-            currentUser.shoppingList.add(kiwi)
-            currentUser.shoppingList.add(peach)
-            currentUser.inventoryList.sortBy { it.expiryDate }
-
-            val jsonString = Gson().toJson(currentUser)
-            Log.i(TAG, jsonString)
-            val userEditor = userSharedPreferences.edit()
-            userEditor.putString("USER", jsonString)
-            userEditor.apply()
-        }
     }
 
     override fun onResume() {

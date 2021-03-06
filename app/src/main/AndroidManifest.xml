@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
-        <activity android:name=".RecipeDetails"></activity>
+        <activity android:name=".SignUp"></activity>
+        <activity android:name=".RecipeDetails" />
         <activity android:name=".MovePurchasedItemToInventory" />
         <activity
             android:name=".AddNewShoppingItem"

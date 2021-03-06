@@ -5,7 +5,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class User(
-        val username: String,
+        val username: String?,
+        val password: String?,
         var dietaryRestriction: MutableList<Boolean> = mutableListOf(false, false, false, false, false, false),
         var isInFamily : Boolean = false,
         var inventoryList:MutableList<Food> = ArrayList(),
