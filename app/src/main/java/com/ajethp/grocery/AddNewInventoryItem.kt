@@ -97,10 +97,20 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         savedDay = dayOfMonth
         savedMonth = month + 1
         savedYear = year
+        val dayOfMonthString: String = if(savedDay < 10) {
+            "0$savedDay"
+        } else {
+            savedDay.toString()
+        }
 
-        expiryDate = "$savedDay-$savedMonth-$savedYear"
+        val monthString: String = if (savedMonth < 10) {
+            "0$savedMonth"
+        } else {
+            savedMonth.toString()
+        }
 
-        Log.i(TAG,"$newInventoryItemQuantity of $newInventoryItemName with $expiryDate" )
+        expiryDate = "$savedYear-$monthString-$dayOfMonthString"
+
         val newInventoryFood = Food(newInventoryItemName, expiryDate, newInventoryItemQuantity)
         currentUser.inventoryList.add(newInventoryFood)
         val jsonString = Gson().toJson(currentUser)

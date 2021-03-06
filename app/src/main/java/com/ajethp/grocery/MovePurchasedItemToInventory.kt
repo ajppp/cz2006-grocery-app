@@ -67,10 +67,22 @@ class MovePurchasedItemToInventory : AppCompatActivity(), DatePickerDialog.OnDat
         savedMonth = month + 1
         savedYear = year
 
-        expiryDate = "$savedDay-$savedMonth-$savedYear"
+        val dayOfMonthString: String = if(savedDay < 10) {
+            "0$savedDay"
+        } else {
+            savedDay.toString()
+        }
+
+        val monthString: String = if (savedMonth < 10) {
+            "0$savedMonth"
+        } else {
+            savedMonth.toString()
+        }
+
+        expiryDate = "$savedYear-$monthString-$dayOfMonthString"
 
         val size = currentUser.inventoryList.size
-        var movedFoodItem: Food = currentUser.inventoryList.elementAt(size - 1)
+        val movedFoodItem: Food = currentUser.inventoryList.elementAt(size - 1)
         movedFoodItem.expiryDate = expiryDate
         val jsonString = Gson().toJson(currentUser)
         Log.i(TAG, jsonString)
