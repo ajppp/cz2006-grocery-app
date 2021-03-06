@@ -113,6 +113,7 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
         val newInventoryFood = Food(newInventoryItemName, expiryDate, newInventoryItemQuantity)
         currentUser.inventoryList.add(newInventoryFood)
+        currentUser.inventoryList.sortBy { it.expiryDate }
         val jsonString = Gson().toJson(currentUser)
         val userEditor = userSharedPreferences.edit()
         userEditor.putString("USER", jsonString)

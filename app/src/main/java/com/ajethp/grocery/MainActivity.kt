@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             currentUser.inventoryList.add(orange)
             currentUser.shoppingList.add(kiwi)
             currentUser.shoppingList.add(peach)
+            currentUser.inventoryList.sortBy { it.expiryDate }
 
             val jsonString = Gson().toJson(currentUser)
             Log.i(TAG, jsonString)

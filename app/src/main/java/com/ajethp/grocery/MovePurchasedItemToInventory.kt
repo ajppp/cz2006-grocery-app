@@ -84,6 +84,7 @@ class MovePurchasedItemToInventory : AppCompatActivity(), DatePickerDialog.OnDat
         val size = currentUser.inventoryList.size
         val movedFoodItem: Food = currentUser.inventoryList.elementAt(size - 1)
         movedFoodItem.expiryDate = expiryDate
+        currentUser.inventoryList.sortBy { it.expiryDate }
         val jsonString = Gson().toJson(currentUser)
         Log.i(TAG, jsonString)
         val userEditor = userSharedPreferences.edit()
