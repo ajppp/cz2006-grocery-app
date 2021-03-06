@@ -1,34 +1,24 @@
 package com.ajethp.grocery
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecipeAdapter(private val context: Context,
-                    private val suggestedRecipeName: MutableList<String>,
-                    val itemClick: (Int) -> Unit) :
-    RecyclerView.Adapter<RecipeAdapter.ViewHolder>() {
+class RecipeDetailsAdapter(private val context: Context,
+                           private val recipeSteps: MutableList<String>) :
+        RecyclerView.Adapter<RecipeDetailsAdapter.ViewHolder>() {
 
-    companion object{
-        private const val TAG = "RecipeAdapter"
-    }
-
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-            private val suggestedRecipe = itemView.findViewById<TextView>(R.id.suggestedRecipeName)
-
-            fun bind(position: Int) {
-                suggestedRecipe.text = suggestedRecipeName[position]
-                suggestedRecipe.setOnClickListener{
-                    itemClick(position)
-                }
-            }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val recipeInstructions = itemView.findViewById<TextView>(R.id.recipeInstruction)
+        fun bind(position: Int) {
+            val step = position + 1
+            val recipeStep = "$step) " + recipeSteps[position]
+            recipeInstructions.text = recipeStep
         }
-
+    }
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
      * an item.
@@ -53,7 +43,7 @@ class RecipeAdapter(private val context: Context,
      * @see .onBindViewHolder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.suggested_recipe_item, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.recipe_item_instruction, parent, false)
         return ViewHolder(view)
     }
 
@@ -87,8 +77,6 @@ class RecipeAdapter(private val context: Context,
      *
      * @return The total number of items in this adapter.
      */
-    override fun getItemCount(): Int {
-        return suggestedRecipeName.size
-    }
+    override fun getItemCount(): Int = recipeSteps.size
 
 }

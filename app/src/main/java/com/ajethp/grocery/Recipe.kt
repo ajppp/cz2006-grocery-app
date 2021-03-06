@@ -1,6 +1,7 @@
 package com.ajethp.grocery
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -32,39 +33,43 @@ class Recipe : AppCompatActivity() {
         Log.i(TAG, userJsonString!!)
         currentUser = Gson().fromJson(userJsonString, User::class.java)
 
-        var _url = "https://api.spoonacular.com/recipes/findByIngredients?ingredients="
+        // gets the top three ingredients in users inventory list and uses it to query the system
         val firstIngredient = currentUser.inventoryList[0].foodName
         val secondIngredient = currentUser.inventoryList[1].foodName
         val thirdIngredient = currentUser.inventoryList[2].foodName
-        var ingredients = "$firstIngredient,+$secondIngredient,+$thirdIngredient"
-        val numberOfRecipes = "&number=3&"
-        val apiKey = "apiKey=fbb942433c0d4382a68fef26d5554e5f"
-
-        val url = _url+ingredients+numberOfRecipes+apiKey
+        val url = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=$firstIngredient,+$secondIngredient,+$thirdIngredient&number=3&ranking=1&ignorePantry=true&apiKey=fbb942433c0d4382a68fef26d5554e5f"
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
         recipeRvBoard = findViewById(R.id.recipeRvBoard)
+        val suggestedRecipeName: MutableList<String> = arrayListOf()
+        val suggestedRecipeId: MutableList<String> = arrayListOf()
 
         Thread {
             val responseText = client.newCall(Request.Builder().url(url).get().build()).execute().body()!!.string()
-            var responseArray  = JSONArray(responseText)
-            var size = responseArray.length()
-            var suggestedRecipe: MutableList<String> = arrayListOf()
+            val responseArray  = JSONArray(responseText)
+            val size = responseArray.length()
             for (i in 0 until size) {
                 val responseObject = responseArray.getJSONObject(i)
+                val recipeId = responseObject.optString("id").toString()
                 val recipeName = responseObject.optString("title").toString()
-                suggestedRecipe.add(recipeName)
-                Log.i(TAG, responseObject.toString())
-                Log.i(TAG, recipeName)
+                suggestedRecipeName.add(recipeName)
+                suggestedRecipeId.add(recipeId)
             }
 
+
             runOnUiThread {
-                recipeRvBoard.adapter = RecipeAdapter(this, suggestedRecipe)
+                recipeRvBoard.adapter = RecipeAdapter(this, suggestedRecipeName) {
+                    val clickedRecipeId: String = suggestedRecipeId[it]
+                    val intent = Intent(this, RecipeDetails::class.java)
+                    intent.putExtra("RECIPE_ID", clickedRecipeId)
+                    startActivity(intent)
+                }
                 recipeRvBoard.setHasFixedSize(true)
                 // spanCount is the number of columns
                 recipeRvBoard.layoutManager = GridLayoutManager(this, 1)
             }
+
         }.start()
         }
     }
