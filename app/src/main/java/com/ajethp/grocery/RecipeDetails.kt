@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -64,19 +65,18 @@ class RecipeDetails : AppCompatActivity() {
 
             //get recipe ingredients and parse
             val ingredientResponseText = client.newCall(Request.Builder().url(ingredientUrl).get().build()).execute().body()!!.string()
-            val ingredientJSONObject = JSONArray(responseText).getJSONObject(0)
-            // what to do if null
-            if (ingredientJSONObject.optString("ingredients").isNotEmpty() ) {
-                        val ingredientJSONArray = JSONArray(ingredientJSONObject.optString("ingredients").toString())
-                        val numIngredients = ingredientJSONArray.length()
-                        for (i in 0 until numIngredients) {
-                            val ingredientObject = ingredientJSONArray.getJSONObject(i)
-                            val ingredientName = ingredientObject.optString("name")
-                            val ingredientQuantity = JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("value")
-                            val ingredientText = "$ingredientName: $ingredientQuantity"
-                            recipeIngredients.add(ingredientText)
-                        }
-                    }
+            val ingredientArray = JSONArray(JSONObject(ingredientResponseText).optString("ingredients"))
+            val numIngredients = ingredientArray.length()
+            for (i in 0 until numIngredients) {
+                val ingredientObject = ingredientArray.getJSONObject(i)
+                val ingredientName = ingredientObject.optString("name")
+                Log.i(TAG, ingredientName)
+                val ingredientQuantity = JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("value") +
+                        JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("unit")
+                val ingredientText = "$ingredientName: $ingredientQuantity"
+                if (recipeIngredients.size == 0) {recipeIngredients.add(ingredientText)}
+                else {recipeIngredients[0].plus("\n$ingredientText")}
+            }
 
             runOnUiThread {
                 recipeTextName.text = recipeName
@@ -84,7 +84,7 @@ class RecipeDetails : AppCompatActivity() {
                 // recipe ingredients
                 recipeIngredientsRvBoard.adapter = RecipeIngredientsAdapter(this, recipeIngredients)
                 recipeIngredientsRvBoard.setHasFixedSize(true)
-                recipeIngredientsRvBoard.layoutManager = GridLayoutManager(this, 2)
+                recipeIngredientsRvBoard.layoutManager = LinearLayoutManager(this)
 
                 // recipe details
                 recipeDetailsRvBoard.adapter = RecipeDetailsAdapter(this, recipeSteps)
