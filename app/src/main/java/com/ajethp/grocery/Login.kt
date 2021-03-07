@@ -11,6 +11,7 @@ import android.widget.TextView
 
 class Login : AppCompatActivity() {
 
+    private lateinit var signUpButton: Button
     private lateinit var loginButton: Button
     private lateinit var usernameTextEdit: EditText
     private lateinit var passwordTextEdit: EditText
@@ -24,6 +25,7 @@ class Login : AppCompatActivity() {
         loginButton = findViewById(R.id.loginButton)
         usernameTextEdit = findViewById(R.id.usernameText)
         passwordTextEdit = findViewById(R.id.passwordText)
+        signUpButton = findViewById(R.id.loginPageSignUpButton)
 
         sharedPreferences = getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
 
@@ -39,5 +41,7 @@ class Login : AppCompatActivity() {
             finish()
             startActivity(Intent(this, MainActivity::class.java))
         }
+
+        signUpButton.setOnClickListener { startActivity(Intent(this, SignUp::class.java)) }
     }
 }
