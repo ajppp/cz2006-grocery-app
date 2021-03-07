@@ -18,15 +18,6 @@ import java.time.Month
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        private const val TAG = "MainActivity"
-    }
-
-    private lateinit var currentUser: User
-
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var userSharedPreferences: SharedPreferences
-
     private lateinit var inventoryButton: Button
     private lateinit var recipeButton: Button
     private lateinit var groceryButton: Button
@@ -34,24 +25,20 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i(TAG, "currently on create")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        sharedPreferences = getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
 
         inventoryButton = findViewById(R.id.inventoryButton)
         recipeButton = findViewById(R.id.recipeButton)
         groceryButton = findViewById(R.id.groceryButton)
         settingsButton = findViewById(R.id.settingsButton)
 
-        val username = sharedPreferences.getString("USERNAME", "")
-
     }
 
     override fun onResume() {
         super.onResume()
+
+
 
         inventoryButton.setOnClickListener { startActivity(Intent(this, Inventory::class.java)) }
         recipeButton.setOnClickListener { startActivity(Intent(this, Recipe::class.java)) }

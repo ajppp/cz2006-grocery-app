@@ -112,6 +112,7 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         contentValues.put(INVENTORY_COL_NAME, food.foodName)
         contentValues.put(INVENTORY_COL_DATE, food.expiryDate)
         contentValues.put(INVENTORY_COL_QUANTITY, food.quantity)
+        database.insert(TABLE_INVENTORY, null, contentValues)
     }
 
     fun insertShoppingData(food: Food, user:User) {
@@ -120,6 +121,7 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         contentValues.put(USER_COL_NAME, user.username)
         contentValues.put(SHOPPING_COL_NAME, food.foodName)
         contentValues.put(SHOPPING_COL_QUANTITY, food.quantity)
+        database.insert(TABLE_SHOPPING, null, contentValues)
     }
 
     fun insertPurchasedData(food: Food, user:User) {
@@ -128,6 +130,22 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         contentValues.put(USER_COL_NAME, user.username)
         contentValues.put(PURCHASED_COL_NAME, food.foodName)
         contentValues.put(PURCHASED_COL_QUANTITY, food.quantity)
+        database.insert(TABLE_PURCHASED, null, contentValues)
+    }
+
+    fun verifyUserExists(username: String) : Boolean {
+        val db = this.readableDatabase
+        val usernameQuery = "SELECT $USER_COL_NAME FROM $TABLE_USER " +
+                "WHERE $USER_COL_NAME = '$username';"
+        return db.rawQuery(usernameQuery, null).count != 0
+    }
+
+    fun verifyUserPassword(username: String, password: String): Boolean {
+        val db = this.readableDatabase
+        val userPasswordQuery = "SELECT $USER_COL_NAME FROM $TABLE_USER " +
+                "WHERE $USER_COL_NAME = '$username' "+
+                "AND $USER_COL_PASSWORD = '$password';"
+        return db.rawQuery(userPasswordQuery, null).count != 0
     }
 
     fun readUserData(username: String, password: String): User {
@@ -140,12 +158,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         if (userResult.moveToFirst()) {
                 val resultName: String = userResult.getString(userResult.getColumnIndex(USER_COL_NAME))
                 val resultPassword: String = userResult.getString(userResult.getColumnIndex(USER_COL_PASSWORD))
-
                 currentUser = User(resultName, resultPassword)
         }
         // get the inventory
         val inventoryTableQuery = "SELECT * FROM $TABLE_INVENTORY" +
-                "WHERE $USER_COL_NAME = '$username'"
+                "WHERE $USER_COL_NAME = '$username';"
         val inventoryResult = db.rawQuery(inventoryTableQuery, null)
         if (inventoryResult.moveToFirst()) {
             do {
@@ -158,7 +175,7 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
         // get the shopping list
         val shoppingTableQuery = "SELECT * FROM $TABLE_SHOPPING" +
-                "WHERE $USER_COL_NAME = '$username'"
+                "WHERE $USER_COL_NAME = '$username';"
         val shoppingResult = db.rawQuery(shoppingTableQuery, null)
         if (shoppingResult.moveToFirst()) {
             do {
@@ -171,7 +188,7 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
         // get the purchased list
         val purchasedTableQuery = "SELECT * FROM $TABLE_PURCHASED" +
-                "WHERE $USER_COL_NAME = '$username'"
+                "WHERE $USER_COL_NAME = '$username';"
 
         val purchasedResult = db.rawQuery(shoppingTableQuery, null)
         if (purchasedResult.moveToFirst()) {
