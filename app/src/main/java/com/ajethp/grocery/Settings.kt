@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.ajethp.grocery.classes.User
 import com.google.gson.Gson
@@ -35,6 +36,7 @@ class Settings : AppCompatActivity() {
     private lateinit var languageButton: Button
     private lateinit var fontSizeButton: Button
     private lateinit var familyButton: Button
+    private lateinit var settingsUserName: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +50,8 @@ class Settings : AppCompatActivity() {
         languageButton = findViewById(R.id.languageButton)
         fontSizeButton = findViewById(R.id.fontSizeButton)
         familyButton = findViewById(R.id.familyButton)
+        settingsUserName = findViewById(R.id.settingsUsername)
+        settingsUserName.text = currentUser.username
 
         updateRestrictionsButton.setOnClickListener { showDietaryRestrictionAlertDialog("Dietary Restrictions", null) {} }
     }
@@ -65,15 +69,12 @@ class Settings : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        val intent = Intent(this, MainActivity::class.java)
 
         val jsonString = Gson().toJson(currentUser)
         val userEditor = userSharedPreferences.edit()
-        Log.i(TAG, jsonString)
         userEditor.putString("USER", jsonString)
         userEditor.apply()
 
-        Log.i(TAG, "stopped settings, starting main activity")
-        startActivity(intent)
+        startActivity(Intent(this, MainActivity::class.java))
     }
 }

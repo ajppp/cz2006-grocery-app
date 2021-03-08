@@ -52,7 +52,6 @@ class Inventory : AppCompatActivity() {
         super.onStart()
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
         val userJsonString = userSharedPreferences.getString("USER", "")
-        Log.i(TAG, userJsonString!!)
         currentUser = Gson().fromJson(userJsonString, User::class.java)
 
         inventoryRvBoard.adapter = InventoryAdapter(this, currentUser.inventoryList)

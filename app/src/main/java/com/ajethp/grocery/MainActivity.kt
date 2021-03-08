@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var groceryButton: Button
     private lateinit var settingsButton: Button
 
+    private lateinit var userSharedPreferences: SharedPreferences
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,12 @@ class MainActivity : AppCompatActivity() {
 
         val db = DataBaseHelper(this)
         val currentUser : User = db.readUserData(intent.getStringExtra("USERNAME")!!, intent.getStringExtra("PASSWORD")!!)
+
+        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
+        val jsonString = Gson().toJson(currentUser)
+        val userEditor = userSharedPreferences.edit()
+        userEditor.putString("USER", jsonString)
+        userEditor.apply()
 
         inventoryButton.setOnClickListener { startActivity(Intent(this, Inventory::class.java)) }
         recipeButton.setOnClickListener { startActivity(Intent(this, Recipe::class.java)) }

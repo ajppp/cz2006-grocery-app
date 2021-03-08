@@ -6,11 +6,13 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.User
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_recipe.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
@@ -24,6 +26,7 @@ class Recipe : AppCompatActivity() {
     private lateinit var userSharedPreferences: SharedPreferences
 
     private lateinit var recipeRvBoard: RecyclerView
+    private lateinit var recipeSuggestionText: TextView
 
     private val client = OkHttpClient()
 
@@ -75,6 +78,8 @@ class Recipe : AppCompatActivity() {
             }.start()
         } else {
             recipeRvBoard.visibility = View.INVISIBLE
+            recipeSuggestionText = findViewById(R.id.recipeSuggestionText)
+            recipeSuggestionText.text = "You do not have enough ingredients for us to suggest recipes"
         }
     }
 }
