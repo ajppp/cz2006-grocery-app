@@ -12,6 +12,7 @@ import android.widget.Button
 import androidx.annotation.RequiresApi
 import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
+import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.gson.Gson
 import java.time.LocalDate
 import java.time.Month
@@ -38,7 +39,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-
+        val db = DataBaseHelper(this)
+        val currentUser : User = db.readUserData(intent.getStringExtra("USERNAME")!!, intent.getStringExtra("PASSWORD")!!)
 
         inventoryButton.setOnClickListener { startActivity(Intent(this, Inventory::class.java)) }
         recipeButton.setOnClickListener { startActivity(Intent(this, Recipe::class.java)) }

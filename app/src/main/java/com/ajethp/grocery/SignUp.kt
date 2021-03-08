@@ -8,14 +8,17 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import kotlin.math.sign
+import java.util.regex.Pattern
 
 class SignUp : AppCompatActivity() {
+
+    companion object {
+        private val EMAIL_ADDRESS_PATTERN = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\[\\x01-\\x09\\x0b\\x0c\\x0e\\x7f])+)\\])")
+    }
 
     private lateinit var emailTextEdit: EditText
     private lateinit var usernameTextEdit: EditText
@@ -41,36 +44,37 @@ class SignUp : AppCompatActivity() {
         signUpDoneButton = findViewById(R.id.signUpButton)
         signUpClRoot = findViewById(R.id.signUpClRoot)
 
-        // TODO("check if such a user already exists in the database")
-        // TODO("check if the password and confirm passwords are the same")
+        signUpDoneButton.setOnClickListener {
+            if (EMAIL_ADDRESS_PATTERN.matcher(emailTextEdit.text.toString()).matches()) {
+                if (usernameTextEdit.text.toString().isNotEmpty()) {
+                    if (passwordTextEdit.text.toString().isNotEmpty()) {
+                        if (confirmPassword.text.toString() == passwordTextEdit.text.toString()) {
+                            val email = emailTextEdit.text.toString()
+                            val username = usernameTextEdit.text.toString()
+                            val password = passwordTextEdit.text.toString()
+                            // check for existing user
+                            if (db.verifyUserExists(username)) {
+                                Snackbar.make(signUpClRoot, "A user with that username already exists", Snackbar.LENGTH_LONG).show()
+                            } else {
+                                // everything is correct
+                                val newUser = User(email, username, password)
 
-        // insert to the database
+                                val jsonString = Gson().toJson(newUser)
+                                val userEditor = userSharedPreferences.edit()
+                                userEditor.putString("USER", jsonString)
+                                userEditor.apply()
 
+                                db.insertUserData(newUser)
 
-        signUpDoneButton.setOnClickListener{
-            if (confirmPassword.text.toString() != passwordTextEdit.text.toString()){
-                Snackbar.make(it, "Passwords are not the same", Snackbar.LENGTH_LONG).show()
-            } else {
-                val username = usernameTextEdit.text.toString()
-                val password = passwordTextEdit.text.toString()
-
-                // check for existing user
-                if (db.verifyUserExists(username)) {
-                    Snackbar.make(signUpClRoot, "A user with that username already exists", Snackbar.LENGTH_LONG).show()
-                } else {
-                    val newUser = User(username, password)
-
-                    val jsonString = Gson().toJson(newUser)
-                    val userEditor = userSharedPreferences.edit()
-                    userEditor.putString("USER", jsonString)
-                    userEditor.apply()
-
-                    db.insertUserData(newUser)
-
-                    startActivity(Intent(this, MainActivity::class.java))
-                }
-
-            }
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.putExtra("USERNAME", username)
+                                intent.putExtra("PASSWORD", password)
+                                startActivity(intent)
+                            }
+                        } else { Snackbar.make(it, "Passwords are not the same", Snackbar.LENGTH_LONG).show() }
+                    } else { Snackbar.make(signUpClRoot, "Password is empty! Please insert a password", Snackbar.LENGTH_LONG).show() }
+                } else { Snackbar.make(signUpClRoot, "Username is empty! Please insert a Username", Snackbar.LENGTH_LONG).show() }
+            } else { Snackbar.make(signUpClRoot, "Invalid Email Address", Snackbar.LENGTH_LONG).show() }
         }
     }
 }

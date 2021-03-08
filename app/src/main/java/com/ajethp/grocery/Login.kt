@@ -37,30 +37,25 @@ class Login : AppCompatActivity() {
         passwordTextEdit = findViewById(R.id.passwordText)
         signUpButton = findViewById(R.id.loginPageSignUpButton)
 
+        // login button
         loginButton.setOnClickListener {
             val username = usernameTextEdit.text.toString()
             // need to hash
             val password = passwordTextEdit.text.toString()
-
             // verification
             if(db.verifyUserExists(username)){
-                Log.i(TAG, "user verification successful")
                 if (db.verifyUserPassword(username, password)){
-
                     val intent = Intent(this, MainActivity::class.java)
-
                     // allows us to get the user data only in the main activity
                     intent.putExtra("USERNAME", username)
                     intent.putExtra("PASSWORD", password)
                     startActivity(intent)
 
-                } else {
-                    Snackbar.make(loginClRoot, "Wrong Password", Snackbar.LENGTH_LONG).show()
-                }
-            } else {
-                Snackbar.make(loginClRoot, "A user with that username does not exist", Snackbar.LENGTH_LONG).show()
-            }
+                } else { Snackbar.make(loginClRoot, "Wrong Password", Snackbar.LENGTH_LONG).show() }
+            } else { Snackbar.make(loginClRoot, "A user with that username does not exist", Snackbar.LENGTH_LONG).show() }
         }
+
+        // sign up button
         signUpButton.setOnClickListener { startActivity(Intent(this, SignUp::class.java)) }
     }
 }
