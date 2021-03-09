@@ -68,7 +68,6 @@ class SignUp : AppCompatActivity() {
 
                                 val intent = Intent(this, MainActivity::class.java)
                                 intent.putExtra("USERNAME", username)
-                                intent.putExtra("PASSWORD", password)
                                 startActivity(intent)
                             }
                         } else { Snackbar.make(it, "Passwords are not the same", Snackbar.LENGTH_LONG).show() }

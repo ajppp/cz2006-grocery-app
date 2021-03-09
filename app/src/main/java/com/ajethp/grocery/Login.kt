@@ -45,11 +45,9 @@ class Login : AppCompatActivity() {
             // verification
             if(db.verifyUserExists(username)){
                 if (db.verifyUserPassword(username, password)){
-                    val intent = Intent(this, MainActivity::class.java)
                     // allows us to get the user data only in the main activity
-                    intent.putExtra("USERNAME", username)
-                    intent.putExtra("PASSWORD", password)
-                    startActivity(intent)
+                    getSharedPreferences("USER_REF", Context.MODE_PRIVATE).edit().putString("USERNAME", username).commit()
+                    startActivity(Intent(this, MainActivity::class.java))
 
                 } else { Snackbar.make(loginClRoot, "Wrong Password", Snackbar.LENGTH_LONG).show() }
             } else { Snackbar.make(loginClRoot, "A user with that username does not exist", Snackbar.LENGTH_LONG).show() }

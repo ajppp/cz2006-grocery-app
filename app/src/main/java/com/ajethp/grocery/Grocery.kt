@@ -36,12 +36,20 @@ class Grocery : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_grocery)
 
+
         shoppingListRvBoard = findViewById(R.id.shoppingListRvBoard)
         purchasedListRvBoard = findViewById(R.id.purchasedListRvBoard)
 
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
-        val userJsonString = userSharedPreferences.getString("USER", "")
-        currentUser = Gson().fromJson(userJsonString, User::class.java)
+        val db = DataBaseHelper(this)
+        val username = userSharedPreferences.getString("USERNAME", "")
+        val currentUser : User = db.readUserData(username!!)
+        Log.i(TAG, currentUser.toString())
+        // currentUser.inventoryList.sortBy { it.expiryDate }
+
+        // val userJsonString = userSharedPreferences.getString("USER", "")
+        // Log.i(TAG, userJsonString!!)
+        // currentUser = Gson().fromJson(userJsonString, User::class.java)
 
         // currentUser = intent.getParcelableExtra<User>("CURRENT USER")
         val userShoppingList = currentUser.shoppingList
@@ -49,28 +57,28 @@ class Grocery : AppCompatActivity() {
 
         shoppingListRvBoard.adapter = ShoppingListAdapter(this, userShoppingList) {
             // remove item from shopping list and add it to purchased list
+            db.deleteShoppingData(currentUser.shoppingList[it], currentUser.username!!)
+            db.insertPurchasedData(currentUser.shoppingList[it], currentUser.username!!)
+
             currentUser.purchasedList.add(currentUser.shoppingList[it])
             currentUser.shoppingList.removeAt(it)
             purchasedListRvBoard.adapter?.notifyDataSetChanged()
 
-            val jsonString = Gson().toJson(currentUser)
-            val userEditor = userSharedPreferences.edit()
-            userEditor.putString("USER", jsonString)
-            userEditor.apply()
+            // val jsonString = Gson().toJson(currentUser)
+            // val userEditor = userSharedPreferences.edit()
+            // userEditor.putString("USER", jsonString)
+            // userEditor.apply()
 
-            val db = DataBaseHelper(this)
-            db.deleteShoppingData(currentUser.shoppingList[it], currentUser.username!!)
-            db.insertPurchasedData(currentUser.shoppingList[it], currentUser.username!!)
         }
         purchasedListRvBoard.adapter = PurchasedListAdapter(this, userPurchasedList) {
             var movedFoodItem = currentUser.purchasedList[it]
             currentUser.inventoryList.add(movedFoodItem)
             currentUser.purchasedList.removeAt(it)
             purchasedListRvBoard.adapter?.notifyDataSetChanged()
-            val jsonString = Gson().toJson(currentUser)
-            val userEditor = userSharedPreferences.edit()
-            userEditor.putString("USER", jsonString)
-            userEditor.apply()
+            // val jsonString = Gson().toJson(currentUser)
+            // val userEditor = userSharedPreferences.edit()
+            // userEditor.putString("USER", jsonString)
+            // userEditor.apply()
             startActivity(Intent(this, MovePurchasedItemToInventory::class.java))
         }
 
@@ -94,10 +102,10 @@ class Grocery : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        val jsonString = Gson().toJson(currentUser)
-        val userEditor = userSharedPreferences.edit()
-        userEditor.putString("USER", jsonString)
-        userEditor.apply()
+        // val jsonString = Gson().toJson(currentUser)
+        // val userEditor = userSharedPreferences.edit()
+        // userEditor.putString("USER", jsonString)
+        // userEditor.apply()
     }
 
 }

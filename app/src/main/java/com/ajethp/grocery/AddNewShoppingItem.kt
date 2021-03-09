@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import com.ajethp.grocery.classes.Food
@@ -13,6 +14,10 @@ import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.gson.Gson
 
 class AddNewShoppingItem : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "ADD NEW SHOPPING"
+    }
 
     private lateinit var newShoppingItemName: String
     private var newShoppingItemQuantity: Int = 0
@@ -28,9 +33,9 @@ class AddNewShoppingItem : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_shopping_item)
 
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
-        val userJsonString = userSharedPreferences.getString("USER", "")
-        currentUser = Gson().fromJson(userJsonString, User::class.java)
+        val db = DataBaseHelper(this)
+        val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
+        currentUser = db.readUserData(username!!)
 
         enterShoppingItem = findViewById(R.id.enterShoppingItemText)
         enterShoppingQuantity = findViewById(R.id.enterShoppingItemQuantity)
@@ -41,14 +46,8 @@ class AddNewShoppingItem : AppCompatActivity() {
             newShoppingItemQuantity = enterShoppingQuantity.text.toString().toInt()
             var newShoppingFood = Food(newShoppingItemName, null, newShoppingItemQuantity)
             currentUser.shoppingList.add(newShoppingFood)
-
-            val db = DataBaseHelper(this)
+            Log.i(TAG, currentUser.toString())
             db.insertShoppingData(newShoppingFood, currentUser.username!!)
-
-            val jsonString = Gson().toJson(currentUser)
-            val userEditor = userSharedPreferences.edit()
-            userEditor.putString("USER", jsonString)
-            userEditor.apply()
 
             startActivity(Intent(this, Grocery::class.java))
         }

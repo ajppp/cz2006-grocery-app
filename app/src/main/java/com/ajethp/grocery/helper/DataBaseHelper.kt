@@ -10,26 +10,26 @@ import com.ajethp.grocery.classes.User
 val DATABASE_NAME = "USER DATABASE"
 
 // Table names
-val TABLE_USER = "Users"
-val TABLE_INVENTORY = "Inventory"
-val TABLE_PURCHASED = "Purchased"
-val TABLE_SHOPPING = "Shopping"
+const val TABLE_USER = "Users"
+const val TABLE_INVENTORY = "Inventory"
+const val TABLE_PURCHASED = "Purchased"
+const val TABLE_SHOPPING = "Shopping"
 
-val USER_COL_EMAIL = "email"
-val USER_COL_NAME = "username"
-val USER_COL_PASSWORD = "password"
-val USER_COL_FAMILY = "family_id"
-val USER_COL_RESTRICTIONS = "restrictions"
+const val USER_COL_EMAIL = "email"
+const val USER_COL_NAME = "username"
+const val USER_COL_PASSWORD = "password"
+const val USER_COL_FAMILY = "family_id"
+const val USER_COL_RESTRICTIONS = "restrictions"
 
-val INVENTORY_COL_NAME = "food_name"
-val INVENTORY_COL_DATE = "expiry_date"
-val INVENTORY_COL_QUANTITY = "quantity"
+const val INVENTORY_COL_NAME = "food_name"
+const val INVENTORY_COL_DATE = "expiry_date"
+const val INVENTORY_COL_QUANTITY = "quantity"
 
-val PURCHASED_COL_NAME = "food_name"
-val PURCHASED_COL_QUANTITY = "quantity"
+const val PURCHASED_COL_NAME = "food_name"
+const val PURCHASED_COL_QUANTITY = "quantity"
 
-val SHOPPING_COL_NAME = "food_name"
-val SHOPPING_COL_QUANTITY = "quantity"
+const val SHOPPING_COL_NAME = "food_name"
+const val SHOPPING_COL_QUANTITY = "quantity"
 
 class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
     /**
@@ -130,12 +130,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun deleteShoppingData(food: Food, username: String) {
-        val db = this.writableDatabase
         val deleteShoppingQuery = "DELETE FROM $TABLE_SHOPPING " +
                 "WHERE $USER_COL_NAME = '$username' " +
                 "AND $SHOPPING_COL_NAME = '${food.foodName}' " +
                 "AND $SHOPPING_COL_QUANTITY = '${food.quantity}';"
-        db.execSQL(deleteShoppingQuery)
+        this.writableDatabase.execSQL(deleteShoppingQuery)
     }
 
     fun insertPurchasedData(food: Food, username: String) {
@@ -162,12 +161,12 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         return db.rawQuery(userPasswordQuery, null).count != 0
     }
 
-    fun readUserData(username: String, password: String): User {
+    fun readUserData(username: String): User {
         val db = this.readableDatabase
         var currentUser = User(null, null, null)
         // get the username and password
         val userTableQuery = "SELECT * FROM $TABLE_USER " +
-                "WHERE $USER_COL_NAME = '$username' AND $USER_COL_PASSWORD = '$password';"
+                "WHERE $USER_COL_NAME = '$username' ;"
         val userResult = db.rawQuery(userTableQuery, null)
         if (userResult.moveToFirst()) {
             val resultEmail: String = userResult.getString(userResult.getColumnIndex(USER_COL_EMAIL))
@@ -209,7 +208,7 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         val purchasedTableQuery = "SELECT * FROM $TABLE_PURCHASED " +
                 "WHERE $USER_COL_NAME = '$username';"
 
-        val purchasedResult = db.rawQuery(shoppingTableQuery, null)
+        val purchasedResult = db.rawQuery(purchasedTableQuery, null)
         if (purchasedResult.moveToFirst()) {
             do {
                 val foodName = purchasedResult.getString(purchasedResult.getColumnIndex(PURCHASED_COL_NAME))

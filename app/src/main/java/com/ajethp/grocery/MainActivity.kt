@@ -19,6 +19,10 @@ import java.time.Month
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private const val TAG = "MAIN"
+    }
+
     private lateinit var inventoryButton: Button
     private lateinit var recipeButton: Button
     private lateinit var groceryButton: Button
@@ -42,18 +46,22 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         val db = DataBaseHelper(this)
-        val currentUser : User = db.readUserData(intent.getStringExtra("USERNAME")!!, intent.getStringExtra("PASSWORD")!!)
+        val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
+        val currentUser : User = db.readUserData(username!!)
         currentUser.inventoryList.sortBy { it.expiryDate }
+        Log.i(TAG, currentUser.toString())
 
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
-        val jsonString = Gson().toJson(currentUser)
-        val userEditor = userSharedPreferences.edit()
-        userEditor.putString("USER", jsonString)
-        userEditor.apply()
+        // val intent = Intent(this, Grocery::class.java)
+        // intent.putExtra("USERNAME", currentUser.username)
+
+        // val jsonString = Gson().toJson(currentUser)
+        // val userEditor = userSharedPreferences.edit()
+        // userEditor.putString("USER", jsonString)
+        // userEditor.apply()
 
         inventoryButton.setOnClickListener { startActivity(Intent(this, Inventory::class.java)) }
         recipeButton.setOnClickListener { startActivity(Intent(this, Recipe::class.java)) }
-        groceryButton.setOnClickListener { startActivity(Intent(this, Grocery::class.java)) }
+        groceryButton.setOnClickListener {startActivity(Intent(this, Grocery::class.java))}
         settingsButton.setOnClickListener { startActivity(Intent(this, Settings::class.java)) }
     }
 }
