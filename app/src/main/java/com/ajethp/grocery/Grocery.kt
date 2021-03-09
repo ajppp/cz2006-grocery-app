@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.User
+import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.gson.Gson
 
 class Grocery : AppCompatActivity() {
@@ -51,10 +52,15 @@ class Grocery : AppCompatActivity() {
             currentUser.purchasedList.add(currentUser.shoppingList[it])
             currentUser.shoppingList.removeAt(it)
             purchasedListRvBoard.adapter?.notifyDataSetChanged()
+
             val jsonString = Gson().toJson(currentUser)
             val userEditor = userSharedPreferences.edit()
             userEditor.putString("USER", jsonString)
             userEditor.apply()
+
+            val db = DataBaseHelper(this)
+            db.deleteShoppingData(currentUser.shoppingList[it], currentUser.username!!)
+            db.insertPurchasedData(currentUser.shoppingList[it], currentUser.username!!)
         }
         purchasedListRvBoard.adapter = PurchasedListAdapter(this, userPurchasedList) {
             var movedFoodItem = currentUser.purchasedList[it]

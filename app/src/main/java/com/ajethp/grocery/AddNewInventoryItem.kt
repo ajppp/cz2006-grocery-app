@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
+import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.gson.Gson
 import java.util.*
@@ -113,6 +114,10 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
         val newInventoryFood = Food(newInventoryItemName, expiryDate, newInventoryItemQuantity)
         currentUser.inventoryList.add(newInventoryFood)
+
+        val db = DataBaseHelper(this)
+        db.insertInventoryData(newInventoryFood, currentUser.username!!)
+
         currentUser.inventoryList.sortBy { it.expiryDate }
         val jsonString = Gson().toJson(currentUser)
         val userEditor = userSharedPreferences.edit()

@@ -129,6 +129,15 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         database.insert(TABLE_SHOPPING, null, contentValues)
     }
 
+    fun deleteShoppingData(food: Food, username: String) {
+        val db = this.writableDatabase
+        val deleteShoppingQuery = "DELETE FROM $TABLE_SHOPPING " +
+                "WHERE $USER_COL_NAME = '$username' " +
+                "AND $SHOPPING_COL_NAME = '${food.foodName}' " +
+                "AND $SHOPPING_COL_QUANTITY = '${food.quantity}';"
+        db.execSQL(deleteShoppingQuery)
+    }
+
     fun insertPurchasedData(food: Food, username: String) {
         val database = this.writableDatabase
         val contentValues = ContentValues()

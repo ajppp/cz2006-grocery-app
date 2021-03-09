@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
+import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.gson.Gson
 
 class AddNewShoppingItem : AppCompatActivity() {
@@ -40,6 +41,9 @@ class AddNewShoppingItem : AppCompatActivity() {
             newShoppingItemQuantity = enterShoppingQuantity.text.toString().toInt()
             var newShoppingFood = Food(newShoppingItemName, null, newShoppingItemQuantity)
             currentUser.shoppingList.add(newShoppingFood)
+
+            val db = DataBaseHelper(this)
+            db.insertShoppingData(newShoppingFood, currentUser.username!!)
 
             val jsonString = Gson().toJson(currentUser)
             val userEditor = userSharedPreferences.edit()

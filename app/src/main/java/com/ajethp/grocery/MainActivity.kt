@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         val db = DataBaseHelper(this)
         val currentUser : User = db.readUserData(intent.getStringExtra("USERNAME")!!, intent.getStringExtra("PASSWORD")!!)
+        currentUser.inventoryList.sortBy { it.expiryDate }
 
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
         val jsonString = Gson().toJson(currentUser)
