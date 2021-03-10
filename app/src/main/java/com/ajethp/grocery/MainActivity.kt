@@ -45,19 +45,10 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val db = DataBaseHelper(this)
-        val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
-        val currentUser : User = db.readUserData(username!!)
+        // val db = DataBaseHelper(this)
+        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
         currentUser.inventoryList.sortBy { it.expiryDate }
         Log.i(TAG, currentUser.toString())
-
-        // val intent = Intent(this, Grocery::class.java)
-        // intent.putExtra("USERNAME", currentUser.username)
-
-        // val jsonString = Gson().toJson(currentUser)
-        // val userEditor = userSharedPreferences.edit()
-        // userEditor.putString("USER", jsonString)
-        // userEditor.apply()
 
         inventoryButton.setOnClickListener { startActivity(Intent(this, Inventory::class.java)) }
         recipeButton.setOnClickListener { startActivity(Intent(this, Recipe::class.java)) }

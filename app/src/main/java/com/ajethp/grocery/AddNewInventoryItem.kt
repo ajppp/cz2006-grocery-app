@@ -39,16 +39,11 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     private lateinit var expiryDateSwitch: Switch
     private lateinit var addNewInventoryNextButton : Button
 
-    private lateinit var currentUser: User
     private lateinit var userSharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_inventory_item)
-
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
-        val userJsonString = userSharedPreferences.getString("USER", "")
-        currentUser = Gson().fromJson(userJsonString, User::class.java)
 
         enterFoodItem = findViewById(R.id.enterFoodItemText)
         enterFoodQuantity = findViewById(R.id.enterFoodQuantityText)
@@ -113,16 +108,8 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         expiryDate = "$savedYear-$monthString-$dayOfMonthString"
 
         val newInventoryFood = Food(newInventoryItemName, expiryDate, newInventoryItemQuantity)
-        currentUser.inventoryList.add(newInventoryFood)
-
-        val db = DataBaseHelper(this)
-        db.insertInventoryData(newInventoryFood, currentUser.username!!)
-
-        currentUser.inventoryList.sortBy { it.expiryDate }
-        val jsonString = Gson().toJson(currentUser)
-        val userEditor = userSharedPreferences.edit()
-        userEditor.putString("USER", jsonString)
-        userEditor.apply()
+        val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
+        DataBaseHelper(this).insertInventoryData(newInventoryFood, username!!)
 
         startActivity(Intent(this, Inventory::class.java))
     }

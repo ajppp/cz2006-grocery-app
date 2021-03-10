@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.DatePicker
 import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
+import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.gson.Gson
 import java.util.*
 
@@ -26,16 +27,12 @@ class MovePurchasedItemToInventory : AppCompatActivity(), DatePickerDialog.OnDat
     var savedYear = 0
     private lateinit var expiryDate: String
 
-    private lateinit var currentUser: User
     private lateinit var userSharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_move_purchased_item_to_inventory)
 
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
-        val userJsonString = userSharedPreferences.getString("USER", "")
-        currentUser = Gson().fromJson(userJsonString, User::class.java)
 
         pickDate()
     }
@@ -80,16 +77,16 @@ class MovePurchasedItemToInventory : AppCompatActivity(), DatePickerDialog.OnDat
         }
 
         expiryDate = "$savedYear-$monthString-$dayOfMonthString"
-
-        val size = currentUser.inventoryList.size
-        val movedFoodItem: Food = currentUser.inventoryList.elementAt(size - 1)
-        movedFoodItem.expiryDate = expiryDate
-        currentUser.inventoryList.sortBy { it.expiryDate }
-        val jsonString = Gson().toJson(currentUser)
-        Log.i(TAG, jsonString)
-        val userEditor = userSharedPreferences.edit()
-        userEditor.putString("USER", jsonString)
-        userEditor.apply()
+        val foodName = intent.getStringExtra("NAME")
+        val foodQuantity= intent.getIntExtra("QUANTITY", 0)
+        val db = DataBaseHelper(this)
+        // val size = currentUser.inventoryList.size
+        // val movedFoodItem: Food = currentUser.inventoryList.elementAt(size - 1)
+        val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
+        // movedFoodItem.expiryDate = expiryDate
+        val movedFoodItem = Food(foodName!!, expiryDate, foodQuantity)
+        db.deletePurchasedData(movedFoodItem, username!!)
+        db.insertInventoryData(movedFoodItem, username)
         startActivity(Intent(this, Grocery::class.java))
     }
 }

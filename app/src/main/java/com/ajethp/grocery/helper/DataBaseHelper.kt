@@ -146,6 +146,14 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         database.insert(TABLE_PURCHASED, null, contentValues)
     }
 
+    fun deletePurchasedData(food: Food, username: String) {
+        val deletePurchasedQuery = "DELETE FROM $TABLE_PURCHASED " +
+                "WHERE $USER_COL_NAME = '$username' " +
+                "AND $PURCHASED_COL_NAME = '${food.foodName}' " +
+                "AND $PURCHASED_COL_QUANTITY = '${food.quantity}';"
+        this.writableDatabase.execSQL(deletePurchasedQuery)
+    }
+
     fun verifyUserExists(username: String) : Boolean {
         val db = this.readableDatabase
         val usernameQuery = "SELECT $USER_COL_NAME FROM $TABLE_USER " +

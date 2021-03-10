@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.User
+import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.gson.Gson
 
 class Inventory : AppCompatActivity() {
@@ -50,10 +51,9 @@ class Inventory : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
-        val userJsonString = userSharedPreferences.getString("USER", "")
-        currentUser = Gson().fromJson(userJsonString, User::class.java)
 
+        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
+        currentUser.inventoryList.sortBy { it.expiryDate }
         inventoryRvBoard.adapter = InventoryAdapter(this, currentUser.inventoryList)
         inventoryRvBoard.setHasFixedSize(true)
         inventoryRvBoard.layoutManager = GridLayoutManager(this, 1)

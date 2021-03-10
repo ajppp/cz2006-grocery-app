@@ -58,17 +58,10 @@ class SignUp : AppCompatActivity() {
                             } else {
                                 // everything is correct
                                 val newUser = User(email, username, password)
-
-                                val jsonString = Gson().toJson(newUser)
-                                val userEditor = userSharedPreferences.edit()
-                                userEditor.putString("USER", jsonString)
-                                userEditor.apply()
-
                                 db.insertUserData(newUser)
+                                getSharedPreferences("USER_REF", Context.MODE_PRIVATE).edit().putString("USERNAME", username).commit()
 
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.putExtra("USERNAME", username)
-                                startActivity(intent)
+                                startActivity(Intent(this, MainActivity::class.java))
                             }
                         } else { Snackbar.make(it, "Passwords are not the same", Snackbar.LENGTH_LONG).show() }
                     } else { Snackbar.make(signUpClRoot, "Password is empty! Please insert a password", Snackbar.LENGTH_LONG).show() }

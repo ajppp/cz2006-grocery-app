@@ -26,16 +26,11 @@ class AddNewShoppingItem : AppCompatActivity() {
     private lateinit var enterShoppingQuantity: EditText
     private lateinit var addShoppingItemDoneButton: Button
 
-    private lateinit var currentUser: User
     private lateinit var userSharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_shopping_item)
-
-        val db = DataBaseHelper(this)
-        val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
-        currentUser = db.readUserData(username!!)
 
         enterShoppingItem = findViewById(R.id.enterShoppingItemText)
         enterShoppingQuantity = findViewById(R.id.enterShoppingItemQuantity)
@@ -45,10 +40,9 @@ class AddNewShoppingItem : AppCompatActivity() {
             newShoppingItemName = enterShoppingItem.text.toString()
             newShoppingItemQuantity = enterShoppingQuantity.text.toString().toInt()
             var newShoppingFood = Food(newShoppingItemName, null, newShoppingItemQuantity)
-            currentUser.shoppingList.add(newShoppingFood)
-            Log.i(TAG, currentUser.toString())
-            db.insertShoppingData(newShoppingFood, currentUser.username!!)
 
+            val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
+            DataBaseHelper(this).insertShoppingData(newShoppingFood, username!!)
             startActivity(Intent(this, Grocery::class.java))
         }
     }
