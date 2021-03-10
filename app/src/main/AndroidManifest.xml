@@ -10,8 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
-        <activity android:name=".SignUp"
-            android:parentActivityName=".Login"/>
+        <activity android:name=".RecipeSearchResults"></activity>
+        <activity
+            android:name=".SignUp"
+            android:parentActivityName=".Login" />
         <activity android:name=".RecipeDetails" />
         <activity android:name=".MovePurchasedItemToInventory" />
         <activity

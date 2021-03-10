@@ -43,4 +43,25 @@
         android:name="com.ajethp.grocery.Settings"
         android:label="activity_settings"
         tools:layout="@layout/activity_settings" />
+    <activity
+        android:id="@+id/login"
+        android:name="com.ajethp.grocery.Login"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" >
+        <action
+            android:id="@+id/action_login_to_mainActivity"
+            app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_login_to_signUp"
+            app:destination="@id/signUp" />
+    </activity>
+    <activity
+        android:id="@+id/signUp"
+        android:name="com.ajethp.grocery.SignUp"
+        android:label="activity_sign_up"
+        tools:layout="@layout/activity_sign_up" >
+        <action
+            android:id="@+id/action_signUp_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </activity>
 </navigation>
