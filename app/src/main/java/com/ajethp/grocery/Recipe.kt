@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,6 +29,7 @@ class Recipe : AppCompatActivity() {
 
     private lateinit var recipeRvBoard: RecyclerView
     private lateinit var recipeSuggestionText: TextView
+    private lateinit var recipeSearchBar: SearchView
 
     private val client = OkHttpClient()
 
@@ -39,8 +41,10 @@ class Recipe : AppCompatActivity() {
         currentUser.inventoryList.sortBy { it.expiryDate }
 
         recipeRvBoard = findViewById(R.id.recipeRvBoard)
+        recipeSearchBar = findViewById(R.id.recipeSearchBar)
         val suggestedRecipeName: MutableList<String> = arrayListOf()
         val suggestedRecipeId: MutableList<String> = arrayListOf()
+
 
         // gets the top three ingredients in users inventory list and uses it to query the system
         if (currentUser.inventoryList.size > 2) {
@@ -50,6 +54,32 @@ class Recipe : AppCompatActivity() {
             val url = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=$firstIngredient,+$secondIngredient,+$thirdIngredient&number=3&ranking=1&ignorePantry=true&apiKey=fbb942433c0d4382a68fef26d5554e5f"
 
             Thread {
+                recipeSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String) : Boolean {
+                        val queryUrl = "https://api.spoonacular.com/recipes/complexSearch?query=$query&number=10&apiKey=fbb942433c0d4382a68fef26d5554e5f"
+                        Log.i(TAG, query)
+                        val queryResponseText = client.newCall(Request.Builder().url(queryUrl).get().build()).execute().body()!!.string()
+                        Log.i(TAG, queryResponseText)
+                        return false
+                    }
+
+                    /**
+                     * Called when the query text is changed by the user.
+                     *
+                     * @param newText the new content of the query text field.
+                     *
+                     * @return false if the SearchView should perform the default action of showing any
+                     * suggestions if available, true if the action was handled by the listener.
+                     */
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        return false
+                        TODO("Not yet implemented")
+                    }
+                })
+            }.start()
+
+            Thread {
+
                 val responseText = client.newCall(Request.Builder().url(url).get().build()).execute().body()!!.string()
                 val responseArray  = JSONArray(responseText)
                 val size = responseArray.length()
