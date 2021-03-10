@@ -110,6 +110,14 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         database.insert(TABLE_USER, null, contentValues)
     }
 
+    fun modifyUserRestriction(user: User) {
+        val database = this.writableDatabase
+        val modifyUserRestrictionQuery = "UPDATE $TABLE_USER " +
+                "SET $USER_COL_RESTRICTIONS = '${user.dietaryRestriction.joinToString()}' " +
+                "WHERE $USER_COL_NAME = '${user.username}';"
+        database.execSQL(modifyUserRestrictionQuery)
+    }
+
     fun insertInventoryData(food: Food, username: String) {
         val database = this.writableDatabase
         val contentValues = ContentValues()

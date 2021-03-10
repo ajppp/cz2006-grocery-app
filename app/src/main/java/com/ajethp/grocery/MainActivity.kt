@@ -40,16 +40,6 @@ class MainActivity : AppCompatActivity() {
         groceryButton = findViewById(R.id.groceryButton)
         settingsButton = findViewById(R.id.settingsButton)
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // val db = DataBaseHelper(this)
-        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
-        currentUser.inventoryList.sortBy { it.expiryDate }
-        Log.i(TAG, currentUser.toString())
-
         inventoryButton.setOnClickListener { startActivity(Intent(this, Inventory::class.java)) }
         recipeButton.setOnClickListener { startActivity(Intent(this, Recipe::class.java)) }
         groceryButton.setOnClickListener {startActivity(Intent(this, Grocery::class.java))}

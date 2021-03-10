@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.ajethp.grocery.classes.User
+import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.gson.Gson
 
 class Settings : AppCompatActivity() {
@@ -42,9 +43,7 @@ class Settings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
-        val userJsonString = userSharedPreferences.getString("USER", "")
-        currentUser = Gson().fromJson(userJsonString, User::class.java)
+        currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
 
         updateRestrictionsButton = findViewById(R.id.updateRestrictionsButton)
         languageButton = findViewById(R.id.languageButton)
@@ -56,8 +55,6 @@ class Settings : AppCompatActivity() {
         updateRestrictionsButton.setOnClickListener { showDietaryRestrictionAlertDialog("Dietary Restrictions", null) {} }
     }
 
-    // NOT DONE
-    // HOW TO GET IT TO SAVE THE THINGS THAT HAVE BEEN MODIFIED
     private fun showDietaryRestrictionAlertDialog(title: String, view: View?, positiveClickListener: View.OnClickListener) {
         AlertDialog.Builder(this)
                 .setTitle(title)
@@ -69,12 +66,7 @@ class Settings : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-
-        val jsonString = Gson().toJson(currentUser)
-        val userEditor = userSharedPreferences.edit()
-        userEditor.putString("USER", jsonString)
-        userEditor.apply()
-
+        DataBaseHelper(this).modifyUserRestriction(currentUser)
         startActivity(Intent(this, MainActivity::class.java))
     }
 }

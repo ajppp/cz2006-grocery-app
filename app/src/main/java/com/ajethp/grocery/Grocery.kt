@@ -40,9 +40,8 @@ class Grocery : AppCompatActivity() {
         shoppingListRvBoard = findViewById(R.id.shoppingListRvBoard)
         purchasedListRvBoard = findViewById(R.id.purchasedListRvBoard)
 
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
         val db = DataBaseHelper(this)
-        val username = userSharedPreferences.getString("USERNAME", "")
+        val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
         val currentUser : User = db.readUserData(username!!)
         val userShoppingList = currentUser.shoppingList
         val userPurchasedList = currentUser.purchasedList
@@ -58,21 +57,16 @@ class Grocery : AppCompatActivity() {
         }
         purchasedListRvBoard.adapter = PurchasedListAdapter(this, userPurchasedList) {
             val movedFoodItem = currentUser.purchasedList[it]
-            // db.insertInventoryData(movedFoodItem, username)
             val intent = Intent(this, MovePurchasedItemToInventory::class.java)
             intent.putExtra("NAME", movedFoodItem.foodName)
             intent.putExtra("QUANTITY", movedFoodItem.quantity)
-            // currentUser.inventoryList.add(movedFoodItem)
-            // currentUser.purchasedList.removeAt(it)
-            // purchasedListRvBoard.adapter?.notifyDataSetChanged()
-            // startActivity(Intent(this, MovePurchasedItemToInventory::class.java))
             startActivity(intent)
         }
 
         shoppingListRvBoard.setHasFixedSize(true)
         purchasedListRvBoard.setHasFixedSize(true)
-        shoppingListRvBoard.layoutManager = GridLayoutManager(this, 1)
-        purchasedListRvBoard.layoutManager = GridLayoutManager(this, 1)
+        shoppingListRvBoard.layoutManager = GridLayoutManager(this, 2)
+        purchasedListRvBoard.layoutManager = GridLayoutManager(this, 2)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

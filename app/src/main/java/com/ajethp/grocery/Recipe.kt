@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.User
+import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_recipe.*
 import okhttp3.OkHttpClient
@@ -34,10 +35,8 @@ class Recipe : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
 
-        userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
-        val userJsonString = userSharedPreferences.getString("USER", "")
-        Log.i(TAG, userJsonString!!)
-        currentUser = Gson().fromJson(userJsonString, User::class.java)
+        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
+        currentUser.inventoryList.sortBy { it.expiryDate }
 
         recipeRvBoard = findViewById(R.id.recipeRvBoard)
         val suggestedRecipeName: MutableList<String> = arrayListOf()

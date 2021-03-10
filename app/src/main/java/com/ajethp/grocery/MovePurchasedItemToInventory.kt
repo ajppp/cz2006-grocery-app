@@ -32,8 +32,6 @@ class MovePurchasedItemToInventory : AppCompatActivity(), DatePickerDialog.OnDat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_move_purchased_item_to_inventory)
-
-
         pickDate()
     }
 
@@ -48,6 +46,9 @@ class MovePurchasedItemToInventory : AppCompatActivity(), DatePickerDialog.OnDat
         getDateCalendar()
         val dpd = DatePickerDialog(this, this, year, month, day)
         dpd.datePicker.minDate = Calendar.getInstance().timeInMillis
+        dpd.setOnCancelListener {
+            startActivity(Intent(this, Grocery::class.java))
+        }
         dpd.show()
     }
 
@@ -80,10 +81,7 @@ class MovePurchasedItemToInventory : AppCompatActivity(), DatePickerDialog.OnDat
         val foodName = intent.getStringExtra("NAME")
         val foodQuantity= intent.getIntExtra("QUANTITY", 0)
         val db = DataBaseHelper(this)
-        // val size = currentUser.inventoryList.size
-        // val movedFoodItem: Food = currentUser.inventoryList.elementAt(size - 1)
         val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
-        // movedFoodItem.expiryDate = expiryDate
         val movedFoodItem = Food(foodName!!, expiryDate, foodQuantity)
         db.deletePurchasedData(movedFoodItem, username!!)
         db.insertInventoryData(movedFoodItem, username)

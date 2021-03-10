@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/purchasedItem"
-    android:layout_width="384dp"
+    android:layout_width="192dp"
     android:layout_height="48dp">
 
 
@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/purchasedQuantity"
-        android:layout_width="8dp"
+        android:layout_width="24dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"

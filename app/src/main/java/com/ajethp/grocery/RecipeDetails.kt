@@ -45,10 +45,9 @@ class RecipeDetails : AppCompatActivity() {
         recipeDoneButton = findViewById(R.id.recipeDoneButton)
         val recipeSteps: MutableList<String> = arrayListOf()
         val recipeIngredients: MutableList<String> = arrayListOf()
-        val recipeIngredientQuantity: MutableList<String> = arrayListOf()
 
         Thread {
-            // get recipe instructions and parse it
+            // get recipe instructions and parse
             val responseText = client.newCall(Request.Builder().url(instructionUrl).get().build()).execute().body()!!.string()
             val responseArray = JSONArray(responseText)
             val size = responseArray.length()
@@ -62,7 +61,6 @@ class RecipeDetails : AppCompatActivity() {
                     recipeSteps.add(recipeStep)
                 }
             }
-
             //get recipe ingredients and parse
             val ingredientResponseText = client.newCall(Request.Builder().url(ingredientUrl).get().build()).execute().body()!!.string()
             val ingredientArray = JSONArray(JSONObject(ingredientResponseText).optString("ingredients"))
@@ -70,29 +68,26 @@ class RecipeDetails : AppCompatActivity() {
             for (i in 0 until numIngredients) {
                 val ingredientObject = ingredientArray.getJSONObject(i)
                 val ingredientName = ingredientObject.optString("name")
-                Log.i(TAG, ingredientName)
                 val ingredientQuantity = JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("value") +
                         JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("unit")
                 val ingredientText = "$ingredientName: $ingredientQuantity"
                 if (recipeIngredients.size == 0) {recipeIngredients.add(ingredientText)}
-                else {recipeIngredients[0].plus("\n$ingredientText")}
+                else if (recipeIngredients.size > 0) {recipeIngredients[0].plus("\n$ingredientText")}
             }
 
             runOnUiThread {
                 recipeTextName.text = recipeName
 
-                // recipe ingredients
                 recipeIngredientsRvBoard.adapter = RecipeIngredientsAdapter(this, recipeIngredients)
                 recipeIngredientsRvBoard.setHasFixedSize(true)
                 recipeIngredientsRvBoard.layoutManager = LinearLayoutManager(this)
 
-                // recipe details
                 recipeDetailsRvBoard.adapter = RecipeDetailsAdapter(this, recipeSteps)
                 recipeDetailsRvBoard.setHasFixedSize(true)
                 recipeDetailsRvBoard.layoutManager = GridLayoutManager(this, 1)
 
                 recipeDoneButton.setOnClickListener {
-                    //TODO("when the user clicks on the done button, need to do something")
+                    //TODO("when the user clicks on the done button, need to do something?")
                     startActivity(Intent(this, MainActivity::class.java))
                 }
             }
