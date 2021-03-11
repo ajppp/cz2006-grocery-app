@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
 
-val DATABASE_NAME = "USER DATABASE"
+const val DATABASE_NAME = "USER DATABASE"
 
 // Table names
 const val TABLE_USER = "Users"
@@ -126,6 +126,23 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         contentValues.put(INVENTORY_COL_DATE, food.expiryDate)
         contentValues.put(INVENTORY_COL_QUANTITY, food.quantity)
         database.insert(TABLE_INVENTORY, null, contentValues)
+    }
+
+    fun modifyInventoryData(food: Food, quantityRemaining: Int, username: String) {
+        val modifyInventoryDataQuery = "UPDATE $TABLE_INVENTORY " +
+                "SET $INVENTORY_COL_QUANTITY = $quantityRemaining " +
+                "WHERE $USER_COL_NAME = '$username' " +
+                "AND $INVENTORY_COL_NAME = '${food.foodName}' " +
+                "AND $INVENTORY_COL_DATE = '${food.expiryDate}';"
+        this.writableDatabase.execSQL(modifyInventoryDataQuery)
+    }
+
+    fun deleteInventoryData(food: Food, username: String) {
+        val deleteShoppingDataQuery = "DELETE FROM $TABLE_INVENTORY " +
+                "WHERE $USER_COL_NAME = '$username' " +
+                "AND $INVENTORY_COL_NAME = '${food.foodName}' " +
+                "AND $INVENTORY_COL_DATE = '${food.expiryDate};'"
+        this.writableDatabase.execSQL(deleteShoppingDataQuery)
     }
 
     fun insertShoppingData(food: Food, username: String) {
