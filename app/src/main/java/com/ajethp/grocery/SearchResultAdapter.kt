@@ -9,13 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 
 class SearchResultAdapter(
     private val context: Context,
-    private val recipeName: ArrayList<String>?) :
+    private val recipeName: ArrayList<String>?,
+    val itemClick: (Int) -> Unit) :
     RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val searchResultName = itemView.findViewById<TextView>(R.id.searchResultName)
         fun bind(position: Int) {
             searchResultName.text = recipeName!![position]
+            searchResultName.setOnClickListener {
+                itemClick(position)
+            }
         }
 
     }

@@ -2,6 +2,7 @@ package com.ajethp.grocery
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,8 @@ class RecipeDetails : AppCompatActivity() {
         // get the recipe instructions
         val instructionUrl = "https://api.spoonacular.com/recipes/$recipeId/analyzedInstructions?apiKey=fbb942433c0d4382a68fef26d5554e5f"
         val ingredientUrl = "https://api.spoonacular.com/recipes/$recipeId/ingredientWidget.json?apiKey=fbb942433c0d4382a68fef26d5554e5f"
+
+        Log.i(TAG, instructionUrl)
 
 
         recipeTextName = findViewById(R.id.recipeTitle)
