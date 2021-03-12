@@ -12,10 +12,12 @@ Our project is called **Minimising Food Waste by Leveraging Technology**. To tha
 - [x] add a menuInflater to Inventory to add items
 - [x] figure out how to use DatePickerDialog.OnSetDateListener
 - [x] used new activity to add items 
-- [ ] use AlertDialog to delete items?
-- [ ] use AlertDialog to change number of inventory items?
 - [x] add sign-up
 - [x] implement SQLite for storing local user data
 - [x] implement recipe retrieval
 - [x] Shared Preferences to save data across activities and app usage
 - [x] Use RadioGroup to implement restrictions?
+- [ ] use AlertDialog to delete items?
+- [ ] use AlertDialog to change number of inventory items?
+- [ ] add family feature
+- [ ] add OTP feature
