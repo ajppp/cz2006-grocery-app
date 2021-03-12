@@ -1,11 +1,11 @@
 package com.ajethp.grocery
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +38,8 @@ class RecipeDetails : AppCompatActivity() {
         val instructionUrl = "https://api.spoonacular.com/recipes/$recipeId/analyzedInstructions?apiKey=fbb942433c0d4382a68fef26d5554e5f"
         val ingredientUrl = "https://api.spoonacular.com/recipes/$recipeId/ingredientWidget.json?apiKey=fbb942433c0d4382a68fef26d5554e5f"
 
+        Log.i(TAG, instructionUrl)
+
 
         recipeTextName = findViewById(R.id.recipeTitle)
         recipeDetailsRvBoard = findViewById(R.id.recipeDetails)
@@ -63,6 +65,7 @@ class RecipeDetails : AppCompatActivity() {
             }
             //get recipe ingredients and parse
             val ingredientResponseText = client.newCall(Request.Builder().url(ingredientUrl).get().build()).execute().body()!!.string()
+            Log.i(TAG, ingredientResponseText)
             val ingredientArray = JSONArray(JSONObject(ingredientResponseText).optString("ingredients"))
             val numIngredients = ingredientArray.length()
             for (i in 0 until numIngredients) {
@@ -71,8 +74,9 @@ class RecipeDetails : AppCompatActivity() {
                 val ingredientQuantity = JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("value") +
                         JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("unit")
                 val ingredientText = "$ingredientName: $ingredientQuantity"
-                if (recipeIngredients.size == 0) {recipeIngredients.add(ingredientText)}
-                else if (recipeIngredients.size > 0) {recipeIngredients[0].plus("\n$ingredientText")}
+                recipeIngredients.add(ingredientText)
+                // if (recipeIngredients.size == 0) {recipeIngredients.add(ingredientText)}
+                // else if (recipeIngredients.size > 0) {recipeIngredients[0].plus("\n $ingredientText")}
             }
 
             runOnUiThread {

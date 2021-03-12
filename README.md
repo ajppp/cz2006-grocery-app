@@ -14,9 +14,8 @@ Our project is called **Minimising Food Waste by Leveraging Technology**. To tha
 - [x] used new activity to add items 
 - [ ] use AlertDialog to delete items?
 - [ ] use AlertDialog to change number of inventory items?
-- [ ] add sign-up
-- [ ] implement SQLite for storing local user data
-- [ ] firebase for storing user data?
-- [ ] implement recipe retrieval
+- [x] add sign-up
+- [x] implement SQLite for storing local user data
+- [x] implement recipe retrieval
 - [x] Shared Preferences to save data across activities and app usage
 - [x] Use RadioGroup to implement restrictions?
