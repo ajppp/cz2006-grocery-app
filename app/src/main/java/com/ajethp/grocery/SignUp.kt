@@ -11,7 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
+import java.math.BigInteger
+import java.security.MessageDigest
 import java.util.regex.Pattern
 
 class SignUp : AppCompatActivity() {
@@ -51,7 +52,7 @@ class SignUp : AppCompatActivity() {
                         if (confirmPassword.text.toString() == passwordTextEdit.text.toString()) {
                             val email = emailTextEdit.text.toString()
                             val username = usernameTextEdit.text.toString()
-                            val password = passwordTextEdit.text.toString()
+                            val password = hash(passwordTextEdit.text.toString())
                             // check for existing user
                             if (db.verifyUserExists(username)) {
                                 Snackbar.make(signUpClRoot, "A user with that username already exists", Snackbar.LENGTH_LONG).show()
@@ -68,5 +69,10 @@ class SignUp : AppCompatActivity() {
                 } else { Snackbar.make(signUpClRoot, "Username is empty! Please insert a Username", Snackbar.LENGTH_LONG).show() }
             } else { Snackbar.make(signUpClRoot, "Invalid Email Address", Snackbar.LENGTH_LONG).show() }
         }
+    }
+
+    private fun hash(input: String): String {
+        val md = MessageDigest.getInstance("MD5")
+        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 }

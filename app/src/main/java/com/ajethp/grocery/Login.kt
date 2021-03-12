@@ -12,6 +12,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.android.material.snackbar.Snackbar
+import java.math.BigInteger
+import java.security.MessageDigest
 
 class Login : AppCompatActivity() {
 
@@ -41,7 +43,7 @@ class Login : AppCompatActivity() {
         loginButton.setOnClickListener {
             val username = usernameTextEdit.text.toString()
             // need to hash
-            val password = passwordTextEdit.text.toString()
+            val password = hash(passwordTextEdit.text.toString())
             // verification
             if(db.verifyUserExists(username)){
                 if (db.verifyUserPassword(username, password)){
@@ -55,5 +57,10 @@ class Login : AppCompatActivity() {
 
         // sign up button
         signUpButton.setOnClickListener { startActivity(Intent(this, SignUp::class.java)) }
+    }
+
+    private fun hash(input: String): String {
+        val md = MessageDigest.getInstance("MD5")
+        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 }

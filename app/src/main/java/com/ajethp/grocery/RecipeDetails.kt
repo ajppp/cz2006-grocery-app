@@ -33,13 +33,9 @@ class RecipeDetails : AppCompatActivity() {
 
         val recipeId = intent.getStringExtra("RECIPE_ID")
         val recipeName = intent.getStringExtra("RECIPE_NAME")
-
         // get the recipe instructions
         val instructionUrl = "https://api.spoonacular.com/recipes/$recipeId/analyzedInstructions?apiKey=fbb942433c0d4382a68fef26d5554e5f"
         val ingredientUrl = "https://api.spoonacular.com/recipes/$recipeId/ingredientWidget.json?apiKey=fbb942433c0d4382a68fef26d5554e5f"
-
-        Log.i(TAG, instructionUrl)
-
 
         recipeTextName = findViewById(R.id.recipeTitle)
         recipeDetailsRvBoard = findViewById(R.id.recipeDetails)
