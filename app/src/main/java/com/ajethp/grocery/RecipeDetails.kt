@@ -65,6 +65,7 @@ class RecipeDetails : AppCompatActivity() {
             }
             //get recipe ingredients and parse
             val ingredientResponseText = client.newCall(Request.Builder().url(ingredientUrl).get().build()).execute().body()!!.string()
+            Log.i(TAG, ingredientResponseText)
             val ingredientArray = JSONArray(JSONObject(ingredientResponseText).optString("ingredients"))
             val numIngredients = ingredientArray.length()
             for (i in 0 until numIngredients) {
@@ -73,8 +74,9 @@ class RecipeDetails : AppCompatActivity() {
                 val ingredientQuantity = JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("value") +
                         JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("unit")
                 val ingredientText = "$ingredientName: $ingredientQuantity"
-                if (recipeIngredients.size == 0) {recipeIngredients.add(ingredientText)}
-                else if (recipeIngredients.size > 0) {recipeIngredients[0].plus("\n$ingredientText")}
+                recipeIngredients.add(ingredientText)
+                // if (recipeIngredients.size == 0) {recipeIngredients.add(ingredientText)}
+                // else if (recipeIngredients.size > 0) {recipeIngredients[0].plus("\n $ingredientText")}
             }
 
             runOnUiThread {
