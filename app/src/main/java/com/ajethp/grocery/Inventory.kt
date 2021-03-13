@@ -13,9 +13,11 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 
 class Inventory : AppCompatActivity() {
@@ -59,20 +61,32 @@ class Inventory : AppCompatActivity() {
         currentUser.inventoryList.sortBy { it.expiryDate }
         inventoryRvBoard.adapter = InventoryAdapter(this, currentUser.inventoryList) {
             val inputNewQuantity = EditText(this)
-            inputNewQuantity.setInputType(InputType.TYPE_CLASS_NUMBER)
+            inputNewQuantity.inputType = InputType.TYPE_CLASS_NUMBER
             AlertDialog.Builder(this)
                     .setTitle("Enter new quantity")
                     .setView(inputNewQuantity)
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("OK") {_, _ ->
                         val editedQuantity = inputNewQuantity.text.toString().toInt()
-                        DataBaseHelper(this).modifyInventoryData(currentUser.inventoryList[it], editedQuantity, currentUser.username!!)
-                        currentUser.inventoryList[it].quantity = editedQuantity
-                        inventoryRvBoard.adapter?.notifyDataSetChanged()
+                        if (editedQuantity < currentUser.inventoryList[it].quantity) {
+                            if (editedQuantity == 0) {
+                                DataBaseHelper(this).deleteInventoryData(currentUser.inventoryList[it], currentUser.username!!)
+                                currentUser.inventoryList.removeAt(it)
+                                inventoryRvBoard.adapter?.notifyDataSetChanged()
+                                Snackbar.make(inventoryClRoot, "Removed item", Snackbar.LENGTH_LONG).show()
+                            } else {
+                                DataBaseHelper(this).modifyInventoryData(currentUser.inventoryList[it], editedQuantity, currentUser.username!!)
+                                currentUser.inventoryList[it].quantity = editedQuantity
+                                inventoryRvBoard.adapter?.notifyDataSetChanged()
+                                Snackbar.make(inventoryClRoot, "Quantity reduction successful!", Snackbar.LENGTH_LONG).show()
+                            }
+                        } else {
+                            Snackbar.make(inventoryClRoot, "Input quantity more than original quantity", Snackbar.LENGTH_LONG).show()
+                        }
                     }
                     .show()
         }
         inventoryRvBoard.setHasFixedSize(true)
-        inventoryRvBoard.layoutManager = GridLayoutManager(this, 1)
+        inventoryRvBoard.layoutManager = LinearLayoutManager(this)
     }
 }

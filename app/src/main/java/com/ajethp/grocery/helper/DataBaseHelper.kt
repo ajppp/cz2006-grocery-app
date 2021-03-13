@@ -138,11 +138,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun deleteInventoryData(food: Food, username: String) {
-        val deleteShoppingDataQuery = "DELETE FROM $TABLE_INVENTORY " +
+        val deleteInventoryQuery = "DELETE FROM $TABLE_INVENTORY " +
                 "WHERE $USER_COL_NAME = '$username' " +
                 "AND $INVENTORY_COL_NAME = '${food.foodName}' " +
-                "AND $INVENTORY_COL_DATE = '${food.expiryDate};'"
-        this.writableDatabase.execSQL(deleteShoppingDataQuery)
+                "AND $INVENTORY_COL_DATE = '${food.expiryDate}';"
+        this.writableDatabase.execSQL(deleteInventoryQuery)
     }
 
     fun insertShoppingData(food: Food, username: String) {
