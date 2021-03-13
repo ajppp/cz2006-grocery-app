@@ -5,9 +5,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,7 +57,21 @@ class Inventory : AppCompatActivity() {
 
         val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
         currentUser.inventoryList.sortBy { it.expiryDate }
-        inventoryRvBoard.adapter = InventoryAdapter(this, currentUser.inventoryList)
+        inventoryRvBoard.adapter = InventoryAdapter(this, currentUser.inventoryList) {
+            val inputNewQuantity = EditText(this)
+            inputNewQuantity.setInputType(InputType.TYPE_CLASS_NUMBER)
+            AlertDialog.Builder(this)
+                    .setTitle("Enter new quantity")
+                    .setView(inputNewQuantity)
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("OK") {_, _ ->
+                        val editedQuantity = inputNewQuantity.text.toString().toInt()
+                        DataBaseHelper(this).modifyInventoryData(currentUser.inventoryList[it], editedQuantity, currentUser.username!!)
+                        currentUser.inventoryList[it].quantity = editedQuantity
+                        inventoryRvBoard.adapter?.notifyDataSetChanged()
+                    }
+                    .show()
+        }
         inventoryRvBoard.setHasFixedSize(true)
         inventoryRvBoard.layoutManager = GridLayoutManager(this, 1)
     }

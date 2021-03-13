@@ -1,18 +1,20 @@
 package com.ajethp.grocery
 
 import android.content.Context
+import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ajethp.grocery.classes.Food
 
 class InventoryAdapter(
     private val context: Context,
-    private val userInventory: List<Food>
-) :
+    private val userInventory: List<Food>,
+    val itemClick: (Int) -> Unit) :
         RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
 
         companion object {
@@ -24,6 +26,7 @@ class InventoryAdapter(
                 private val nameText = itemView.findViewById<TextView>(R.id.inventoryFoodItem)
                 private val quantityText = itemView.findViewById<TextView>(R.id.inventoryQuantity)
                 private val expiryDateText = itemView.findViewById<TextView>(R.id.inventoryExpiryDate)
+                private val minusButton = itemView.findViewById<ImageView>(R.id.minusButton)
 
                 fun bind(position: Int) {
 
@@ -31,6 +34,10 @@ class InventoryAdapter(
                     nameText.text = userInventory[position].foodName
                     quantityText.text = userInventory[position].quantity.toString()
                     expiryDateText.text = userInventory[position].expiryDate
+
+                    minusButton.setOnClickListener {
+                        itemClick(position)
+                    }
 
                     quantityText.setOnClickListener{
                         // TODO("change the function on the on click listener to reduce the quantity?")
