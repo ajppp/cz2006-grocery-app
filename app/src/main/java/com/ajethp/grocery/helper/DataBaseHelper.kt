@@ -140,7 +140,7 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun deleteInventoryData(food: Food, username: String) {
         val deleteInventoryQuery = "DELETE FROM $TABLE_INVENTORY " +
                 "WHERE $USER_COL_NAME = '$username' " +
-                "AND $INVENTORY_COL_NAME = '${food.foodName}' " +
+                "AND $INVENTORY_COL_NAME = \"${food.foodName}\" " +
                 "AND $INVENTORY_COL_DATE = '${food.expiryDate}';"
         this.writableDatabase.execSQL(deleteInventoryQuery)
     }
@@ -157,7 +157,7 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun deleteShoppingData(food: Food, username: String) {
         val deleteShoppingQuery = "DELETE FROM $TABLE_SHOPPING " +
                 "WHERE $USER_COL_NAME = '$username' " +
-                "AND $SHOPPING_COL_NAME = '${food.foodName}' " +
+                "AND $SHOPPING_COL_NAME = \"${food.foodName}\" " +
                 "AND $SHOPPING_COL_QUANTITY = '${food.quantity}';"
         this.writableDatabase.execSQL(deleteShoppingQuery)
     }
@@ -174,7 +174,7 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun deletePurchasedData(food: Food, username: String) {
         val deletePurchasedQuery = "DELETE FROM $TABLE_PURCHASED " +
                 "WHERE $USER_COL_NAME = '$username' " +
-                "AND $PURCHASED_COL_NAME = '${food.foodName}' " +
+                "AND $PURCHASED_COL_NAME = \"${food.foodName}\" " +
                 "AND $PURCHASED_COL_QUANTITY = '${food.quantity}';"
         this.writableDatabase.execSQL(deletePurchasedQuery)
     }
