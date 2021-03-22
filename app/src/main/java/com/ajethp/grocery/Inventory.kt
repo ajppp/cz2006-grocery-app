@@ -58,7 +58,7 @@ class Inventory : AppCompatActivity() {
         super.onStart()
 
         val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
-        currentUser.inventoryList.sortBy { it.expiryDate }
+        currentUser.sortInventory()
         inventoryRvBoard.adapter = InventoryAdapter(this, currentUser.inventoryList) {
             val inputNewQuantity = EditText(this)
             inputNewQuantity.inputType = InputType.TYPE_CLASS_NUMBER

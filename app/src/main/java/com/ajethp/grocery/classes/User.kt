@@ -11,5 +11,7 @@ data class User(
         var inventoryList:MutableList<Food> = ArrayList(),
         var shoppingList:MutableList<Food> = ArrayList(),
         var purchasedList:MutableList<Food> = ArrayList()
-)
+){
+    fun sortInventory() = this.inventoryList.sortBy {it.expiryDate}
+}
 
