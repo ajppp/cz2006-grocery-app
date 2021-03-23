@@ -24,6 +24,13 @@ import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONObject
 
+/**
+ * This class is an activity class which
+ * implements the Recipe activity. It is the
+ * main recipe page of our app
+ *
+ * @author jethro
+ */
 class Recipe : AppCompatActivity() {
     companion object{
          private const val TAG = "Recipe"

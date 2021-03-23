@@ -13,8 +13,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
-import com.google.gson.Gson
 
+/**
+ * This class is an activity class which
+ * implements the Settings activity. It is the
+ * settings page of our app
+ *
+ * @author jethro
+ * @author claudia
+ */
 class Settings : AppCompatActivity() {
 
     private val restrictionsList = arrayOf(

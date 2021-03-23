@@ -1,5 +1,15 @@
 package com.ajethp.grocery.classes
 
+/**
+ * This class implements the Food entity with
+ * the attributes user email, user name,
+ * password, restriction, familyId,
+ * isInFamily boolean, an inventory list of food,
+ * a shopping list of food and a purchased list
+ * of food
+ *
+ * @author jethro
+ */
 data class User(
         val userEmail: String?,
         val username: String?,
@@ -12,6 +22,13 @@ data class User(
         var shoppingList:MutableList<Food> = ArrayList(),
         var purchasedList:MutableList<Food> = ArrayList()
 ){
+    /**
+     * This method sorts the inventory of the user
+     * based on the expiry date. This allows us to
+     * display the user's inventory based on the item
+     * that is closest to expiry and use them in the
+     * suggested recipe query
+     */
     fun sortInventory() = this.inventoryList.sortBy {it.expiryDate}
 }
 

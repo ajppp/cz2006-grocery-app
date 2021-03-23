@@ -15,11 +15,16 @@ import com.google.android.material.snackbar.Snackbar
 import java.math.BigInteger
 import java.security.MessageDigest
 
+/**
+ * This class is an activity class which
+ * implements the Login activity. It is
+ * the first page that the user sees when opening
+ * the app
+ *
+ * @author jethro
+ * @author claudia
+ */
 class Login : AppCompatActivity() {
-
-    private companion object{
-        val TAG = "LOGIN"
-    }
 
     private lateinit var signUpButton: Button
     private lateinit var loginButton: Button

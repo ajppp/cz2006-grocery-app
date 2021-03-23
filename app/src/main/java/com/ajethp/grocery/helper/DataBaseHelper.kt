@@ -31,6 +31,15 @@ const val PURCHASED_COL_QUANTITY = "quantity"
 const val SHOPPING_COL_NAME = "food_name"
 const val SHOPPING_COL_QUANTITY = "quantity"
 
+/**
+ * This class implements the SQLite database needed in order to
+ * store the user information, along with their food list and
+ * family information
+ *
+ * @author jethro
+ * @author claudia
+ */
+
 class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
     /**
      * Called when the database is created for the first time. This is where the
@@ -99,6 +108,10 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         onCreate(db)
     }
 
+    /**
+     * This method inserts the user data into the user table
+     * It is invoked when creating a new user account
+     */
     fun insertUserData(user: User) {
         val database = this.writableDatabase
         val contentValues = ContentValues()
@@ -118,6 +131,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         database.execSQL(modifyUserRestrictionQuery)
     }
 
+    /**
+     * This method is invoked when inserting inventory data
+     * for a particular user, the data is stored in the
+     * Inventory table
+     */
     fun insertInventoryData(food: Food, username: String) {
         val database = this.writableDatabase
         val contentValues = ContentValues()
@@ -128,6 +146,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         database.insert(TABLE_INVENTORY, null, contentValues)
     }
 
+    /**
+     * This method is invoked when an inventory item has been used
+     * with some remaining amount of item
+     */
+
     fun modifyInventoryData(food: Food, quantityRemaining: Int, username: String) {
         val modifyInventoryDataQuery = "UPDATE $TABLE_INVENTORY " +
                 "SET $INVENTORY_COL_QUANTITY = $quantityRemaining " +
@@ -137,6 +160,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         this.writableDatabase.execSQL(modifyInventoryDataQuery)
     }
 
+    /**
+     * This method is invoked when an inventory item has been used
+     * with no item remaining
+     */
+
     fun deleteInventoryData(food: Food, username: String) {
         val deleteInventoryQuery = "DELETE FROM $TABLE_INVENTORY " +
                 "WHERE $USER_COL_NAME = '$username' " +
@@ -145,6 +173,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         this.writableDatabase.execSQL(deleteInventoryQuery)
     }
 
+    /**
+     * This method is invoked when inserting shopping data
+     * for a particular user, the data is stored in the
+     * Shopping table
+     */
     fun insertShoppingData(food: Food, username: String) {
         val database = this.writableDatabase
         val contentValues = ContentValues()
@@ -154,6 +187,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         database.insert(TABLE_SHOPPING, null, contentValues)
     }
 
+    /**
+     * This method is invoked when the shopping data is deleted
+     * or when it has been purchased and moved to the purchased
+     * list
+     */
     fun deleteShoppingData(food: Food, username: String) {
         val deleteShoppingQuery = "DELETE FROM $TABLE_SHOPPING " +
                 "WHERE $USER_COL_NAME = '$username' " +
@@ -161,6 +199,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
                 "AND $SHOPPING_COL_QUANTITY = '${food.quantity}';"
         this.writableDatabase.execSQL(deleteShoppingQuery)
     }
+
+    /**
+     * This method is invoked when a shopping item has been purchased
+     * and moved to the purchased item table
+     */
 
     fun insertPurchasedData(food: Food, username: String) {
         val database = this.writableDatabase
@@ -171,6 +214,12 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         database.insert(TABLE_PURCHASED, null, contentValues)
     }
 
+    /**
+     * This method is invoked when a purchased item is deleted
+     * and moved to the Inventory table or when it is deleted
+     * by the user. It deletes the row from the Purchased table
+     */
+
     fun deletePurchasedData(food: Food, username: String) {
         val deletePurchasedQuery = "DELETE FROM $TABLE_PURCHASED " +
                 "WHERE $USER_COL_NAME = '$username' " +
@@ -179,12 +228,24 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         this.writableDatabase.execSQL(deletePurchasedQuery)
     }
 
+    /**
+     * This method is used to check if a user with that user ID
+     * already exists in the user table. It is invoked when creating
+     * a new user account
+     */
+
     fun verifyUserExists(username: String) : Boolean {
         val db = this.readableDatabase
         val usernameQuery = "SELECT $USER_COL_NAME FROM $TABLE_USER " +
                 "WHERE $USER_COL_NAME = '$username';"
         return db.rawQuery(usernameQuery, null).count != 0
     }
+
+    /**
+     * This method is used to check if a user with that user ID
+     * and password exists. It is used to verify user password when
+     * logging in
+     */
 
     fun verifyUserPassword(username: String, password: String): Boolean {
         val db = this.readableDatabase
@@ -194,6 +255,12 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         return db.rawQuery(userPasswordQuery, null).count != 0
     }
 
+    /**
+     * This method is used to initialise a User object based on the
+     * data that already existson the database.It takes in the username
+     * as a string and returns a User object tied to that particular
+     * username
+     */
     fun readUserData(username: String): User {
         val db = this.readableDatabase
         var currentUser = User(null, null, null)

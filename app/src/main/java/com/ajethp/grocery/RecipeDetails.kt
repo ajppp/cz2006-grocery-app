@@ -14,6 +14,18 @@ import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONObject
 
+/**
+ * This class is an activity class which
+ * implements the RecipeDetails activity. It is the
+ * page of our app which displays the recipe ingredients
+ * as well as the detailed instruction of the recipe.
+ * This class also manages the posting of the API request
+ * to get the recipe ingredients and instructions based on
+ * the recipe ID.
+ *
+ * @author jethro
+ * @author claudia
+ */
 class RecipeDetails : AppCompatActivity() {
 
     companion object {

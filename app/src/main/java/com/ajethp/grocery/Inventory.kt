@@ -20,6 +20,14 @@ import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 
+/**
+ * This class is an activity class which
+ * implements the Inventory. It is the
+ * Inventory page of our app
+ *
+ * @author jethro
+ * @author claudia
+ */
 class Inventory : AppCompatActivity() {
     companion object {
         private const val TAG = "Inventory"

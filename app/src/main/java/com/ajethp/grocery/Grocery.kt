@@ -17,6 +17,14 @@ import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.gson.Gson
 
+/**
+ * This class is a grocery class which
+ * implements the Grocery activity. It is
+ * the shopping list page of our app.
+ *
+ * @author jethro
+ * @author claudia
+ */
 class Grocery : AppCompatActivity() {
 
     companion object {

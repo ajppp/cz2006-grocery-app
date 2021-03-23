@@ -17,6 +17,13 @@ import com.google.gson.Gson
 import java.time.LocalDate
 import java.time.Month
 
+/**
+ * This class is an activity class which
+ * implements the MainActivity. It is the
+ * main menu page of our app
+ *
+ * @author jethro
+ */
 class MainActivity : AppCompatActivity() {
 
     companion object {

@@ -15,6 +15,13 @@ import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.regex.Pattern
 
+/**
+ * This class is an activity class which
+ * implements the Sign Up activity. It is used
+ * when the user signs for a new account
+ *
+ * @author jethro
+ */
 class SignUp : AppCompatActivity() {
 
     companion object {
