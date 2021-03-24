@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var groceryButton: Button
     private lateinit var settingsButton: Button
 
-    private lateinit var userSharedPreferences: SharedPreferences
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

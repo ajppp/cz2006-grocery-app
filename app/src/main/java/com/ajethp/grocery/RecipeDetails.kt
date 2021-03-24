@@ -99,8 +99,10 @@ class RecipeDetails : AppCompatActivity() {
                 recipeDetailsRvBoard.layoutManager = GridLayoutManager(this, 1)
 
                 recipeDoneButton.setOnClickListener {
-                    //TODO("when the user clicks on the done button, need to do something?")
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, Inventory::class.java))
+                    // TODO("prompt them to remove item that they have used that are in their inventory")
+                    // TODO("make new activity in order to display the used item from the recipe")
+                    // TODO("prompt them to enter the ingredient used for that particular iitem)
                 }
             }
         }.start()

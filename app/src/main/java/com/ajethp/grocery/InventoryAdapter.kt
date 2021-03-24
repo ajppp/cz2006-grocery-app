@@ -23,6 +23,7 @@ class InventoryAdapter(
 
             inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+                // TODO("the expiry date text should change color as it gets closer to expiry date")
                 private val nameText = itemView.findViewById<TextView>(R.id.inventoryFoodItem)
                 private val quantityText = itemView.findViewById<TextView>(R.id.inventoryQuantity)
                 private val expiryDateText = itemView.findViewById<TextView>(R.id.inventoryExpiryDate)
@@ -39,15 +40,11 @@ class InventoryAdapter(
                         itemClick(position)
                     }
 
-                    quantityText.setOnClickListener{
-                        // TODO("change the function on the on click listener to reduce the quantity?")
-                        // also possible to add button to minus?
-                        Log.i(TAG, "Clicked on position $position")
-                    }
                     // can set more onClickListener here in case anything else in the inventory is clickable
                     // set onLongClickListener to delete item
+                    // long hold to delete button
                     quantityText.setOnLongClickListener{
-                        // TODO("delete item")
+                        // TODO("delete item on long hold")
                         Log.i(TAG, "long click")
                         true
                     }

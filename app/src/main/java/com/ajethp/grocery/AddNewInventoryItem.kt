@@ -39,8 +39,6 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     private lateinit var expiryDateSwitch: Switch
     private lateinit var addNewInventoryNextButton : Button
 
-    private lateinit var userSharedPreferences: SharedPreferences
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_inventory_item)
