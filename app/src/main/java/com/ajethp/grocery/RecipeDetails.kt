@@ -1,5 +1,6 @@
 package com.ajethp.grocery
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -54,7 +55,8 @@ class RecipeDetails : AppCompatActivity() {
         recipeIngredientsRvBoard = findViewById(R.id.recipeIngredientRvBoard)
         recipeDoneButton = findViewById(R.id.recipeDoneButton)
         val recipeSteps: MutableList<String> = arrayListOf()
-        val recipeIngredients: MutableList<String> = arrayListOf()
+        val recipeIngredientsName: ArrayList<String> = arrayListOf()
+        val recipeIngredients: ArrayList<String> = arrayListOf()
 
         Thread {
             // get recipe instructions and parse
@@ -73,18 +75,17 @@ class RecipeDetails : AppCompatActivity() {
             }
             //get recipe ingredients and parse
             val ingredientResponseText = client.newCall(Request.Builder().url(ingredientUrl).get().build()).execute().body()!!.string()
-            Log.i(TAG, ingredientResponseText)
             val ingredientArray = JSONArray(JSONObject(ingredientResponseText).optString("ingredients"))
             val numIngredients = ingredientArray.length()
             for (i in 0 until numIngredients) {
                 val ingredientObject = ingredientArray.getJSONObject(i)
                 val ingredientName = ingredientObject.optString("name")
+                recipeIngredientsName.add(ingredientName)
                 val ingredientQuantity = JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("value") +
+                        " " +
                         JSONObject(JSONObject(ingredientObject.optString("amount")).optString("metric")).optString("unit")
                 val ingredientText = "$ingredientName: $ingredientQuantity"
                 recipeIngredients.add(ingredientText)
-                // if (recipeIngredients.size == 0) {recipeIngredients.add(ingredientText)}
-                // else if (recipeIngredients.size > 0) {recipeIngredients[0].plus("\n $ingredientText")}
             }
 
             runOnUiThread {
@@ -92,17 +93,21 @@ class RecipeDetails : AppCompatActivity() {
 
                 recipeIngredientsRvBoard.adapter = RecipeIngredientsAdapter(this, recipeIngredients)
                 recipeIngredientsRvBoard.setHasFixedSize(true)
-                recipeIngredientsRvBoard.layoutManager = LinearLayoutManager(this)
+                // recipeIngredientsRvBoard.layoutManager = LinearLayoutManager(this)
+                recipeIngredientsRvBoard.layoutManager = GridLayoutManager(this, 2)
 
                 recipeDetailsRvBoard.adapter = RecipeDetailsAdapter(this, recipeSteps)
                 recipeDetailsRvBoard.setHasFixedSize(true)
+                // recipeDetailsRvBoard.layoutManager = GridLayoutManager(this, 1)
                 recipeDetailsRvBoard.layoutManager = GridLayoutManager(this, 1)
 
+                val intent = Intent(this, PostRecipe::class.java)
+                intent.putStringArrayListExtra("INGREDIENTS", recipeIngredients)
                 recipeDoneButton.setOnClickListener {
-                    startActivity(Intent(this, Inventory::class.java))
+                    startActivity(intent)
                     // TODO("prompt them to remove item that they have used that are in their inventory")
                     // TODO("make new activity in order to display the used item from the recipe")
-                    // TODO("prompt them to enter the ingredient used for that particular iitem)
+                    // TODO("prompt them to enter the quantity used for that particular item)
                 }
             }
         }.start()

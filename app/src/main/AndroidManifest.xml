@@ -6,18 +6,21 @@
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@drawable/ic_food"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
-        <activity android:name=".RecipeSearchResults"
-            android:parentActivityName=".Recipe"/>
+        <activity android:name=".PostRecipe"></activity>
+        <activity
+            android:name=".RecipeSearchResults"
+            android:parentActivityName=".Recipe" />
         <activity
             android:name=".SignUp"
             android:parentActivityName=".Login" />
-        <activity android:name=".RecipeDetails"
-            android:parentActivityName=".Recipe"/>
+        <activity
+            android:name=".RecipeDetails"
+            android:parentActivityName=".Recipe" />
         <activity android:name=".MovePurchasedItemToInventory" />
         <activity
             android:name=".AddNewShoppingItem"
@@ -28,6 +31,7 @@
         <activity android:name=".Login">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
