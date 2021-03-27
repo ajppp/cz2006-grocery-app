@@ -45,9 +45,11 @@ class MainActivity : AppCompatActivity() {
         groceryButton = findViewById(R.id.groceryButton)
         settingsButton = findViewById(R.id.settingsButton)
 
+        // set OnClickListener for all of the buttons in the main activity such that when clicked, it will
+        // start the activities associated with it
         inventoryButton.setOnClickListener { startActivity(Intent(this, Inventory::class.java)) }
         recipeButton.setOnClickListener { startActivity(Intent(this, Recipe::class.java)) }
-        groceryButton.setOnClickListener {startActivity(Intent(this, Grocery::class.java))}
+        groceryButton.setOnClickListener { startActivity(Intent(this, Grocery::class.java)) }
         settingsButton.setOnClickListener { startActivity(Intent(this, Settings::class.java)) }
     }
 }

@@ -22,17 +22,17 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         private const val TAG = "AddNewInventoryItem"
     }
 
-    var day = 0
-    var month = 0
-    var year = 0
+    private var day = 0
+    private var month = 0
+    private var year = 0
 
     private lateinit var newInventoryItemName: String
     private var newInventoryItemQuantity: Int = 0
     private lateinit var expiryDate: String
 
-    var savedDay = 0
-    var savedMonth = 0
-    var savedYear = 0
+    private var savedDay = 0
+    private var savedMonth = 0
+    private var savedYear = 0
 
     private lateinit var enterFoodItem: EditText
     private lateinit var enterFoodQuantity: EditText

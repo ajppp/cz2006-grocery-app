@@ -36,6 +36,9 @@ class InventoryAdapter(
                     quantityText.text = userInventory[position].quantity.toString()
                     expiryDateText.text = userInventory[position].expiryDate
 
+                    // handles what happens when the minus button for a particular item is clicked
+                    // the function that is passed in to this class is then called
+                    // in this case, the function is in Inventory
                     minusButton.setOnClickListener {
                         itemClick(position)
                     }

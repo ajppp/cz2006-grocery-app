@@ -37,7 +37,6 @@ class Login : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val db = DataBaseHelper(this)
-
         loginClRoot = findViewById(R.id.loginClRoot)
         loginButton = findViewById(R.id.loginButton)
         usernameTextEdit = findViewById(R.id.usernameText)
@@ -46,16 +45,19 @@ class Login : AppCompatActivity() {
 
         // login button
         loginButton.setOnClickListener {
+            // get inserted username and password
             val username = usernameTextEdit.text.toString()
-            // need to hash
             val password = hash(passwordTextEdit.text.toString())
-            // verification
-            if(db.verifyUserExists(username)){
-                if (db.verifyUserPassword(username, password)){
-                    // allows us to get the user data only in the main activity
-                    getSharedPreferences("USER_REF", Context.MODE_PRIVATE).edit().putString("USERNAME", username).commit()
-                    startActivity(Intent(this, MainActivity::class.java))
 
+            // check if a user with that username exists
+            if(db.verifyUserExists(username)){
+                // check if that username has that password attached to it
+                if (db.verifyUserPassword(username, password)){
+                    // store the inserted username in the shared preferences which
+                    // allows us to get the user data only in the main activity and etc.
+                    getSharedPreferences("USER_REF", Context.MODE_PRIVATE).edit().putString("USERNAME", username).commit()
+                    // start the main activity
+                    startActivity(Intent(this, MainActivity::class.java))
                 } else { Snackbar.make(loginClRoot, "Wrong Password", Snackbar.LENGTH_LONG).show() }
             } else { Snackbar.make(loginClRoot, "A user with that username does not exist", Snackbar.LENGTH_LONG).show() }
         }
@@ -64,6 +66,7 @@ class Login : AppCompatActivity() {
         signUpButton.setOnClickListener { startActivity(Intent(this, SignUp::class.java)) }
     }
 
+    // function to hash the password inserted using MD5
     private fun hash(input: String): String {
         val md = MessageDigest.getInstance("MD5")
         return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')

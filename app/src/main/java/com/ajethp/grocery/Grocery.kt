@@ -31,12 +31,6 @@ class Grocery : AppCompatActivity() {
         private const val TAG = "Grocery"
     }
 
-    private lateinit var shoppingItemName: String
-    private var shoppingItemQuantity = 0
-
-    private lateinit var currentUser: User
-    private lateinit var userSharedPreferences: SharedPreferences
-
     private lateinit var shoppingListRvBoard: RecyclerView
     private lateinit var purchasedListRvBoard: RecyclerView
 
@@ -51,19 +45,25 @@ class Grocery : AppCompatActivity() {
         val db = DataBaseHelper(this)
         val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
         val currentUser : User = db.readUserData(username!!)
-        val userShoppingList = currentUser.shoppingList
-        val userPurchasedList = currentUser.purchasedList
 
-        shoppingListRvBoard.adapter = ShoppingListAdapter(this, userShoppingList) {
-            // remove item from shopping list and add it to purchased list
+        shoppingListRvBoard.adapter = ShoppingListAdapter(this, currentUser.shoppingList) {
+            // remove item from shopping list and add it to purchased list in the database
             db.deleteShoppingData(currentUser.shoppingList[it], username)
             db.insertPurchasedData(currentUser.shoppingList[it], username)
+
+            // remove item from shopping list and add it to purchased list
             currentUser.purchasedList.add(currentUser.shoppingList[it])
             currentUser.shoppingList.removeAt(it)
-            purchasedListRvBoard.adapter?.notifyDataSetChanged()
 
+            // notify the change in the data to the adapter such that the view can be updated
+            // this is where the observer pattern is used
+            purchasedListRvBoard.adapter?.notifyDataSetChanged()
         }
-        purchasedListRvBoard.adapter = PurchasedListAdapter(this, userPurchasedList) {
+
+        // adapter for the purchased list
+        // takes in context, userPurchasedList as well as a function that determines what happens
+        // when the checkbox is clicked
+        purchasedListRvBoard.adapter = PurchasedListAdapter(this, currentUser.purchasedList) {
             val movedFoodItem = currentUser.purchasedList[it]
             val intent = Intent(this, MovePurchasedItemToInventory::class.java)
             intent.putExtra("NAME", movedFoodItem.foodName)
@@ -71,8 +71,10 @@ class Grocery : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // both rv boards have fixed size
         shoppingListRvBoard.setHasFixedSize(true)
         purchasedListRvBoard.setHasFixedSize(true)
+        // list two items side by side to save space
         shoppingListRvBoard.layoutManager = GridLayoutManager(this, 2)
         purchasedListRvBoard.layoutManager = GridLayoutManager(this, 2)
     }
@@ -88,5 +90,4 @@ class Grocery : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }
