@@ -58,6 +58,7 @@ class Inventory : AppCompatActivity() {
             R.id.mi_add_inventory -> {
                 startActivity(Intent(this, AddNewInventoryItem::class.java))
             }
+
         }
         return super.onOptionsItemSelected(item)
     }
@@ -77,17 +78,26 @@ class Inventory : AppCompatActivity() {
             // create an alert dialog to ask user to enter the new quantity
             // TODO("cloud, if you so wish, you can modify this such that you ask them for how much they used")
             AlertDialog.Builder(this)
-                    .setTitle("Enter new quantity")
+                    .setTitle("Enter quantity used")
                     .setView(inputNewQuantity)
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("OK") {_, _ ->
-                        val editedQuantity = inputNewQuantity.text.toString().toInt()
-                        if (editedQuantity < currentUser.inventoryList[it].quantity) {
-                            if (editedQuantity == 0) {
-                                DataBaseHelper(this).deleteInventoryData(currentUser.inventoryList[it], currentUser.username!!)
-                                currentUser.inventoryList.removeAt(it)
-                                inventoryRvBoard.adapter?.notifyDataSetChanged()
-                                Snackbar.make(inventoryClRoot, "Removed item", Snackbar.LENGTH_LONG).show()
+                        val quantityUsed = inputNewQuantity.text.toString().toInt()
+                        if (quantityUsed < currentUser.inventoryList[it].quantity) {
+                            val newQuantity = currentUser.inventoryList[it].quantity - quantityUsed
+                            DataBaseHelper(this).modifyInventoryData(currentUser.inventoryList[it], newQuantity, currentUser.username!!)
+                            currentUser.inventoryList[it].quantity = newQuantity
+                            inventoryRvBoard.adapter?.notifyDataSetChanged()
+                            Snackbar.make(inventoryClRoot, "Quantity reduction successful!", Snackbar.LENGTH_LONG).show()
+                        }
+                        else if (quantityUsed > currentUser.inventoryList[it].quantity) {
+                            Snackbar.make(inventoryClRoot, "Quantity used more than available quantity! Removing item...", Snackbar.LENGTH_LONG).show()
+                            DataBaseHelper(this).deleteInventoryData(currentUser.inventoryList[it], currentUser.username!!)
+                            currentUser.inventoryList.removeAt(it)
+                            inventoryRvBoard.adapter?.notifyDataSetChanged()
+                            Snackbar.make(inventoryClRoot, "Removed item", Snackbar.LENGTH_LONG).show()
+                        }
+                         /**
                             } else {
                                 DataBaseHelper(this).modifyInventoryData(currentUser.inventoryList[it], editedQuantity, currentUser.username!!)
                                 currentUser.inventoryList[it].quantity = editedQuantity
@@ -96,7 +106,7 @@ class Inventory : AppCompatActivity() {
                             }
                         } else {
                             Snackbar.make(inventoryClRoot, "Input quantity more than original quantity", Snackbar.LENGTH_LONG).show()
-                        }
+                        } **/
                     }
                     .show()
         }
