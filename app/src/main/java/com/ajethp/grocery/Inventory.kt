@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
+import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -57,8 +60,11 @@ class Inventory : AppCompatActivity() {
         when (item.itemId) {
             R.id.mi_add_inventory -> {
                 startActivity(Intent(this, AddNewInventoryItem::class.java))
+        }
+            R.id.mi_filter -> {
+                showFilterDialog()
+                return true
             }
-
         }
         return super.onOptionsItemSelected(item)
     }
@@ -112,5 +118,27 @@ class Inventory : AppCompatActivity() {
         }
         inventoryRvBoard.setHasFixedSize(true)
         inventoryRvBoard.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun showFilterDialog() {
+        val radioGroupView = LayoutInflater.from(this).inflate(R.layout.dialog_inventory_filter, null)
+        val radioGroupSize = radioGroupView.findViewById<RadioGroup>(R.id.radioGroup)
+        showAlertDialog("Choose how to filter", null, View.OnClickListener {
+            when (radioGroupSize.checkedRadioButtonId) {
+                R.id.rbName -> currentUser.sortInventoryByName()
+                R.id.rbQuantity -> currentUser.sortInventoryByQuantity()
+                R.id.rbDate -> currentUser.sortInventory()
+            }
+        })
+    }
+
+    private fun showAlertDialog(title: String, view: View?, positiveClickListener: View.OnClickListener) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setView(view)
+            .setNegativeButton("cancel", null)
+            .setPositiveButton("OK") {_, _ ->
+                positiveClickListener.onClick(null)
+            }.show()
     }
 }

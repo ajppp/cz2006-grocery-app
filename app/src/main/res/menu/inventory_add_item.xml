@@ -7,4 +7,9 @@
         android:icon="@drawable/ic_add"
         android:title="Add Item"
         app:showAsAction="always" />
+    <item
+            android:title="Item"
+            android:id="@+id/mi_filter"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_baseline_filter_alt_24" />
 </menu>
