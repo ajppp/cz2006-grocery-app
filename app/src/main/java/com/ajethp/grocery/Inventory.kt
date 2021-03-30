@@ -72,10 +72,8 @@ class Inventory : AppCompatActivity() {
     // handle what happens after the activity is started after creation
     override fun onStart() {
         super.onStart()
-
+        val currentUser = sortInventory("Name")
         // create a currentUser instance by reading the database using the username that was inserted when logging in
-        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
-        currentUser.sortInventory()
         // handle the display of the inventory items
         // the InventoryAdapter takes the context, the inventoryList and a function as its constructor parameters
         inventoryRvBoard.adapter = InventoryAdapter(this, currentUser.inventoryList) {
@@ -103,16 +101,6 @@ class Inventory : AppCompatActivity() {
                             inventoryRvBoard.adapter?.notifyDataSetChanged()
                             Snackbar.make(inventoryClRoot, "Removed item", Snackbar.LENGTH_LONG).show()
                         }
-                         /**
-                            } else {
-                                DataBaseHelper(this).modifyInventoryData(currentUser.inventoryList[it], editedQuantity, currentUser.username!!)
-                                currentUser.inventoryList[it].quantity = editedQuantity
-                                inventoryRvBoard.adapter?.notifyDataSetChanged()
-                                Snackbar.make(inventoryClRoot, "Quantity reduction successful!", Snackbar.LENGTH_LONG).show()
-                            }
-                        } else {
-                            Snackbar.make(inventoryClRoot, "Input quantity more than original quantity", Snackbar.LENGTH_LONG).show()
-                        } **/
                     }
                     .show()
         }
@@ -123,13 +111,15 @@ class Inventory : AppCompatActivity() {
     private fun showFilterDialog() {
         val radioGroupView = LayoutInflater.from(this).inflate(R.layout.dialog_inventory_filter, null)
         val radioGroupSize = radioGroupView.findViewById<RadioGroup>(R.id.radioGroup)
-        showAlertDialog("Choose how to filter", null, View.OnClickListener {
-            when (radioGroupSize.checkedRadioButtonId) {
+        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
+        showAlertDialog("Choose how to filter", radioGroupView) {
+              when (radioGroupSize.checkedRadioButtonId) {
                 R.id.rbName -> currentUser.sortInventoryByName()
                 R.id.rbQuantity -> currentUser.sortInventoryByQuantity()
                 R.id.rbDate -> currentUser.sortInventory()
             }
-        })
+            inventoryRvBoard.adapter?.notifyDataSetChanged()
+        }
     }
 
     private fun showAlertDialog(title: String, view: View?, positiveClickListener: View.OnClickListener) {
@@ -140,5 +130,15 @@ class Inventory : AppCompatActivity() {
             .setPositiveButton("OK") {_, _ ->
                 positiveClickListener.onClick(null)
             }.show()
+    }
+
+    private fun sortInventory(string: String): User {
+        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
+        when (string) {
+            "Quantity" -> currentUser.sortInventoryByQuantity()
+            "Name" -> currentUser.sortInventoryByName()
+            "Date" -> currentUser.sortInventory()
+        }
+        return currentUser
     }
 }
