@@ -12,8 +12,6 @@ import androidx.appcompat.widget.SwitchCompat
 import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
-import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.gson.Gson
 import java.util.*
 
 class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
@@ -42,6 +40,8 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_inventory_item)
+
+
 
         enterFoodItem = findViewById(R.id.enterFoodItemText)
         enterFoodQuantity = findViewById(R.id.enterFoodQuantityText)
@@ -107,8 +107,20 @@ class AddNewInventoryItem : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
         val newInventoryFood = Food(newInventoryItemName, expiryDate, newInventoryItemQuantity)
         val username = getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")
-        DataBaseHelper(this).insertInventoryData(newInventoryFood, username!!)
-
+        val currentUser = DataBaseHelper(this).readUserData(username!!)
+        val currentInventoryList = currentUser.inventoryList
+        var differentFood = true
+        for (food in currentInventoryList) {
+            if (food.foodName == newInventoryItemName) {
+                if (food.expiryDate == expiryDate) {
+                    DataBaseHelper(this).modifyInventoryData(food, food.quantity + newInventoryItemQuantity, username)
+                    differentFood = false
+                }
+            }
+        }
+        if (differentFood) {
+            DataBaseHelper(this).insertInventoryData(newInventoryFood, username)
+        }
         startActivity(Intent(this, Inventory::class.java))
     }
 }
