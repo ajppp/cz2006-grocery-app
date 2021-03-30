@@ -6,30 +6,36 @@
         android:layout_width="match_parent" android:layout_height="match_parent">
 
     <RadioGroup
-            android:layout_width="wrap_content"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/radioGroup">
+            android:id="@+id/radioGroup"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="16dp">
 
         <RadioButton
                 android:text="Name"
-                android:layout_width="411dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rbName" />
+                android:id="@+id/rbName"
+                android:layout_weight="1" />
 
         <RadioButton
                 android:text="Quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rbQuantity" />
+                android:id="@+id/rbQuantity"
+                android:layout_weight="1" />
 
         <RadioButton
                 android:text="Date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rbDate" />
+                android:id="@+id/rbDate"
+                android:layout_weight="1" />
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,6 +38,7 @@ class Inventory : AppCompatActivity() {
 
     private lateinit var inventoryRvBoard: RecyclerView
     private lateinit var inventoryClRoot: ConstraintLayout
+    private lateinit var sortBy: String
 
     // a function that is called when first creating the activity
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,37 +73,42 @@ class Inventory : AppCompatActivity() {
     // handle what happens after the activity is started after creation
     override fun onStart() {
         super.onStart()
-        val currentUser = sortInventory("Name")
+        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
+        currentUser.sortInventory()
+        sortBy = "DATE"
+        setupInventory(currentUser)
+    }
+
+    private fun setupInventory(currentUser: User) {
         // create a currentUser instance by reading the database using the username that was inserted when logging in
         // handle the display of the inventory items
         // the InventoryAdapter takes the context, the inventoryList and a function as its constructor parameters
         inventoryRvBoard.adapter = InventoryAdapter(this, currentUser.inventoryList) {
             val inputNewQuantity = EditText(this)
             inputNewQuantity.inputType = InputType.TYPE_CLASS_NUMBER
-            // create an alert dialog to ask user to enter the new quantity
-            // TODO("cloud, if you so wish, you can modify this such that you ask them for how much they used")
+            // create an alert dialog to ask user to enter the quantity used
             AlertDialog.Builder(this)
-                    .setTitle("Enter quantity used")
-                    .setView(inputNewQuantity)
-                    .setNegativeButton("Cancel", null)
-                    .setPositiveButton("OK") {_, _ ->
-                        val quantityUsed = inputNewQuantity.text.toString().toInt()
-                        if (quantityUsed < currentUser.inventoryList[it].quantity) {
-                            val newQuantity = currentUser.inventoryList[it].quantity - quantityUsed
-                            DataBaseHelper(this).modifyInventoryData(currentUser.inventoryList[it], newQuantity, currentUser.username!!)
-                            currentUser.inventoryList[it].quantity = newQuantity
-                            inventoryRvBoard.adapter?.notifyDataSetChanged()
-                            Snackbar.make(inventoryClRoot, "Quantity reduction successful!", Snackbar.LENGTH_LONG).show()
-                        }
-                        else if (quantityUsed > currentUser.inventoryList[it].quantity) {
-                            Snackbar.make(inventoryClRoot, "Quantity used more than available quantity! Removing item...", Snackbar.LENGTH_LONG).show()
-                            DataBaseHelper(this).deleteInventoryData(currentUser.inventoryList[it], currentUser.username!!)
-                            currentUser.inventoryList.removeAt(it)
-                            inventoryRvBoard.adapter?.notifyDataSetChanged()
-                            Snackbar.make(inventoryClRoot, "Removed item", Snackbar.LENGTH_LONG).show()
-                        }
+                .setTitle("Enter quantity used")
+                .setView(inputNewQuantity)
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("OK") {_, _ ->
+                    val quantityUsed = inputNewQuantity.text.toString().toInt()
+                    if (quantityUsed < currentUser.inventoryList[it].quantity) {
+                        val newQuantity = currentUser.inventoryList[it].quantity - quantityUsed
+                        DataBaseHelper(this).modifyInventoryData(currentUser.inventoryList[it], newQuantity, currentUser.username!!)
+                        currentUser.inventoryList[it].quantity = newQuantity
+                        inventoryRvBoard.adapter?.notifyDataSetChanged()
+                        Snackbar.make(inventoryClRoot, "Quantity reduction successful!", Snackbar.LENGTH_LONG).show()
                     }
-                    .show()
+                    else if (quantityUsed > currentUser.inventoryList[it].quantity) {
+                        Snackbar.make(inventoryClRoot, "Quantity used more than available quantity! Removing item...", Snackbar.LENGTH_LONG).show()
+                        DataBaseHelper(this).deleteInventoryData(currentUser.inventoryList[it], currentUser.username!!)
+                        currentUser.inventoryList.removeAt(it)
+                        inventoryRvBoard.adapter?.notifyDataSetChanged()
+                        Snackbar.make(inventoryClRoot, "Removed item", Snackbar.LENGTH_LONG).show()
+                    }
+                }
+                .show()
         }
         inventoryRvBoard.setHasFixedSize(true)
         inventoryRvBoard.layoutManager = LinearLayoutManager(this)
@@ -111,14 +117,28 @@ class Inventory : AppCompatActivity() {
     private fun showFilterDialog() {
         val radioGroupView = LayoutInflater.from(this).inflate(R.layout.dialog_inventory_filter, null)
         val radioGroupSize = radioGroupView.findViewById<RadioGroup>(R.id.radioGroup)
+        when (sortBy) {
+            "DATE" -> radioGroupSize.check(R.id.rbDate)
+            "NAME" -> radioGroupSize.check(R.id.rbName)
+            "QUANTITY" -> radioGroupSize.check(R.id.rbQuantity)
+        }
         val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
         showAlertDialog("Choose how to filter", radioGroupView) {
               when (radioGroupSize.checkedRadioButtonId) {
-                R.id.rbName -> currentUser.sortInventoryByName()
-                R.id.rbQuantity -> currentUser.sortInventoryByQuantity()
-                R.id.rbDate -> currentUser.sortInventory()
+                R.id.rbName -> {
+                    currentUser.sortInventoryByName()
+                    sortBy = "NAME"
+                }
+                R.id.rbQuantity -> {
+                    currentUser.sortInventoryByQuantity()
+                    sortBy = "QUANTITY"
+                }
+                R.id.rbDate -> {
+                    currentUser.sortInventory()
+                    sortBy = "DATE"
+                }
             }
-            inventoryRvBoard.adapter?.notifyDataSetChanged()
+            setupInventory(currentUser)
         }
     }
 
@@ -130,15 +150,5 @@ class Inventory : AppCompatActivity() {
             .setPositiveButton("OK") {_, _ ->
                 positiveClickListener.onClick(null)
             }.show()
-    }
-
-    private fun sortInventory(string: String): User {
-        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
-        when (string) {
-            "Quantity" -> currentUser.sortInventoryByQuantity()
-            "Name" -> currentUser.sortInventoryByName()
-            "Date" -> currentUser.sortInventory()
-        }
-        return currentUser
     }
 }

@@ -31,6 +31,6 @@ data class User(
      */
     fun sortInventory() = this.inventoryList.sortBy {it.expiryDate}
     fun sortInventoryByName() = this.inventoryList.sortBy { it.foodName }
-    fun sortInventoryByQuantity() = this.inventoryList.sortBy { it.quantity }
+    fun sortInventoryByQuantity() = this.inventoryList.sortByDescending { it.quantity }
 }
 
