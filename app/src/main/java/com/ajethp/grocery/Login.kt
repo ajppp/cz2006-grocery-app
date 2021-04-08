@@ -49,19 +49,12 @@ class Login : AppCompatActivity() {
             val username = usernameTextEdit.text.toString()
             val password = hash(passwordTextEdit.text.toString())
 
-            // check if a user with that username exists
-            if(db.verifyUserExists(username)){
-                // check if that username has that password attached to it
-                if (db.verifyUserPassword(username, password)){
-                    // store the inserted username in the shared preferences which
-                    // allows us to get the user data only in the main activity and etc.
-                    getSharedPreferences("USER_REF", Context.MODE_PRIVATE).edit().putString("USERNAME", username).commit()
-                    // start the main activity
-                    startActivity(Intent(this, MainActivity::class.java))
-                } else { Snackbar.make(loginClRoot, "Wrong Password", Snackbar.LENGTH_LONG).show() }
-            } else { Snackbar.make(loginClRoot, "A user with that username does not exist", Snackbar.LENGTH_LONG).show() }
+            if (checkValidUser(username, password)) {
+                getSharedPreferences("USER_REF", Context.MODE_PRIVATE).edit().putString("USERNAME", username).commit()
+                // start the main activity
+                startActivity(Intent(this, MainActivity::class.java))
+            }
         }
-
         // sign up button
         signUpButton.setOnClickListener { startActivity(Intent(this, SignUp::class.java)) }
     }
@@ -70,5 +63,24 @@ class Login : AppCompatActivity() {
     private fun hash(input: String): String {
         val md = MessageDigest.getInstance("MD5")
         return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+    }
+
+    fun checkValidUser(username: String, password: String): Boolean {
+        val db = DataBaseHelper(this)
+        // check if a user with that username exists
+        if(db.verifyUserExists(username)){
+            // check if that username has thart password attached to it
+            if (db.verifyUserPassword(username, password)){
+                // store the inserted username in the shared preferences which
+                // allows us to get the user data only in the main activity and etc.
+                return true
+            } else {
+                Snackbar.make(loginClRoot, "Wrong Password", Snackbar.LENGTH_LONG).show()
+                return false}
+        } else {
+            Snackbar.make(loginClRoot, "A user with that username does not exist", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+
     }
 }
