@@ -92,6 +92,7 @@ class SignUp : AppCompatActivity() {
      * @author jethro
      * @author claudia
      */
+
     fun checkValidLoginDetails (email: String, username: String, password: String, confirmPassword: String): Int {
         return if (EMAIL_ADDRESS_PATTERN.matcher(email).matches()) {
             if (username.isNotEmpty()) {
