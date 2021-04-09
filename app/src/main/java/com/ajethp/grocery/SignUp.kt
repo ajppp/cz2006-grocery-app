@@ -21,6 +21,7 @@ import java.util.regex.Pattern
  * when the user signs for a new account
  *
  * @author jethro
+ * @author claudia
  */
 class SignUp : AppCompatActivity() {
 
@@ -43,8 +44,6 @@ class SignUp : AppCompatActivity() {
 
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
 
-
-
         emailTextEdit = findViewById(R.id.signUpEmailText)
         usernameTextEdit = findViewById(R.id.signUpUsernameText)
         passwordTextEdit = findViewById(R.id.signUpPasswordText)
@@ -52,24 +51,30 @@ class SignUp : AppCompatActivity() {
         signUpDoneButton = findViewById(R.id.signUpButton)
         signUpClRoot = findViewById(R.id.signUpClRoot)
 
+        // if (EMAIL_ADDRESS_PATTERN.matcher(emailTextEdit.text.toString()).matches()) { checkEmail = true }
+        // if (usernameTextEdit.text.toString().isNotEmpty()) {checkUsernameNotEmpty = true }
+        // if (passwordTextEdit.text.toString().isNotEmpty()) { checkPasswordNotEmpty = true }
+        // if (confirmPassword.text.toString() == passwordTextEdit.text.toString()) { passwordSimilar = true }
+        val db = DataBaseHelper(this)
 
-        var checkEmail: Boolean = false
-        var checkUsernameNotEmpty: Boolean = false
-        var checkPasswordNotEmpty: Boolean = false
-        var passwordSimilar: Boolean = false
-        if (EMAIL_ADDRESS_PATTERN.matcher(emailTextEdit.text.toString()).matches()) { checkEmail = true }
-        if (usernameTextEdit.text.toString().isNotEmpty()) {checkUsernameNotEmpty = true }
-        if (passwordTextEdit.text.toString().isNotEmpty()) { checkPasswordNotEmpty = true }
-        if (confirmPassword.text.toString() == passwordTextEdit.text.toString()) { passwordSimilar = true }
-
-        val email = emailTextEdit.text.toString()
-        val username = usernameTextEdit.text.toString()
-        val password = hash(passwordTextEdit.text.toString())
-
-        if (checkValidLoginDetails(email, username, password, checkEmail, checkUsernameNotEmpty, checkPasswordNotEmpty, passwordSimilar)) {
-
+        signUpDoneButton.setOnClickListener {
+            val email = emailTextEdit.text.toString()
+            val username = usernameTextEdit.text.toString()
+            val password = hash(passwordTextEdit.text.toString())
+            val confirmPassword = hash(confirmPassword.text.toString())
+            when (checkValidLoginDetails(email, username, password, confirmPassword)) {
+                1 -> Snackbar.make(signUpClRoot, "Invalid Email Address", Snackbar.LENGTH_LONG).show()
+                2 -> Snackbar.make(signUpClRoot, "Username is empty! Please insert a Username", Snackbar.LENGTH_LONG).show()
+                3 -> Snackbar.make(signUpClRoot, "Password is empty! Please insert a password", Snackbar.LENGTH_LONG).show()
+                4 -> Snackbar.make(signUpClRoot, "Passwords are not the same", Snackbar.LENGTH_LONG).show()
+                5 -> Snackbar.make(signUpClRoot, "A user with that username already exists", Snackbar.LENGTH_LONG).show()
+                6 -> {
+                    db.insertUserData(User(email, username, password))
+                    getSharedPreferences("USER_REF", Context.MODE_PRIVATE).edit().putString("USERNAME", username).commit()
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+            }
         }
-
 
     }
 
@@ -78,29 +83,26 @@ class SignUp : AppCompatActivity() {
         return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 
-    fun checkValidLoginDetails (email: String, username: String, password: String, checkEmail: Boolean, checkUsernameNotEmpty: Boolean, checkPasswordNotEmpty: Boolean, passwordSimilar: Boolean): Boolean {
-        val db = DataBaseHelper(this)
-        signUpDoneButton.setOnClickListener {
-            if (checkEmail) {
-                if (checkUsernameNotEmpty) {
-                    if (checkPasswordNotEmpty) {
-                        if (passwordSimilar) {
-                            // check for existing user
-                            if (db.verifyUserExists(username)) {
-                                Snackbar.make(signUpClRoot, "A user with that username already exists", Snackbar.LENGTH_LONG).show()
-                                // i tried adding a return here but they said not allowed what the fuck
-                            } else {
-                                // everything is correct
-                                val newUser = User(email, username, password)
-                                db.insertUserData(newUser)
-                                getSharedPreferences("USER_REF", Context.MODE_PRIVATE).edit().putString("USERNAME", username).commit()
 
-                                startActivity(Intent(this, MainActivity::class.java))
-                            }
-                        } else { Snackbar.make(it, "Passwords are not the same", Snackbar.LENGTH_LONG).show() }
-                    } else { Snackbar.make(signUpClRoot, "Password is empty! Please insert a password", Snackbar.LENGTH_LONG).show() }
-                } else { Snackbar.make(signUpClRoot, "Username is empty! Please insert a Username", Snackbar.LENGTH_LONG).show() }
-            } else { Snackbar.make(signUpClRoot, "Invalid Email Address", Snackbar.LENGTH_LONG).show() }
-        }
+    /**
+     * This function checks if the sign up credentials provided are valid
+     * it returns an integer value (0 - 6) which provides information on
+     * what the error is and 6 if everything is fine
+     *
+     * @author jethro
+     * @author claudia
+     */
+    fun checkValidLoginDetails (email: String, username: String, password: String, confirmPassword: String): Int {
+        return if (EMAIL_ADDRESS_PATTERN.matcher(email).matches()) {
+            if (username.isNotEmpty()) {
+                if (password.isNotEmpty()) {
+                    if (password == confirmPassword) {
+                        if (DataBaseHelper(this).verifyUserExists(username)) {
+                            5
+                        } else { 6 }
+                    } else { 4 }
+                } else { 3 }
+            } else { 2 }
+        } else { 1 }
     }
 }
