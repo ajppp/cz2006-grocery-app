@@ -38,7 +38,6 @@ class Settings : AppCompatActivity() {
     }
 
     private lateinit var currentUser: User
-    private lateinit var userSharedPreferences: SharedPreferences
 
     private lateinit var updateRestrictionsButton: Button
     private lateinit var languageButton: Button
@@ -72,13 +71,13 @@ class Settings : AppCompatActivity() {
             }
 
             createFamilyButton.setOnClickListener {
-                startActivity(Intent(this, CreateFamilyActivity::class.java))
+                startActivity(Intent(this, CreateFamily::class.java))
             }
         } else {
             createFamilyButton.visibility = View.GONE
             familyButton.text = "View Family Information"
             familyButton.setOnClickListener {
-                startActivity(Intent(this, ViewFamilyActivity::class.java))
+                startActivity(Intent(this, ViewFamily::class.java))
             }
         }
     }

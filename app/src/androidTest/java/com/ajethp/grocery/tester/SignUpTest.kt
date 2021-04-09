@@ -18,7 +18,7 @@ class SignUpTest {
         scenario.onActivity { activity ->
             result = activity.checkValidLoginDetails(
                 "claudia@gmail.com",
-                "coloteong",
+                "jethro",
                 "claudia",
                 "claudia"
             )
@@ -75,7 +75,7 @@ class SignUpTest {
     @Test fun validLoginDetails() {
         val scenario = launch(SignUp::class.java)
         scenario.onActivity { activity ->
-            result = activity.checkValidLoginDetails("claudia@gmail.com", "coloteong1", "claudia", "claudia")
+            result = activity.checkValidLoginDetails("claudia@gmail.com", "coloteong123", "claudia", "claudia")
         }
         assertEquals(result, 6)
     }

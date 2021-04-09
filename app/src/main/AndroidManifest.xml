@@ -1,56 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ajethp.grocery">
+        package="com.ajethp.grocery">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
-        android:label="@string/app_name"
-        android:icon="@drawable/ic_food"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat">
-        <activity android:name=".RecipeSearchResults"
-            android:parentActivityName=".Recipe"/>
+            android:allowBackup="true"
+            android:icon="@drawable/ic_food"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.AppCompat">
+        <activity android:name=".ViewFamily"></activity>
+        <activity android:name=".CreateFamily" />
+        <activity android:name=".JoinFamilyActivity" />
         <activity
-            android:name=".SignUp"
-            android:parentActivityName=".Login" />
-        <activity android:name=".RecipeDetails"
-            android:parentActivityName=".Recipe"/>
+                android:name=".RecipeSearchResults"
+                android:parentActivityName=".Recipe" />
+        <activity
+                android:name=".SignUp"
+                android:parentActivityName=".Login" />
+        <activity
+                android:name=".RecipeDetails"
+                android:parentActivityName=".Recipe" />
         <activity android:name=".MovePurchasedItemToInventory" />
         <activity
-            android:name=".AddNewShoppingItem"
-            android:parentActivityName=".Grocery" />
+                android:name=".AddNewShoppingItem"
+                android:parentActivityName=".Grocery" />
         <activity
-            android:name=".AddNewInventoryItem"
-            android:parentActivityName=".Inventory" />
+                android:name=".AddNewInventoryItem"
+                android:parentActivityName=".Inventory" />
         <activity android:name=".Login">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".Settings"
-            android:label="Settings"
-            android:parentActivityName=".MainActivity" />
+                android:name=".Settings"
+                android:label="Settings"
+                android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Grocery"
-            android:label=""
-            android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity" />
+                android:name=".Grocery"
+                android:label=""
+                android:launchMode="singleTop"
+                android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Recipe"
-            android:label="@string/title_activity_recipe"
-            android:parentActivityName=".MainActivity" />
+                android:name=".Recipe"
+                android:label="@string/title_activity_recipe"
+                android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Inventory"
-            android:label="Your Inventory"
-            android:parentActivityName=".MainActivity" />
+                android:name=".Inventory"
+                android:label="Your Inventory"
+                android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".MainActivity"
-            android:launchMode="singleTop" />
+                android:name=".MainActivity"
+                android:launchMode="singleTop" />
     </application>
 
 </manifest>
