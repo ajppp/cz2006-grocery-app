@@ -43,7 +43,7 @@ class SignUp : AppCompatActivity() {
 
         userSharedPreferences = getSharedPreferences("USER_REF", Context.MODE_PRIVATE)
 
-        val db = DataBaseHelper(this)
+
 
         emailTextEdit = findViewById(R.id.signUpEmailText)
         usernameTextEdit = findViewById(R.id.signUpUsernameText)
@@ -52,17 +52,43 @@ class SignUp : AppCompatActivity() {
         signUpDoneButton = findViewById(R.id.signUpButton)
         signUpClRoot = findViewById(R.id.signUpClRoot)
 
+
+        var checkEmail: Boolean = false
+        var checkUsernameNotEmpty: Boolean = false
+        var checkPasswordNotEmpty: Boolean = false
+        var passwordSimilar: Boolean = false
+        if (EMAIL_ADDRESS_PATTERN.matcher(emailTextEdit.text.toString()).matches()) { checkEmail = true }
+        if (usernameTextEdit.text.toString().isNotEmpty()) {checkUsernameNotEmpty = true }
+        if (passwordTextEdit.text.toString().isNotEmpty()) { checkPasswordNotEmpty = true }
+        if (confirmPassword.text.toString() == passwordTextEdit.text.toString()) { passwordSimilar = true }
+
+        val email = emailTextEdit.text.toString()
+        val username = usernameTextEdit.text.toString()
+        val password = hash(passwordTextEdit.text.toString())
+
+        if (checkValidLoginDetails(email, username, password, checkEmail, checkUsernameNotEmpty, checkPasswordNotEmpty, passwordSimilar)) {
+
+        }
+
+
+    }
+
+    private fun hash(input: String): String {
+        val md = MessageDigest.getInstance("MD5")
+        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+    }
+
+    fun checkValidLoginDetails (email: String, username: String, password: String, checkEmail: Boolean, checkUsernameNotEmpty: Boolean, checkPasswordNotEmpty: Boolean, passwordSimilar: Boolean): Boolean {
+        val db = DataBaseHelper(this)
         signUpDoneButton.setOnClickListener {
-            if (EMAIL_ADDRESS_PATTERN.matcher(emailTextEdit.text.toString()).matches()) {
-                if (usernameTextEdit.text.toString().isNotEmpty()) {
-                    if (passwordTextEdit.text.toString().isNotEmpty()) {
-                        if (confirmPassword.text.toString() == passwordTextEdit.text.toString()) {
-                            val email = emailTextEdit.text.toString()
-                            val username = usernameTextEdit.text.toString()
-                            val password = hash(passwordTextEdit.text.toString())
+            if (checkEmail) {
+                if (checkUsernameNotEmpty) {
+                    if (checkPasswordNotEmpty) {
+                        if (passwordSimilar) {
                             // check for existing user
                             if (db.verifyUserExists(username)) {
                                 Snackbar.make(signUpClRoot, "A user with that username already exists", Snackbar.LENGTH_LONG).show()
+                                // i tried adding a return here but they said not allowed what the fuck
                             } else {
                                 // everything is correct
                                 val newUser = User(email, username, password)
@@ -76,10 +102,5 @@ class SignUp : AppCompatActivity() {
                 } else { Snackbar.make(signUpClRoot, "Username is empty! Please insert a Username", Snackbar.LENGTH_LONG).show() }
             } else { Snackbar.make(signUpClRoot, "Invalid Email Address", Snackbar.LENGTH_LONG).show() }
         }
-    }
-
-    private fun hash(input: String): String {
-        val md = MessageDigest.getInstance("MD5")
-        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 }
