@@ -4,7 +4,6 @@ import android.net.sip.SipSession
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ajethp.grocery.Login
-// import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.Assert.*
 import org.junit.runner.RunWith
