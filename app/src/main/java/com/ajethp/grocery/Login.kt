@@ -65,7 +65,7 @@ class Login : AppCompatActivity() {
         return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 
-    fun checkValidUser(username: String, password: String): Boolean {
+     fun checkValidUser(username: String, password: String): Boolean {
         val db = DataBaseHelper(this)
         // check if a user with that username exists
         if(db.verifyUserExists(username)){
