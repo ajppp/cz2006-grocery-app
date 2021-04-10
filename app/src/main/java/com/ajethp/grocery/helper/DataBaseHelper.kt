@@ -254,11 +254,23 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         database.insert(TABLE_FAMILY, null, contentValues)
     }
 
-    fun selectFamilyInventory(familyId: String) {
+    fun selectFamilyInventory(familyId: String): MutableList<Food> {
+        val db = this.readableDatabase
+        val familyInventory: MutableList<Food> = arrayListOf()
         val familyInventoryQuery = "SELECT * FROM $TABLE_INVENTORY " +
                 "WHERE $USER_COL_NAME IN ( SELECT $USER_COL_NAME FROM $TABLE_USER " +
                 "WHERE $USER_COL_FAMILY = '$familyId');"
-        this.readableDatabase.execSQL(familyInventoryQuery)
+        val inventoryResult = db.rawQuery(familyInventoryQuery, null)
+        if (inventoryResult.moveToFirst()) {
+            do {
+                val foodName = inventoryResult.getString(inventoryResult.getColumnIndex(INVENTORY_COL_NAME))
+                val foodDate = inventoryResult.getString(inventoryResult.getColumnIndex(INVENTORY_COL_DATE))
+                val foodQuantity = inventoryResult.getString(inventoryResult.getColumnIndex(INVENTORY_COL_QUANTITY)).toInt()
+                val inventoryFood = Food(foodName, foodDate, foodQuantity)
+                familyInventory.add(inventoryFood)
+            } while (inventoryResult.moveToNext())
+        }
+        return familyInventory
     }
 
     fun verifyFamilyExists(familyId: String): Boolean {

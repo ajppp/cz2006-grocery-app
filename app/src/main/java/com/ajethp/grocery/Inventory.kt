@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.android.material.snackbar.Snackbar
@@ -73,7 +74,9 @@ class Inventory : AppCompatActivity() {
     // handle what happens after the activity is started after creation
     override fun onStart() {
         super.onStart()
-        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
+        val db = DataBaseHelper(this)
+        val currentUser = db.readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
+        if (hasFamily(currentUser)) currentUser.inventoryList = getFamilyInventory(currentUser)
         currentUser.sortInventory()
         sortBy = "DATE"
         setupInventory(currentUser)
@@ -151,4 +154,8 @@ class Inventory : AppCompatActivity() {
                 positiveClickListener.onClick(null)
             }.show()
     }
+
+    private fun hasFamily(currentUser: User): Boolean = currentUser.familyId != null
+
+    private fun getFamilyInventory(currentUser: User): MutableList<Food> = DataBaseHelper(this).selectFamilyInventory(currentUser.familyId!!)
 }
