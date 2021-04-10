@@ -11,9 +11,13 @@ const val DATABASE_NAME = "USER DATABASE"
 
 // Table names
 const val TABLE_USER = "Users"
+const val TABLE_FAMILY = "Family"
 const val TABLE_INVENTORY = "Inventory"
 const val TABLE_PURCHASED = "Purchased"
 const val TABLE_SHOPPING = "Shopping"
+
+const val FAMILY_COL_NAME = "family_id"
+const val FAMILY_COL_PASSWORD = "family_password"
 
 const val USER_COL_EMAIL = "email"
 const val USER_COL_NAME = "username"
@@ -49,11 +53,12 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
      */
 
     override fun onCreate(db: SQLiteDatabase?) {
+
         val createUserTable = "CREATE TABLE $TABLE_USER (" +
                 "$USER_COL_EMAIL TEXT PRIMARY KEY, " +
                 "$USER_COL_NAME TEXT UNIQUE, " +
                 "$USER_COL_PASSWORD TEXT, " +
-                "$USER_COL_FAMILY TEXT, " +
+                "$USER_COL_FAMILY TEXT REFERENCES $TABLE_FAMILY($FAMILY_COL_NAME), " +
                 "$USER_COL_RESTRICTIONS TEXT" +
                 ");"
 
@@ -76,10 +81,15 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
                 "$PURCHASED_COL_QUANTITY INTEGER, " +
                 "FOREIGN KEY ($USER_COL_NAME) REFERENCES $TABLE_USER($USER_COL_NAME));"
 
+        val createFamilyTable = "CREATE TABLE $TABLE_FAMILY ( " +
+                "$FAMILY_COL_NAME TEXT PRIMARY KEY, " +
+                "$FAMILY_COL_PASSWORD TEXT );"
+
         db?.execSQL(createUserTable)
         db?.execSQL(createInventoryTable)
         db?.execSQL(createPurchasedTable)
         db?.execSQL(createShoppingTable)
+        db?.execSQL(createFamilyTable)
     }
 
     /**
@@ -129,6 +139,14 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
                 "SET $USER_COL_RESTRICTIONS = '${user.dietaryRestriction.joinToString()}' " +
                 "WHERE $USER_COL_NAME = '${user.username}';"
         database.execSQL(modifyUserRestrictionQuery)
+    }
+
+    fun modifyUserFamily(user: User) {
+        val database = this.writableDatabase
+        val modifyUserFamilyQuery = "UPDATE $TABLE_USER " +
+                "SET $USER_COL_FAMILY = '$user.familyId' " +
+                "WHERE $USER_COL_NAME = '$user.username';"
+        database.execSQL(modifyUserFamilyQuery)
     }
 
     /**
@@ -228,6 +246,36 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         this.writableDatabase.execSQL(deletePurchasedQuery)
     }
 
+    fun insertFamilyData(familyId: String, familyPassword: String) {
+        val database = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(FAMILY_COL_NAME, familyId)
+        contentValues.put(FAMILY_COL_PASSWORD, familyPassword)
+        database.insert(TABLE_FAMILY, null, contentValues)
+    }
+
+    fun selectFamilyInventory(familyId: String) {
+        val familyInventoryQuery = "SELECT * FROM $TABLE_INVENTORY " +
+                "WHERE $USER_COL_NAME IN ( SELECT $USER_COL_NAME FROM $TABLE_USER " +
+                "WHERE $USER_COL_FAMILY = '$familyId');"
+        this.readableDatabase.execSQL(familyInventoryQuery)
+    }
+
+    fun verifyFamilyExists(familyId: String): Boolean {
+        val db = this.readableDatabase
+        val familyQuery = "SELECT $FAMILY_COL_NAME FROM $TABLE_FAMILY " +
+                "WHERE $FAMILY_COL_NAME = '$familyId';"
+        return db.rawQuery(familyQuery, null).count != 0
+    }
+
+    fun verifyFamilyPassword(familyId: String, password: String): Boolean {
+        val db = this.readableDatabase
+        val familyPasswordQuery = "SELECT $FAMILY_COL_NAME FROM $TABLE_FAMILY " +
+                "WHERE $FAMILY_COL_NAME = '$familyId' "+
+                "AND $FAMILY_COL_PASSWORD = '$password';"
+        return db.rawQuery(familyPasswordQuery, null).count != 0
+    }
+
     /**
      * This method is used to check if a user with that user ID
      * already exists in the user table. It is invoked when creating
@@ -257,10 +305,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
 
     /**
      * This method is used to initialise a User object based on the
-     * data that already existson the database.It takes in the username
+     * data that already exists on the database.It takes in the username
      * as a string and returns a User object tied to that particular
      * username
      */
+
     fun readUserData(username: String): User {
         val db = this.readableDatabase
         var currentUser = User(null, null, null)
@@ -274,8 +323,9 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
             val resultPassword: String = userResult.getString(userResult.getColumnIndex(USER_COL_PASSWORD))
             val resultRestriction: MutableList<Boolean> = ArrayList()
             userResult.getString(userResult.getColumnIndex(USER_COL_RESTRICTIONS)).split(", ").forEach{ resultRestriction.add(it.toBoolean()) }
-            val resultFamily: Int = userResult.getInt(userResult.getColumnIndex(USER_COL_FAMILY))
-            val userIsInFamily = (resultFamily != 0)
+            val resultFamily: String? = userResult.getString(userResult.getColumnIndex(USER_COL_FAMILY))
+            // CLOUDDDD remind me to check this
+            val userIsInFamily = (resultFamily != null)
             currentUser = User(resultEmail, resultName, resultPassword, resultRestriction, resultFamily, userIsInFamily)
         }
         // get the inventory
@@ -327,6 +377,7 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         this.writableDatabase.execSQL("DROP TABLE IF EXISTS $TABLE_INVENTORY")
         this.writableDatabase.execSQL("DROP TABLE IF EXISTS $TABLE_SHOPPING")
         this.writableDatabase.execSQL("DROP TABLE IF EXISTS $TABLE_PURCHASED")
+        this.writableDatabase.execSQL("DROP TABLE IF EXISTS $TABLE_FAMILY")
 
         val createUserTable = "CREATE TABLE $TABLE_USER (" +
                 "$USER_COL_EMAIL TEXT PRIMARY KEY, " +
@@ -355,9 +406,14 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
                 "$PURCHASED_COL_QUANTITY INTEGER, " +
                 "FOREIGN KEY ($USER_COL_NAME) REFERENCES $TABLE_USER($USER_COL_NAME));"
 
+        val createFamilyTable = "CREATE TABLE $TABLE_FAMILY ( " +
+                "$FAMILY_COL_NAME INTEGER PRIMARY KEY, " +
+                "$FAMILY_COL_PASSWORD TEXT );"
+
         this.writableDatabase.execSQL(createUserTable)
         this.writableDatabase.execSQL(createInventoryTable)
         this.writableDatabase.execSQL(createShoppingTable)
         this.writableDatabase.execSQL(createPurchasedTable)
+        this.writableDatabase.execSQL(createFamilyTable)
     }
 }

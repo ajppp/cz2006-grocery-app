@@ -56,6 +56,7 @@ class SignUp : AppCompatActivity() {
         // if (passwordTextEdit.text.toString().isNotEmpty()) { checkPasswordNotEmpty = true }
         // if (confirmPassword.text.toString() == passwordTextEdit.text.toString()) { passwordSimilar = true }
         val db = DataBaseHelper(this)
+        // db.clearDatabase()
 
         signUpDoneButton.setOnClickListener {
             val email = emailTextEdit.text.toString()

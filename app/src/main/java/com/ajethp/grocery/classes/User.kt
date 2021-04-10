@@ -1,5 +1,7 @@
 package com.ajethp.grocery.classes
 
+import java.sql.Types.NULL
+
 /**
  * This class implements the Food entity with
  * the attributes user email, user name,
@@ -16,7 +18,7 @@ data class User(
         val password: String?,
         var dietaryRestriction: MutableList<Boolean> = mutableListOf(false, false, false, false, false, false),
         // default value for no family is 0
-        var familyId : Int = 0,
+        var familyId : String? = null,
         var isInFamily : Boolean = false,
         var inventoryList:MutableList<Food> = ArrayList(),
         var shoppingList:MutableList<Food> = ArrayList(),

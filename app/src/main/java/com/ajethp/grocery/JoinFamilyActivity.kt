@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.android.material.snackbar.Snackbar
@@ -19,6 +20,7 @@ class JoinFamilyActivity : AppCompatActivity() {
     private lateinit var joinFamilyId: EditText
     private lateinit var joinFamilyPassword: EditText
     private lateinit var joinFamilyButton: Button
+    private lateinit var joinFamilyClRoot: ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +31,7 @@ class JoinFamilyActivity : AppCompatActivity() {
         joinFamilyId = findViewById(R.id.familyIdInput)
         joinFamilyPassword = findViewById(R.id.familyPasswordInput)
         joinFamilyButton = findViewById(R.id.joinFamilyButton)
+        joinFamilyClRoot = findViewById(R.id.joinFamilyClRoot)
 
         joinFamilyButton.setOnClickListener {
             // get inserted username and password
@@ -37,35 +40,31 @@ class JoinFamilyActivity : AppCompatActivity() {
 
             if (checkValidFamily(familyID, familyPassword)) {
                 // maybe get the shared inventory or add the current user's items to the shared inventory whichever is easier i guess
-
-                // start the main activity
-                startActivity(Intent(this, MainActivity::class.java))
+                currentUser.familyId = familyID
+                DataBaseHelper(this).modifyUserFamily(currentUser)
+                startActivity(Intent(this, Settings::class.java))
             }
         }
-        // sign up button
-        joinFamilyButton.setOnClickListener { startActivity(Intent(this, SignUp::class.java)) }
     }
+
     private fun hash(input: String): String {
         val md = MessageDigest.getInstance("MD5")
         return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 
-    fun checkValidFamily(familyID: String, familyPassword: String): Boolean {
+    private fun checkValidFamily(familyID: String, familyPassword: String): Boolean {
         val db = DataBaseHelper(this)
-        // check if a user with that username exists
-        if(db.verifyFamilyExists(familyID)){
-            // check if that username has thart password attached to it
-            if (db.verifyFamilyPassword(familyID, familyPassword)){
-                // store the inserted username in the shared preferences which
-                // allows us to get the user data only in the main activity and etc.
-                return true
+        return if (db.verifyFamilyExists(familyID)) {
+            if (db.verifyFamilyPassword(familyID, familyPassword)) { true
             } else {
                 // LOOK AT THIS AND REMEMBER TO FIX IT @@@@@@@@@@@@@@@JETH
-                Snackbar.make(loginClRoot, "Wrong Family Password", Snackbar.LENGTH_LONG).show()
-                return false }
+                // DONE @@@@@@@@@@@@@@@CLOUD
+                Snackbar.make(joinFamilyClRoot, "Wrong Family Password", Snackbar.LENGTH_LONG).show()
+                false
+            }
         } else {
-            // THIS TOO
-            Snackbar.make(loginClRoot, "A family with that ID does not exist", Snackbar.LENGTH_LONG).show()
-            return false
+            Snackbar.make(joinFamilyClRoot, "A family with that ID does not exist", Snackbar.LENGTH_LONG).show()
+            false
         }
+    }
 }

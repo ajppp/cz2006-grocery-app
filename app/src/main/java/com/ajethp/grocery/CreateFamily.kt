@@ -1,12 +1,12 @@
 package com.ajethp.grocery
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.ajethp.grocery.classes.Family
 import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.android.material.snackbar.Snackbar
@@ -45,7 +45,9 @@ class CreateFamily : AppCompatActivity() {
                 3 -> Snackbar.make(createFamilyClRoot, "Passwords are not the same", Snackbar.LENGTH_LONG).show()
                 4 -> Snackbar.make(createFamilyClRoot, "A family with that ID already exists", Snackbar.LENGTH_LONG).show()
                 5 -> {
-                    TODO("make a new family and insert it into the database")
+                    // TODO("make a new family and insert it into the database")
+                    DataBaseHelper(this).insertFamilyData(familyId, password)
+                    startActivity(Intent(this, Settings::class.java))
                 }
             }
         }
@@ -55,7 +57,7 @@ class CreateFamily : AppCompatActivity() {
         return if (familyId.isNotEmpty()) {
             if (password.isNotEmpty()) {
                 if (password == confirmPassword) {
-                    if (DataBaseHelper(this).verifyFamilyExists) {
+                    if (DataBaseHelper(this).verifyFamilyExists(familyId)) {
                         4
                     } else { 5 }
                 } else { 3 }

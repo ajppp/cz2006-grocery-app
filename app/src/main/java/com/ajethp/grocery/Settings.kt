@@ -63,13 +63,15 @@ class Settings : AppCompatActivity() {
         // update restrictions
         updateRestrictionsButton.setOnClickListener { showDietaryRestrictionAlertDialog("Dietary Restrictions", null) {} }
 
-        if (currentUser.familyId == 0) {
-            familyButton.text = "Create or Join Family"
+        Log.i(TAG, currentUser.familyId.toString())
+        if (currentUser.familyId.isNullOrBlank()) {
+            familyButton.text = "Join Family"
             // join family
             familyButton.setOnClickListener {
                 startActivity(Intent(this, JoinFamilyActivity::class.java))
             }
 
+            createFamilyButton.text = "Create Family"
             createFamilyButton.setOnClickListener {
                 startActivity(Intent(this, CreateFamily::class.java))
             }
@@ -94,6 +96,5 @@ class Settings : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         DataBaseHelper(this).modifyUserRestriction(currentUser)
-        startActivity(Intent(this, MainActivity::class.java))
     }
 }
