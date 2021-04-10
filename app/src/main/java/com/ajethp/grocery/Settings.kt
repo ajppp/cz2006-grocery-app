@@ -43,6 +43,7 @@ class Settings : AppCompatActivity() {
     private lateinit var languageButton: Button
     private lateinit var fontSizeButton: Button
     private lateinit var familyButton: Button
+    private lateinit var createFamilyButton: Button
     private lateinit var settingsUserName: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,10 +56,32 @@ class Settings : AppCompatActivity() {
         languageButton = findViewById(R.id.languageButton)
         fontSizeButton = findViewById(R.id.fontSizeButton)
         familyButton = findViewById(R.id.familyButton)
+        createFamilyButton = findViewById(R.id.createFamilyButton)
         settingsUserName = findViewById(R.id.settingsUsername)
         settingsUserName.text = currentUser.username
 
+        // update restrictions
         updateRestrictionsButton.setOnClickListener { showDietaryRestrictionAlertDialog("Dietary Restrictions", null) {} }
+
+        Log.i(TAG, currentUser.familyId.toString())
+        if (currentUser.familyId.isNullOrBlank()) {
+            familyButton.text = "Join Family"
+            // join family
+            familyButton.setOnClickListener {
+                startActivity(Intent(this, JoinFamilyActivity::class.java))
+            }
+
+            createFamilyButton.text = "Create Family"
+            createFamilyButton.setOnClickListener {
+                startActivity(Intent(this, CreateFamily::class.java))
+            }
+        } else {
+            createFamilyButton.visibility = View.GONE
+            familyButton.text = "View Family Information"
+            familyButton.setOnClickListener {
+                startActivity(Intent(this, ViewFamily::class.java))
+            }
+        }
     }
 
     private fun showDietaryRestrictionAlertDialog(title: String, view: View?, positiveClickListener: View.OnClickListener) {
@@ -73,6 +96,5 @@ class Settings : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         DataBaseHelper(this).modifyUserRestriction(currentUser)
-        startActivity(Intent(this, MainActivity::class.java))
     }
 }
