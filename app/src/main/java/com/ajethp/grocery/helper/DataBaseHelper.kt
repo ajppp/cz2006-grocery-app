@@ -141,11 +141,11 @@ class DataBaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         database.execSQL(modifyUserRestrictionQuery)
     }
 
-    fun modifyUserFamily(user: User) {
+    fun modifyUserFamily(username: String, familyId: String) {
         val database = this.writableDatabase
         val modifyUserFamilyQuery = "UPDATE $TABLE_USER " +
-                "SET $USER_COL_FAMILY = '$user.familyId' " +
-                "WHERE $USER_COL_NAME = '$user.username';"
+                "SET $USER_COL_FAMILY = '$familyId' " +
+                "WHERE $USER_COL_NAME = '$username';"
         database.execSQL(modifyUserFamilyQuery)
     }
 

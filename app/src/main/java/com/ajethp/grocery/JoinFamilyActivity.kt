@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -14,6 +15,10 @@ import java.math.BigInteger
 import java.security.MessageDigest
 
 class JoinFamilyActivity : AppCompatActivity() {
+
+    private companion object {
+        const val TAG = "join family"
+    }
 
     private lateinit var currentUser: User
 
@@ -37,11 +42,10 @@ class JoinFamilyActivity : AppCompatActivity() {
             // get inserted username and password
             val familyID = joinFamilyId.text.toString()
             val familyPassword = hash(joinFamilyPassword.text.toString())
-
             if (checkValidFamily(familyID, familyPassword)) {
                 // maybe get the shared inventory or add the current user's items to the shared inventory whichever is easier i guess
-                currentUser.familyId = familyID
-                DataBaseHelper(this).modifyUserFamily(currentUser)
+                Log.i(TAG, "$currentUser.username, $familyID")
+                DataBaseHelper(this).modifyUserFamily(currentUser.username!!, familyID)
                 startActivity(Intent(this, Settings::class.java))
             }
         }

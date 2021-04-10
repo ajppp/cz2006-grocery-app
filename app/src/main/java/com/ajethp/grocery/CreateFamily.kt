@@ -47,6 +47,7 @@ class CreateFamily : AppCompatActivity() {
                 5 -> {
                     // TODO("make a new family and insert it into the database")
                     DataBaseHelper(this).insertFamilyData(familyId, password)
+                    DataBaseHelper(this).modifyUserFamily(currentUser.username!!, familyId)
                     startActivity(Intent(this, Settings::class.java))
                 }
             }
