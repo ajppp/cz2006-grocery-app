@@ -25,21 +25,12 @@ import com.ajethp.grocery.helper.DataBaseHelper
 class Settings : AppCompatActivity() {
 
     private val restrictionsList = arrayOf(
-<<<<<<< HEAD
-            "lactose intolerance",
-            "halal",
-            "vegan",
-            "kosher",
-            "peanut allergies",
-            "diabetic"
-=======
             "vegetarian",
             "vegan",
             "pescatarian",
             "halal",
             "gluten-free",
             "lactose intolerant"
->>>>>>> cloud-tries-android
     )
 
     companion object {
