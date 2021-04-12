@@ -5,6 +5,7 @@
     android:id="@+id/signUpClRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bkground"
     tools:context=".SignUp">
 
     <LinearLayout
@@ -33,15 +34,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Email: "
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/brown" />
 
             <EditText
                 android:id="@+id/signUpEmailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/brown"
                 android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="@color/brown"
+                android:textColorHint="@color/brown" />
 
         </LinearLayout>
 
@@ -58,16 +63,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Username:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/brown" />
 
             <EditText
                 android:id="@+id/signUpUsernameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/brown"
                 android:ems="10"
                 android:hint="Enter username here"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@color/brown"
+                android:textColorHint="@color/brown" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,15 +92,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Password:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/brown" />
 
             <EditText
                 android:id="@+id/signUpPasswordText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/brown"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="@color/brown"
+                android:textColorHint="@color/brown" />
         </LinearLayout>
 
         <LinearLayout
@@ -107,15 +120,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Confirm Password:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/brown"
+                android:textColorHint="@color/brown" />
 
             <EditText
                 android:id="@+id/signUpConfirmText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/brown"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:foregroundTint="@color/brown"
+                android:inputType="textPassword"
+                android:textColor="@color/brown"
+                android:textColorHint="@color/brown" />
         </LinearLayout>
 
     </LinearLayout>

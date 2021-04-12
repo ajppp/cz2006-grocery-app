@@ -5,6 +5,7 @@
     android:id="@+id/inventoryClRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bkground"
     tools:context=".Inventory">
 
     <LinearLayout
@@ -25,6 +26,8 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="Food"
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/inventoryQuantity"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +43,8 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="Quantity"
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/purchasedQuantity"
             app:layout_constraintStart_toEndOf="@+id/inventoryFoodItem"
@@ -55,6 +60,8 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="Shelf Life"
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/inventoryQuantity"

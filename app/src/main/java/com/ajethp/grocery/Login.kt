@@ -37,6 +37,7 @@ class Login : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val db = DataBaseHelper(this)
+        // db.clearDatabase()
         loginClRoot = findViewById(R.id.loginClRoot)
         loginButton = findViewById(R.id.loginButton)
         usernameTextEdit = findViewById(R.id.usernameText)

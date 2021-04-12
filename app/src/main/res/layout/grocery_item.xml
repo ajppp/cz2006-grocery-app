@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/groceryItem"
     android:layout_width="192dp"
-    android:layout_height="48dp">
+    android:layout_height="48dp"
+    android:background="@color/bkground"
+    android:backgroundTint="@color/bkground">
 
 
     <CheckBox
@@ -15,7 +17,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:buttonTint="@color/brown"
         android:text="Item to be Bought"
+        android:textColor="@color/brown"
+        android:textColorHint="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/shoppingQuantity"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +34,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="4"
+        android:textColor="@color/brown"
+        android:textColorHint="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/shoppingcheckBox"
         app:layout_constraintTop_toTopOf="parent" />

@@ -5,41 +5,61 @@
     android:id="@+id/loginClRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BEDC9B"
     tools:context=".Login">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView3"
             android:layout_width="match_parent"
-            android:layout_height="480dp"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/avocado" />
 
         <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Login"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BEDC9B"
+            android:gravity="center"
+            android:text="Login"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:textColor="@color/brown"
+            android:textColorHighlight="#0E0808"
+            android:textColorLink="#130E0E" />
 
         <EditText
-                android:id="@+id/usernameText"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:ems="10"
-                android:hint="Enter Username"
-                android:inputType="text" />
+            android:id="@+id/usernameText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/brown"
+            android:ems="10"
+            android:hint="Enter Username"
+            android:inputType="text"
+            android:textColor="@color/brown"
+            android:textColorHighlight="@color/brown"
+            android:textColorHint="@color/brown"
+            android:textColorLink="@color/brown" />
 
         <EditText
-                android:id="@+id/passwordText"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:ems="10"
-                android:hint="Enter Password"
-                android:inputType="textPassword" />
+            android:id="@+id/passwordText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/brown"
+            android:ems="10"
+            android:hint="Enter Password"
+            android:inputType="textPassword"
+            android:textColor="@color/brown"
+            android:textColorHighlight="@color/brown"
+            android:textColorHint="@color/brown" />
 
         <LinearLayout
                 android:layout_width="match_parent"

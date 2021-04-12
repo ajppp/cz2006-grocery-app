@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/inventoryItem"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/bkground">
 
 
     <TextView
@@ -16,6 +17,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Food Item"
+        android:textColor="@color/brown"
+        android:textColorHint="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/inventoryQuantity"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +31,7 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="3dp"
+        android:tint="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/inventoryFoodItem"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,8 +46,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@color/bkground"
         android:clickable="true"
         android:text="3"
+        android:textColor="@color/brown"
+        android:textColorHint="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/inventoryExpiryDate"
         app:layout_constraintStart_toEndOf="@+id/inventoryFoodItem"
@@ -57,7 +64,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@color/bkground"
         android:text="5 Days"
+        android:textColor="@color/brown"
+        android:textColorHint="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/inventoryQuantity"

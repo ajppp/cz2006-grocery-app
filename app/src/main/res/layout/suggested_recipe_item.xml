@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/bkground"
     android:elevation="12dp">
 
     <TextView
@@ -14,7 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@android:color/background_dark"
+        android:background="#6A6666"
         android:elevation="16dp"
         android:gravity="center"
         android:text="Guacamole"
