@@ -4,40 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bkground"
+    android:backgroundTint="@color/bkground"
     tools:context=".AddNewInventoryItem">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="192dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="192dp"
+        android:foregroundTint="#C0E19A"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/checklist" />
+
         <EditText
             android:id="@+id/enterFoodItemText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/brown"
             android:ems="10"
+            android:foregroundTint="@color/brown"
+            android:foregroundTintMode="add"
+            android:hint="Enter Food Item"
             android:inputType="textPersonName"
-            android:hint="Enter Food Item" />
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown" />
 
         <EditText
             android:id="@+id/enterFoodQuantityText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:autofillHints=""
+            android:backgroundTint="@color/brown"
             android:ems="10"
-            android:inputType="number"
             android:hint="Enter Food Quantity"
-            android:autofillHints="" />
+            android:inputType="number"
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown" />
 
         <Switch
             android:id="@+id/expiryDateSwitch"
@@ -45,6 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Expiry Date"
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown"
             android:textSize="18sp" />
 
         <Button
