@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bkground"
     tools:context=".Grocery">
 
     <LinearLayout
@@ -17,19 +18,26 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="MINE"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TO-BUY"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shoppingListRvBoard"
             android:layout_width="match_parent"
-            android:layout_height="312dp">
+            android:layout_height="312dp"
+            android:background="@color/bkground"
+            android:backgroundTint="@color/bkground"
+            android:backgroundTintMode="src_in">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -38,7 +46,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="BOUGHT"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/purchasedListRvBoard"

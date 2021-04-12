@@ -4,45 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bkground"
+    android:backgroundTint="@color/bkground"
     tools:context=".AddNewShoppingItem">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="224dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="224dp"
+        android:background="@color/bkground"
+        android:backgroundTint="@color/bkground"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="match_parent"
+            android:layout_height="171dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/favorite_cart" />
+
         <EditText
             android:id="@+id/enterShoppingItemText"
-            android:hint="Enter Food Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/brown"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:hint="Enter Food Item"
+            android:inputType="textPersonName"
+            android:textColor="@color/brown"
+            android:textColorHighlight="@color/brown"
+            android:textColorHint="@color/brown"
+            android:textColorLink="@color/brown"
+            android:textIsSelectable="false" />
 
         <EditText
             android:id="@+id/enterShoppingItemQuantity"
-            android:hint="Enter Food Quantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/brown"
             android:ems="10"
-            android:inputType="number" />
+            android:hint="Enter Food Quantity"
+            android:inputType="number"
+            android:textColor="@color/brown"
+            android:textColorHint="@color/brown" />
 
         <Button
             android:id="@+id/addNewShoppingItemDoneButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
-            android:text="Done" />
+            android:text="Done"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

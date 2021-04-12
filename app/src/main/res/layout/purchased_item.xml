@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/purchasedItem"
     android:layout_width="192dp"
-    android:layout_height="48dp">
+    android:layout_height="48dp"
+    android:background="@color/bkground">
 
 
     <CheckBox
@@ -15,7 +16,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:buttonTint="@color/brown"
         android:text="Purchased Item"
+        android:textColor="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/purchasedQuantity"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +32,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="4"
+        android:textColor="@color/brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/purchasedcheckBox"
         app:layout_constraintTop_toTopOf="parent" />

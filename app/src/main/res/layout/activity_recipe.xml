@@ -5,6 +5,7 @@
     android:id="@+id/recipeClRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bkground"
     tools:context=".Recipe">
 
     <SearchView
@@ -14,6 +15,9 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
+        android:background="@color/bkground"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:foregroundTint="@color/brown"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +35,8 @@
         android:layout_marginBottom="20dp"
         android:text="Here are your top 3 suggested recipes"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/brown"
+        android:textColorHint="@color/brown"
         app:layout_constraintBottom_toTopOf="@+id/recipeRvBoard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
