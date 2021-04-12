@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ajethp.grocery.classes.Food
 import com.ajethp.grocery.classes.User
 import com.ajethp.grocery.helper.DataBaseHelper
 import com.google.android.material.snackbar.Snackbar
@@ -37,7 +38,6 @@ class Recipe : AppCompatActivity() {
     }
 
     private lateinit var currentUser: User
-    private lateinit var userSharedPreferences: SharedPreferences
 
     private lateinit var recipeRvBoard: RecyclerView
     private lateinit var recipeSuggestionText: TextView
@@ -50,8 +50,10 @@ class Recipe : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
 
-        val currentUser = DataBaseHelper(this).readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
-        currentUser.inventoryList.sortBy { it.expiryDate }
+        val db = DataBaseHelper(this)
+        currentUser = db.readUserData(getSharedPreferences("USER_REF", Context.MODE_PRIVATE).getString("USERNAME", "")!!)
+        if (hasFamily(currentUser)) currentUser.inventoryList = getFamilyInventory(currentUser)
+        currentUser.sortInventory()
 
         recipeRvBoard = findViewById(R.id.recipeRvBoard)
         recipeSearchBar = findViewById(R.id.recipeSearchBar)
@@ -146,4 +148,8 @@ class Recipe : AppCompatActivity() {
             } else { Snackbar.make(recipeClRoot, "No results found", Snackbar.LENGTH_LONG).show() }
         }.start()
     }
+
+    private fun hasFamily(currentUser: User): Boolean = currentUser.familyId != null
+
+    private fun getFamilyInventory(currentUser: User): MutableList<Food> = DataBaseHelper(this).selectFamilyInventory(currentUser.familyId!!)
 }
