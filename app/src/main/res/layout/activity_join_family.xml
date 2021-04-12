@@ -37,13 +37,15 @@
                 android:textColorHint="@color/brown" />
 
             <EditText
-                android:id="@+id/familyIdInput"
-                android:layout_width="256dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:backgroundTint="@color/brown"
-                android:ems="10"
-                android:inputType="number" />
+                    android:id="@+id/familyIdInput"
+                    android:layout_width="256dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:backgroundTint="@color/brown"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:textColor="@color/brown"
+                    android:textColorHint="@color/brown" />
         </LinearLayout>
 
         <LinearLayout

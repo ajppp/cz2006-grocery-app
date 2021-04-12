@@ -25,12 +25,12 @@ import com.ajethp.grocery.helper.DataBaseHelper
 class Settings : AppCompatActivity() {
 
     private val restrictionsList = arrayOf(
-            "beef",
-            "pork",
-            "etc",
-            "idk what else there is",
-            "some random crap",
-            "whatever"
+            "vegetarian",
+            "vegan",
+            "pescatarian",
+            "halal",
+            "gluten-free",
+            "lactose intolerant"
     )
 
     companion object {

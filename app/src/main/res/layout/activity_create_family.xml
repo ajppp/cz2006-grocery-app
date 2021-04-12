@@ -114,19 +114,19 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/createFamilyDoneButton"
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:layout_marginTop="4dp"
-        android:allowUndo="false"
-        android:text="Button"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+            android:id="@+id/createFamilyDoneButton"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_marginTop="4dp"
+            android:allowUndo="false"
+            android:text="Confirm"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
     <ImageView
         android:id="@+id/imageView"
